@@ -19,7 +19,8 @@ public final class CloneCraftServer {
 	private static Thread acceptThread;
 
 	private final ServerSocket server;
-	@Getter private final Map<Socket, ServerConnection> connections = new HashMap<>();
+	private int counter = 0;
+	@Getter private final Map<Integer, ServerConnection> connections = new HashMap<>();
 
 	private CloneCraftServer() {
 
@@ -37,9 +38,11 @@ public final class CloneCraftServer {
 					final ObjectInputStream ois = new ObjectInputStream(client.getInputStream());
 					final ServerConnection connection = new ServerConnection(this, client, ois, oos);
 
+					System.out.println(client);
+
 					synchronized (connections) {
 
-						connections.put(client, connection);
+						connections.put(counter++, connection);
 
 					}
 
