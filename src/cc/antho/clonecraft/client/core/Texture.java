@@ -28,7 +28,7 @@ import javax.imageio.ImageIO;
 import org.lwjgl.BufferUtils;
 
 import cc.antho.ascl8.math.Mathf;
-import cc.antho.clonecraft.client.CloneCraft;
+import cc.antho.clonecraft.client.CloneCraftGame;
 import cc.antho.clonecraft.client.pack.PackLoader;
 import lombok.Getter;
 
@@ -39,7 +39,7 @@ public class Texture {
 
 	public Texture(final String file, final boolean atlas) throws IOException {
 
-		final InputStream is = CloneCraft.class.getResourceAsStream(file);
+		final InputStream is = CloneCraftGame.class.getResourceAsStream(file);
 		final BufferedImage image = ImageIO.read(is);
 		is.close();
 		image.flush();

@@ -7,7 +7,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 
-import cc.antho.clonecraft.client.CloneCraft;
+import cc.antho.clonecraft.client.CloneCraftGame;
 import lombok.Getter;
 
 public class Shader {
@@ -26,7 +26,7 @@ public class Shader {
 
 	public static final String loadShaderString(final String file) throws IOException {
 
-		final InputStream vis = CloneCraft.class.getResourceAsStream(file);
+		final InputStream vis = CloneCraftGame.class.getResourceAsStream(file);
 
 		final InputStreamReader isr = new InputStreamReader(vis);
 		final BufferedReader br = new BufferedReader(isr);

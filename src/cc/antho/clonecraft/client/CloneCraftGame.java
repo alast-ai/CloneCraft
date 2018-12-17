@@ -14,10 +14,10 @@ import cc.antho.clonecraft.core.state.StateManager;
 import cc.antho.clonecraft.core.state.impl.GameState;
 import lombok.Getter;
 
-public final class CloneCraft extends GameLoop {
+public final class CloneCraftGame extends GameLoop {
 
 	@Getter private static Thread thread;
-	@Getter private static CloneCraft instance;
+	@Getter private static CloneCraftGame instance;
 
 	@Getter private Window window;
 	@Getter private final StateManager manager = new StateManager();
@@ -28,20 +28,20 @@ public final class CloneCraft extends GameLoop {
 
 	}
 
-	private CloneCraft() {
+	private CloneCraftGame() {
 
 		super(Config.UPS_SUBDIVIDE);
 
 	}
 
-	public static final void main(final String[] args) {
+	public static final void main() {
 
 		thread = new Thread(() -> {
 
-			instance = new CloneCraft();
+			instance = new CloneCraftGame();
 			instance.start();
 
-		}, "Game");
+		}, "CloneCraftGame");
 
 		thread.setPriority(Thread.MAX_PRIORITY);
 		thread.start();

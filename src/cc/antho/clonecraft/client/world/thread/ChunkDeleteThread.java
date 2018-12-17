@@ -4,7 +4,7 @@ import static org.lwjgl.glfw.GLFW.*;
 
 import org.lwjgl.opengl.GL;
 
-import cc.antho.clonecraft.client.CloneCraft;
+import cc.antho.clonecraft.client.CloneCraftGame;
 import cc.antho.clonecraft.client.Debugger;
 import cc.antho.clonecraft.client.world.Chunk;
 
@@ -25,7 +25,7 @@ public class ChunkDeleteThread extends ChunkThread {
 			final long m = System.currentTimeMillis();
 
 			// TODO enforces pipeline flush
-			glfwMakeContextCurrent(CloneCraft.getInstance().getWindow().getHandle());
+			glfwMakeContextCurrent(CloneCraftGame.getInstance().getWindow().getHandle());
 
 			GL.createCapabilities();
 

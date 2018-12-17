@@ -10,7 +10,7 @@ import org.joml.Matrix4f;
 import org.lwjgl.BufferUtils;
 
 import cc.antho.ascl8.math.Mathf;
-import cc.antho.clonecraft.client.CloneCraft;
+import cc.antho.clonecraft.client.CloneCraftGame;
 import cc.antho.clonecraft.client.Config;
 import cc.antho.clonecraft.client.core.Player;
 import cc.antho.clonecraft.client.core.Shader;
@@ -20,6 +20,7 @@ import cc.antho.clonecraft.client.world.ChunkSection;
 import cc.antho.clonecraft.client.world.World;
 import cc.antho.clonecraft.client.world.thread.ChunkThread;
 import cc.antho.clonecraft.core.state.State;
+import lombok.Getter;
 
 public class GameState extends State {
 
@@ -31,7 +32,7 @@ public class GameState extends State {
 
 	private final Player camera = new Player();
 
-	private World world;
+	@Getter private World world;
 	private Shader chunkShader, uiShader;
 	private Texture atlas, crosshair;
 
@@ -53,7 +54,7 @@ public class GameState extends State {
 		glEnable(GL_CULL_FACE);
 		glCullFace(GL_BACK);
 
-		CloneCraft.getInstance().getWindow().trigger();
+		CloneCraftGame.getInstance().getWindow().trigger();
 
 	}
 
@@ -119,7 +120,7 @@ public class GameState extends State {
 		atlas.bind(0);
 		chunkShader.bind();
 
-		glViewport(0, 0, CloneCraft.getInstance().getWindow().getWidth(), CloneCraft.getInstance().getWindow().getHeight());
+		glViewport(0, 0, CloneCraftGame.getInstance().getWindow().getWidth(), CloneCraftGame.getInstance().getWindow().getHeight());
 
 		camera.getView().get(matrixBuffer4);
 		glUniformMatrix4fv(chunk_u_view, false, matrixBuffer4);
@@ -139,8 +140,8 @@ public class GameState extends State {
 
 		uiShader.bind();
 
-		final float width = CloneCraft.getInstance().getWindow().getWidth();
-		final float height = CloneCraft.getInstance().getWindow().getHeight();
+		final float width = CloneCraftGame.getInstance().getWindow().getWidth();
+		final float height = CloneCraftGame.getInstance().getWindow().getHeight();
 
 		final Matrix4f matrix = new Matrix4f();
 

@@ -11,6 +11,7 @@ import java.util.Map;
 import cc.antho.clonecraft.common.ConnectionDefaults;
 import cc.antho.clonecraft.common.ServerConnection;
 import cc.antho.clonecraft.common.packet.OnConnectPacket;
+import lombok.Getter;
 
 public final class CloneCraftServer {
 
@@ -18,7 +19,7 @@ public final class CloneCraftServer {
 	private static Thread acceptThread;
 
 	private final ServerSocket server;
-	private final Map<Socket, ServerConnection> connections = new HashMap<>();
+	@Getter private final Map<Socket, ServerConnection> connections = new HashMap<>();
 
 	private CloneCraftServer() {
 
@@ -34,7 +35,7 @@ public final class CloneCraftServer {
 					final Socket client = server.accept();
 					final ObjectOutputStream oos = new ObjectOutputStream(client.getOutputStream());
 					final ObjectInputStream ois = new ObjectInputStream(client.getInputStream());
-					final ServerConnection connection = new ServerConnection(client, ois, oos);
+					final ServerConnection connection = new ServerConnection(this, client, ois, oos);
 
 					synchronized (connections) {
 

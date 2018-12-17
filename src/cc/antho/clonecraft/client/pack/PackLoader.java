@@ -4,7 +4,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.Properties;
 
-import cc.antho.clonecraft.client.CloneCraft;
+import cc.antho.clonecraft.client.CloneCraftGame;
 
 public class PackLoader {
 
@@ -18,7 +18,7 @@ public class PackLoader {
 
 	public static final void load() {
 
-		final InputStream stream = CloneCraft.class.getResourceAsStream(PACK_FILE);
+		final InputStream stream = CloneCraftGame.class.getResourceAsStream(PACK_FILE);
 
 		final Properties properties = new Properties();
 

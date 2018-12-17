@@ -7,10 +7,12 @@ import org.joml.Vector3f;
 import org.joml.Vector4f;
 
 import cc.antho.ascl8.math.Mathf;
-import cc.antho.clonecraft.client.CloneCraft;
+import cc.antho.clonecraft.client.CloneCraftGame;
 import cc.antho.clonecraft.client.Controls;
 import cc.antho.clonecraft.client.world.BlockType;
 import cc.antho.clonecraft.client.world.World;
+import cc.antho.clonecraft.clienti.CloneCraftClient;
+import cc.antho.clonecraft.common.packet.BlockUpdatePacket;
 import cc.antho.clonecraft.core.event.Event;
 import cc.antho.clonecraft.core.event.EventDispatcher;
 import cc.antho.clonecraft.core.event.EventListener;
@@ -35,8 +37,8 @@ public class Player implements EventListener {
 
 	public void rotate(final float xs, final float ys) {
 
-		rotation.x += ys * CloneCraft.getInput().getDifferecePos().y;
-		rotation.y += xs * CloneCraft.getInput().getDifferecePos().x;
+		rotation.x += ys * CloneCraftGame.getInput().getDifferecePos().y;
+		rotation.y += xs * CloneCraftGame.getInput().getDifferecePos().x;
 
 		rotation.x = Mathf.clamp(rotation.x, -90f, 90f);
 		rotation.y %= 360f;
@@ -50,8 +52,8 @@ public class Player implements EventListener {
 
 	public void move(float speed, final World world) {
 
-		final Input input = CloneCraft.getInput();
-		speed *= CloneCraft.getInstance().getDeltaTime();
+		final Input input = CloneCraftGame.getInput();
+		speed *= CloneCraftGame.getInstance().getDeltaTime();
 
 		final Vector3f velocity = new Vector3f();
 
@@ -69,7 +71,7 @@ public class Player implements EventListener {
 		velocity.x += Mathf.sin(Mathf.toRadians(rotation.y + 90f)) * dist;
 		velocity.z -= Mathf.cos(Mathf.toRadians(rotation.y + 90f)) * dist;
 
-		yVel -= 10f * CloneCraft.getInstance().getDeltaTime();
+		yVel -= 10f * CloneCraftGame.getInstance().getDeltaTime();
 
 		// if (input.isKeyDown(Controls.SNEAK)) velocity.y -= speed;
 		if (input.isKeyDown(Controls.JUMP) && canJump) {
@@ -77,7 +79,7 @@ public class Player implements EventListener {
 			canJump = false;
 		}
 
-		velocity.y = (float) (yVel * CloneCraft.getInstance().getDeltaTime());
+		velocity.y = (float) (yVel * CloneCraftGame.getInstance().getDeltaTime());
 
 		if (velocity.x < 0) {
 
@@ -183,7 +185,7 @@ public class Player implements EventListener {
 
 		if (!canBreak) {
 
-			timer += CloneCraft.getInstance().getDeltaTime();
+			timer += CloneCraftGame.getInstance().getDeltaTime();
 			if (timer > .2f) {
 
 				timer = 0;
@@ -193,7 +195,7 @@ public class Player implements EventListener {
 
 		}
 
-		if (CloneCraft.getInput().isButtonDown(GLFW_MOUSE_BUTTON_1) && canBreak) {
+		if (CloneCraftGame.getInput().isButtonDown(GLFW_MOUSE_BUTTON_1) && canBreak) {
 
 			canBreak = false;
 
@@ -209,6 +211,7 @@ public class Player implements EventListener {
 				if (type != null) {
 
 					world.setBlock(p.x, p.y, p.z, null);
+					CloneCraftClient.getConnection().submit(new BlockUpdatePacket(Mathf.floor(p.x), Mathf.floor(p.y), Mathf.floor(p.z), null));
 					world.getChunkFromWorldCoord(p.x, p.z).update();
 					break;
 
@@ -222,7 +225,7 @@ public class Player implements EventListener {
 
 		}
 
-		if (CloneCraft.getInput().isButtonDown(GLFW_MOUSE_BUTTON_2) && canBreak) {
+		if (CloneCraftGame.getInput().isButtonDown(GLFW_MOUSE_BUTTON_2) && canBreak) {
 
 			canBreak = false;
 
@@ -240,6 +243,7 @@ public class Player implements EventListener {
 				if (type != null) {
 
 					world.setBlock(lp.x, lp.y, lp.z, BlockType.STONE);
+					CloneCraftClient.getConnection().submit(new BlockUpdatePacket(Mathf.floor(lp.x), Mathf.floor(lp.y), Mathf.floor(lp.z), BlockType.STONE));
 					world.getChunkFromWorldCoord(lp.x, lp.z).update();
 					break;
 
