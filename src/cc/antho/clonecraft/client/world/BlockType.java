@@ -1,5 +1,7 @@
 package cc.antho.clonecraft.client.world;
 
+import java.io.Serializable;
+
 import org.joml.Vector2i;
 
 import lombok.AccessLevel;
@@ -7,7 +9,9 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
-public class BlockType {
+public class BlockType implements Serializable {
+
+	private static final long serialVersionUID = 1L;
 
 	public static final BlockType GRASS = new BlockType(
 			new Vector2i(0, 1),
