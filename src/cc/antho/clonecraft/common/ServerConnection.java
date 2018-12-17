@@ -12,9 +12,9 @@ public final class ServerConnection extends Connection {
 
 	private final CloneCraftServer server;
 
-	public ServerConnection(final CloneCraftServer server, final Socket socket, final ObjectInputStream ois, final ObjectOutputStream oos) {
+	public ServerConnection(final CloneCraftServer server, final int id, final Socket socket, final ObjectInputStream ois, final ObjectOutputStream oos) {
 
-		super(socket, ois, oos);
+		super(socket, ois, oos, id);
 
 		this.server = server;
 
@@ -32,7 +32,7 @@ public final class ServerConnection extends Connection {
 
 				for (final ServerConnection connection : server.getConnections().values()) {
 
-					if (connection == this) continue;
+					if (connection.getId() == getId()) continue;
 					connection.submit(p);
 
 				}

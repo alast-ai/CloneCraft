@@ -15,6 +15,7 @@ public abstract class Connection {
 	@Getter private final Socket socket;
 	@Getter private final ObjectInputStream ois;
 	@Getter private final ObjectOutputStream oos;
+	@Getter private final int id;
 
 	public boolean submit(final Packet packet) {
 

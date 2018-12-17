@@ -15,7 +15,7 @@ public final class ClientConnection extends Connection {
 
 	public ClientConnection(final Socket socket, final ObjectInputStream ois, final ObjectOutputStream oos) {
 
-		super(socket, ois, oos);
+		super(socket, ois, oos, 0);
 
 	}
 

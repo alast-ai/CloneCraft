@@ -34,15 +34,19 @@ public final class CloneCraftServer {
 				while (!Thread.interrupted()) {
 
 					final Socket client = server.accept();
+
+					final int id = counter;
+					counter++;
+
 					final ObjectOutputStream oos = new ObjectOutputStream(client.getOutputStream());
 					final ObjectInputStream ois = new ObjectInputStream(client.getInputStream());
-					final ServerConnection connection = new ServerConnection(this, client, ois, oos);
+					final ServerConnection connection = new ServerConnection(this, id, client, ois, oos);
 
 					System.out.println(client);
 
 					synchronized (connections) {
 
-						connections.put(counter++, connection);
+						connections.put(id, connection);
 
 					}
 
