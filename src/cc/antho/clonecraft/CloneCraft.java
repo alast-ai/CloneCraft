@@ -86,6 +86,16 @@ public final class CloneCraft {
 			JPanel panel = new JPanel(new GridBagLayout());
 			tabbedPane.addTab("Server", panel);
 			
+			final JLabel lblPort = new JLabel("Host on port");
+			constraints.gridx = 0;
+			constraints.gridy = 0;
+			panel.add(lblPort, constraints);
+			
+			final JTextField txtPort = new JTextField(ConnectionDefaults.TCP_PORT+"", 10);
+			constraints.gridx = 1;
+			constraints.gridy = 0;
+			panel.add(txtPort, constraints);
+			
 			final JButton serverStart = new JButton("Start");
 			final JButton serverStop = new JButton("Stop");
 			serverStop.setEnabled(false);
@@ -93,7 +103,7 @@ public final class CloneCraft {
 			
 			constraints.anchor = GridBagConstraints.EAST;
 			constraints.gridx = 0;
-			constraints.gridy = 0;
+			constraints.gridy = 1;
 			panel.add(serverStart, constraints);
 			
 			serverStart.addActionListener(new ActionListener() {
@@ -102,7 +112,7 @@ public final class CloneCraft {
 				public void actionPerformed(ActionEvent e) {
 					
 					if(CloneCraftServer.instance != null && CloneCraftServer.instance.started) return;
-					if(CloneCraftServer.instance == null) CloneCraftServer.main();
+					if(CloneCraftServer.instance == null) CloneCraftServer.main(Integer.parseInt(txtPort.getText()));
 					
 					serverStop.setEnabled(true);
 					serverStart.setEnabled(false);
@@ -112,7 +122,7 @@ public final class CloneCraft {
 			
 			constraints.anchor = GridBagConstraints.EAST;
 			constraints.gridx = 1;
-			constraints.gridy = 0;
+			constraints.gridy = 1;
 			panel.add(serverStop, constraints);
 			
 			serverStop.addActionListener(new ActionListener() {

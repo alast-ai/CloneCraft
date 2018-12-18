@@ -20,7 +20,7 @@ public final class CloneCraftServer {
 
 	}
 
-	private void start() {
+	private void start(final int Port) {
 
 		server = new Server();
 		ClassRegister.register(server);
@@ -29,7 +29,7 @@ public final class CloneCraftServer {
 
 		try {
 
-			server.bind(ConnectionDefaults.TCP_PORT, ConnectionDefaults.TCP_PORT);
+			server.bind(Port, Port);
 			started = true;
 
 		} catch (final IOException e) {
@@ -40,12 +40,12 @@ public final class CloneCraftServer {
 
 	}
 
-	public static final void main() {
+	public static final void main(final int Port) {
 
 		thread = new Thread(() -> {
 
 			instance = new CloneCraftServer();
-			instance.start();
+			instance.start(Port);
 
 		}, "CloneCraftServer");
 
