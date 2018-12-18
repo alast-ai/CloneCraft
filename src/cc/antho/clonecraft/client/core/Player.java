@@ -176,7 +176,7 @@ public class Player {
 		if (informTimer > .1f) {
 
 			informTimer = 0;
-			CloneCraftClient.getClient().sendUDP(new PlayerMovePacket(CloneCraftClient.getClient().getID(), camera.position, camera.rotation));
+			CloneCraftClient.getNetworkClient().sendUDP(new PlayerMovePacket(CloneCraftClient.getNetworkClient().getID(), camera.position, camera.rotation));
 
 		}
 
@@ -211,7 +211,7 @@ public class Player {
 				if (type != null) {
 
 					world.setBlock(p.x, p.y, p.z, null);
-					CloneCraftClient.getClient().sendTCP(new BlockUpdatePacket(Mathf.floor(p.x), Mathf.floor(p.y), Mathf.floor(p.z), null));
+					CloneCraftClient.getNetworkClient().sendTCP(new BlockUpdatePacket(Mathf.floor(p.x), Mathf.floor(p.y), Mathf.floor(p.z), null));
 
 					world.getChunkFromWorldCoord(p.x, p.z).update();
 					break;
@@ -244,7 +244,7 @@ public class Player {
 				if (type != null) {
 
 					world.setBlock(lp.x, lp.y, lp.z, BlockType.STONE);
-					CloneCraftClient.getClient().sendTCP(new BlockUpdatePacket(Mathf.floor(lp.x), Mathf.floor(lp.y), Mathf.floor(lp.z), BlockType.STONE));
+					CloneCraftClient.getNetworkClient().sendTCP(new BlockUpdatePacket(Mathf.floor(lp.x), Mathf.floor(lp.y), Mathf.floor(lp.z), BlockType.STONE));
 					world.getChunkFromWorldCoord(lp.x, lp.z).update();
 					break;
 
