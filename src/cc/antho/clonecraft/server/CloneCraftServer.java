@@ -1,91 +1,37 @@
 package cc.antho.clonecraft.server;
 
 import java.io.IOException;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
-import java.net.ServerSocket;
-import java.net.Socket;
-import java.util.HashMap;
-import java.util.Map;
+
+import com.esotericsoftware.kryonet.Server;
 
 import cc.antho.clonecraft.common.ConnectionDefaults;
-import cc.antho.clonecraft.common.ServerConnection;
-import cc.antho.clonecraft.common.packet.OnConnectPacket;
+import cc.antho.clonecraft.common.ServerListener;
+import cc.antho.clonecraft.core.ClassRegister;
 import lombok.Getter;
 
 public final class CloneCraftServer {
 
 	private static Thread thread;
-	private static Thread acceptThread;
 
-	private final ServerSocket server;
-	private int counter = 0;
-	@Getter private final Map<Integer, ServerConnection> connections = new HashMap<>();
+	@Getter private final Server server;
 
 	private CloneCraftServer() {
 
-		server = createServer(ConnectionDefaults.PORT);
-		if (server == null) throw new RuntimeException("Failed to create server!");
-
-		acceptThread = new Thread(() -> {
-
-			try {
-
-				while (!Thread.interrupted()) {
-
-					final Socket client = server.accept();
-
-					final int id = counter;
-					counter++;
-
-					final ObjectOutputStream oos = new ObjectOutputStream(client.getOutputStream());
-					final ObjectInputStream ois = new ObjectInputStream(client.getInputStream());
-					final ServerConnection connection = new ServerConnection(this, id, client, ois, oos);
-
-					System.out.println(client);
-
-					synchronized (connections) {
-
-						connections.put(id, connection);
-
-					}
-
-					connection.submit(new OnConnectPacket());
-
-				}
-
-			} catch (final IOException e) {
-
-				e.printStackTrace();
-
-			}
-
-		}, "CloneCraftServer-Accept");
-
-		acceptThread.setPriority(Thread.MAX_PRIORITY);
-		acceptThread.start();
-
-		while (!Thread.interrupted())
-			synchronized (connections) {
-
-				for (final ServerConnection client : connections.values())
-					client.read();
-
-			}
-
-	}
-
-	private final ServerSocket createServer(final int port) {
+		server = new Server();
+		ClassRegister.register(server.getKryo());
+		server.start();
 
 		try {
 
-			return new ServerSocket(ConnectionDefaults.PORT);
+			server.bind(ConnectionDefaults.PORT);
 
 		} catch (final IOException e) {
 
-			return null;
+			e.printStackTrace();
 
 		}
+
+		server.addListener(new ServerListener(this));
 
 	}
 

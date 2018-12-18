@@ -38,4 +38,10 @@ public class BlockType implements Serializable {
 
 	}
 
+	private BlockType() {
+
+		this(null);
+
+	}
+
 }

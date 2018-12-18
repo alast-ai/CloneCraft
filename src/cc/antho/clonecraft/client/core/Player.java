@@ -211,7 +211,8 @@ public class Player implements EventListener {
 				if (type != null) {
 
 					world.setBlock(p.x, p.y, p.z, null);
-					CloneCraftClient.getConnection().submit(new BlockUpdatePacket(Mathf.floor(p.x), Mathf.floor(p.y), Mathf.floor(p.z), null));
+					CloneCraftClient.getClient().sendTCP(new BlockUpdatePacket(Mathf.floor(p.x), Mathf.floor(p.y), Mathf.floor(p.z), null));
+
 					world.getChunkFromWorldCoord(p.x, p.z).update();
 					break;
 
@@ -243,7 +244,7 @@ public class Player implements EventListener {
 				if (type != null) {
 
 					world.setBlock(lp.x, lp.y, lp.z, BlockType.STONE);
-					CloneCraftClient.getConnection().submit(new BlockUpdatePacket(Mathf.floor(lp.x), Mathf.floor(lp.y), Mathf.floor(lp.z), BlockType.STONE));
+					CloneCraftClient.getClient().sendTCP(new BlockUpdatePacket(Mathf.floor(lp.x), Mathf.floor(lp.y), Mathf.floor(lp.z), BlockType.STONE));
 					world.getChunkFromWorldCoord(lp.x, lp.z).update();
 					break;
 

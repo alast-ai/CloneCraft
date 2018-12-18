@@ -11,4 +11,13 @@ public final class BlockUpdatePacket extends Packet {
 	public final int x, y, z;
 	public final BlockType type;
 
+	public BlockUpdatePacket() {
+
+		x = 0;
+		y = 0;
+		z = 0;
+		type = null;
+
+	}
+
 }
