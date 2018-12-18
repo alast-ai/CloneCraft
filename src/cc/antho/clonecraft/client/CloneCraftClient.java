@@ -38,7 +38,7 @@ public final class CloneCraftClient {
 					if(CloneCraftGame.getInstance() != null) {
 						
 						CloneCraftGame.getInstance().stop();
-						Debugger.stop();
+						Debugger.getThread().interrupt();
 						
 					}
 					
