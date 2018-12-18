@@ -14,6 +14,7 @@ public final class CloneCraftServer {
 	public static CloneCraftServer instance;
 
 	@Getter private Server server;
+	@Getter public Boolean started = false;
 
 	private CloneCraftServer() {
 
@@ -29,6 +30,7 @@ public final class CloneCraftServer {
 		try {
 
 			server.bind(ConnectionDefaults.TCP_PORT, ConnectionDefaults.TCP_PORT);
+			started = true;
 
 		} catch (final IOException e) {
 
