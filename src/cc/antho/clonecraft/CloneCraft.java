@@ -38,6 +38,7 @@ public final class CloneCraft {
 		constraints.insets = new Insets(5, 5, 5, 5);
 		
 		{
+			
 			JPanel panel = new JPanel(new GridBagLayout());
 			tabbedPane.addTab("Client", panel);
 			
@@ -66,15 +67,22 @@ public final class CloneCraft {
 			constraints.gridx = 1;
 			constraints.gridy = 2;
 			panel.add(btnConnect, constraints);
+			
 			btnConnect.addActionListener(new ActionListener() {
+				
 				@Override
 				public void actionPerformed(ActionEvent e) {
+					
 					CloneCraftClient.main(txtAddress.getText(), Integer.parseInt(txtPort.getText()));
+					
 				}
+				
 			});
+			
 		}
 		
 		{
+			
 			JPanel panel = new JPanel(new GridBagLayout());
 			tabbedPane.addTab("Server", panel);
 			
@@ -87,33 +95,43 @@ public final class CloneCraft {
 			constraints.gridx = 0;
 			constraints.gridy = 0;
 			panel.add(serverStart, constraints);
+			
 			serverStart.addActionListener(new ActionListener() {
+				
 				@Override
 				public void actionPerformed(ActionEvent e) {
+					
 					if(CloneCraftServer.instance != null && CloneCraftServer.instance.started) return;
 					if(CloneCraftServer.instance == null) CloneCraftServer.main();
 					
 					serverStop.setEnabled(true);
 					serverStart.setEnabled(false);
 				}
+				
 			});
 			
 			constraints.anchor = GridBagConstraints.EAST;
 			constraints.gridx = 1;
 			constraints.gridy = 0;
 			panel.add(serverStop, constraints);
+			
 			serverStop.addActionListener(new ActionListener() {
+				
 				@Override
 				public void actionPerformed(ActionEvent e) {
+					
 					CloneCraftServer.instance.getServer().stop();
 					serverStop.setEnabled(false);
 					synchronized(CloneCraftServer.instance.getServer().getUpdateThread()) {
+						
 						System.out.println("Server Stopped");
 						CloneCraftServer.instance.started = false;
 						serverStart.setEnabled(true);
+						
 					}
 	
 				}
+				
 			});
 		}
 
