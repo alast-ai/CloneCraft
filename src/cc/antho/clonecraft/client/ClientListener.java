@@ -1,13 +1,11 @@
-package cc.antho.clonecraft.common;
+package cc.antho.clonecraft.client;
 
 import com.esotericsoftware.kryonet.Connection;
 import com.esotericsoftware.kryonet.Listener;
 
-import cc.antho.clonecraft.client.CloneCraftGame;
 import cc.antho.clonecraft.client.world.Chunk;
 import cc.antho.clonecraft.client.world.World;
-import cc.antho.clonecraft.common.packet.BlockUpdatePacket;
-import cc.antho.clonecraft.core.state.impl.GameState;
+import cc.antho.clonecraft.core.packet.BlockUpdatePacket;
 
 public final class ClientListener extends Listener {
 

@@ -3,14 +3,16 @@ package cc.antho.clonecraft.core;
 import org.joml.Vector2i;
 
 import com.esotericsoftware.kryo.Kryo;
+import com.esotericsoftware.kryonet.Client;
+import com.esotericsoftware.kryonet.Server;
 
 import cc.antho.clonecraft.client.world.BlockType;
-import cc.antho.clonecraft.common.packet.BlockUpdatePacket;
-import cc.antho.clonecraft.common.packet.Packet;
+import cc.antho.clonecraft.core.packet.BlockUpdatePacket;
+import cc.antho.clonecraft.core.packet.Packet;
 
-public class ClassRegister {
+public final class ClassRegister {
 
-	public static void register(final Kryo kryo) {
+	public static final void register(final Kryo kryo) {
 
 		kryo.register(Vector2i.class);
 
@@ -18,6 +20,22 @@ public class ClassRegister {
 
 		kryo.register(Packet.class);
 		kryo.register(BlockUpdatePacket.class);
+
+	}
+
+	public static final void register(final Server server) {
+
+		register(server.getKryo());
+
+	}
+
+	public static final void register(final Client client) {
+
+		register(client.getKryo());
+
+	}
+
+	private ClassRegister() {
 
 	}
 

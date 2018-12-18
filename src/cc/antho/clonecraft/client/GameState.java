@@ -1,4 +1,4 @@
-package cc.antho.clonecraft.core.state.impl;
+package cc.antho.clonecraft.client;
 
 import static org.lwjgl.opengl.GL11.*;
 import static org.lwjgl.opengl.GL20.*;
@@ -10,8 +10,6 @@ import org.joml.Matrix4f;
 import org.lwjgl.BufferUtils;
 
 import cc.antho.ascl8.math.Mathf;
-import cc.antho.clonecraft.client.CloneCraftGame;
-import cc.antho.clonecraft.client.Config;
 import cc.antho.clonecraft.client.core.Player;
 import cc.antho.clonecraft.client.core.Shader;
 import cc.antho.clonecraft.client.core.Texture;

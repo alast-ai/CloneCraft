@@ -11,7 +11,6 @@ import cc.antho.clonecraft.client.core.Window;
 import cc.antho.clonecraft.client.pack.PackLoader;
 import cc.antho.clonecraft.client.world.thread.ChunkThread;
 import cc.antho.clonecraft.core.state.StateManager;
-import cc.antho.clonecraft.core.state.impl.GameState;
 import lombok.Getter;
 
 public final class CloneCraftGame extends GameLoop {

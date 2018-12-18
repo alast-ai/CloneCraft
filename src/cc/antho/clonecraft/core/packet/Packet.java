@@ -1,4 +1,4 @@
-package cc.antho.clonecraft.common.packet;
+package cc.antho.clonecraft.core.packet;
 
 import java.io.Serializable;
 

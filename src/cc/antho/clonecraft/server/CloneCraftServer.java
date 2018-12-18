@@ -4,21 +4,26 @@ import java.io.IOException;
 
 import com.esotericsoftware.kryonet.Server;
 
-import cc.antho.clonecraft.common.ConnectionDefaults;
-import cc.antho.clonecraft.common.ServerListener;
 import cc.antho.clonecraft.core.ClassRegister;
+import cc.antho.clonecraft.core.ConnectionDefaults;
 import lombok.Getter;
 
 public final class CloneCraftServer {
 
-	private static Thread thread;
+	public static Thread thread;
+	public static CloneCraftServer instance;
 
-	@Getter private final Server server;
+	@Getter private Server server;
 
 	private CloneCraftServer() {
 
+	}
+
+	private void start() {
+
 		server = new Server();
-		ClassRegister.register(server.getKryo());
+		ClassRegister.register(server);
+		server.addListener(new ServerListener(server));
 		server.start();
 
 		try {
@@ -31,15 +36,14 @@ public final class CloneCraftServer {
 
 		}
 
-		server.addListener(new ServerListener(this));
-
 	}
 
-	public static final void main(final String[] args) {
+	public static final void main() {
 
 		thread = new Thread(() -> {
 
-			new CloneCraftServer();
+			instance = new CloneCraftServer();
+			instance.start();
 
 		}, "CloneCraftServer");
 

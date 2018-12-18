@@ -1,13 +1,11 @@
-package cc.antho.clonecraft.clienti;
+package cc.antho.clonecraft.client;
 
 import java.io.IOException;
 
 import com.esotericsoftware.kryonet.Client;
 
-import cc.antho.clonecraft.client.CloneCraftGame;
-import cc.antho.clonecraft.common.ClientListener;
-import cc.antho.clonecraft.common.ConnectionDefaults;
 import cc.antho.clonecraft.core.ClassRegister;
+import cc.antho.clonecraft.core.ConnectionDefaults;
 import lombok.Getter;
 
 public final class CloneCraftClient {
@@ -19,7 +17,7 @@ public final class CloneCraftClient {
 
 	}
 
-	public static final void main(final String[] args) {
+	public static final void main() {
 
 		CloneCraftGame.main();
 

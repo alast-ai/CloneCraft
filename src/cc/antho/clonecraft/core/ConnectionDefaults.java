@@ -1,4 +1,4 @@
-package cc.antho.clonecraft.common;
+package cc.antho.clonecraft.core;
 
 import javax.swing.JOptionPane;
 
