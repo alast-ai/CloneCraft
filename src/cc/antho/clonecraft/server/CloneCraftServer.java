@@ -14,7 +14,7 @@ public final class CloneCraftServer {
 
 	@Getter private Server server;
 
-	private static final Object lock = new Object();
+	private final Object lock = new Object();
 
 	private CloneCraftServer() {
 
@@ -39,7 +39,11 @@ public final class CloneCraftServer {
 
 		try {
 
-			lock.wait();
+			synchronized (lock) {
+
+				lock.wait();
+
+			}
 
 		} catch (final InterruptedException e) {
 
