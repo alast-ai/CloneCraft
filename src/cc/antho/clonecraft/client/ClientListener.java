@@ -3,19 +3,33 @@ package cc.antho.clonecraft.client;
 import java.util.HashMap;
 import java.util.Map;
 
+import com.esotericsoftware.kryonet.Client;
 import com.esotericsoftware.kryonet.Connection;
 import com.esotericsoftware.kryonet.Listener;
 
 import cc.antho.clonecraft.client.world.Chunk;
 import cc.antho.clonecraft.client.world.World;
+import cc.antho.clonecraft.core.event.Event;
+import cc.antho.clonecraft.core.event.EventDispatcher;
+import cc.antho.clonecraft.core.event.EventListener;
+import cc.antho.clonecraft.core.events.NetworkPacketEvent;
 import cc.antho.clonecraft.core.packet.BlockUpdatePacket;
 import cc.antho.clonecraft.core.packet.PlayerConnectPacket;
 import cc.antho.clonecraft.core.packet.PlayerDisconnectPacket;
 import cc.antho.clonecraft.core.packet.PlayerMovePacket;
 
-public final class ClientListener extends Listener {
+public final class ClientListener extends Listener implements EventListener {
 
 	public static final Map<Integer, PlayerStore> players = new HashMap<>();
+
+	private final Client client;
+
+	public ClientListener(final Client client) {
+
+		this.client = client;
+		EventDispatcher.addListener(this);
+
+	}
 
 	public void received(final Connection connection, final Object object) {
 
@@ -51,6 +65,19 @@ public final class ClientListener extends Listener {
 			synchronized (players) {
 				players.remove(p.id);
 			}
+
+		}
+
+	}
+
+	public void onEvent(final Event event) {
+
+		if (event instanceof NetworkPacketEvent) {
+
+			final NetworkPacketEvent e = (NetworkPacketEvent) event;
+
+			if (!e.fromServer) if (e.tcp) client.sendTCP(e.packet);
+			else client.sendUDP(e.packet);
 
 		}
 

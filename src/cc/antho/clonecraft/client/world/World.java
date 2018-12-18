@@ -4,9 +4,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
-import cc.antho.ascl8.math.Mathf;
-import cc.antho.ascl8.noise.OpenSimplexNoise;
 import cc.antho.clonecraft.client.world.thread.ChunkThread;
+import cc.antho.clonecraft.core.Mathf;
+import cc.antho.clonecraft.core.OpenSimplexNoise;
 import lombok.Getter;
 
 public class World {

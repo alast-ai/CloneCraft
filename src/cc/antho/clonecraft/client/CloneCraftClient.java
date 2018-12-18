@@ -23,7 +23,7 @@ public final class CloneCraftClient {
 			networkClient = new Client();
 			ClassRegister.register(networkClient.getKryo());
 			networkClient.start();
-			networkClient.addListener(new ClientListener());
+			networkClient.addListener(new ClientListener(networkClient));
 
 			try {
 

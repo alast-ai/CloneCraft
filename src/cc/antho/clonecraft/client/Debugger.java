@@ -14,8 +14,8 @@ import java.util.Set;
 
 import javax.swing.JFrame;
 
-import cc.antho.ascl8.math.Mathf;
 import cc.antho.clonecraft.client.world.thread.ChunkThread;
+import cc.antho.clonecraft.core.Mathf;
 import lombok.Getter;
 
 public class Debugger {
