@@ -1,10 +1,9 @@
 package cc.antho.clonecraft;
 
 import javax.swing.JOptionPane;
-import javax.swing.UIManager;
-import javax.swing.UnsupportedLookAndFeelException;
 
 import cc.antho.clonecraft.client.CloneCraftClient;
+import cc.antho.clonecraft.core.Util;
 import cc.antho.clonecraft.server.CloneCraftServer;
 
 public final class CloneCraft {
@@ -15,15 +14,7 @@ public final class CloneCraft {
 
 	public static final void main(final String[] args) {
 
-		try {
-
-			UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-
-		} catch (ClassNotFoundException | InstantiationException | IllegalAccessException | UnsupportedLookAndFeelException e) {
-
-			e.printStackTrace();
-
-		}
+		Util.setLookAndFeel();
 
 		final int option = JOptionPane.showConfirmDialog(null, "Start dedicated server?", "CloneCraft", JOptionPane.YES_NO_CANCEL_OPTION);
 

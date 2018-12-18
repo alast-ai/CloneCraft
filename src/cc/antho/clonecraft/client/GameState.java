@@ -1,13 +1,10 @@
 package cc.antho.clonecraft.client;
 
-import static org.lwjgl.opengl.GL11.*;
-import static org.lwjgl.opengl.GL20.*;
+import static org.lwjgl.opengl.GL46.*;
 
 import java.io.IOException;
-import java.nio.FloatBuffer;
 
 import org.joml.Matrix4f;
-import org.lwjgl.BufferUtils;
 
 import cc.antho.ascl8.math.Mathf;
 import cc.antho.clonecraft.client.core.Player;
@@ -22,22 +19,13 @@ import lombok.Getter;
 
 public class GameState extends State {
 
-	private int chunk_u_view;
-	private int chunk_u_projection;
-	private int ui_u_model;
-
-	private FloatBuffer matrixBuffer4;
-
-	private final Player camera = new Player();
+	private final Player player = new Player();
 
 	@Getter private World world;
 	private Shader chunkShader, uiShader;
 	private Texture atlas, crosshair;
 
 	public void init() {
-
-		matrixBuffer4 = BufferUtils.createFloatBuffer(16);
-		matrixBuffer4.limit(matrixBuffer4.capacity());
 
 		ChunkThread.startThreads();
 
@@ -80,15 +68,10 @@ public class GameState extends State {
 
 			chunkShader = new Shader(vertexShader, fragmentShader);
 
-			chunk_u_projection = chunkShader.getUniformLocation("u_projection");
-			chunk_u_view = chunkShader.getUniformLocation("u_view");
-
 			vertexShader = Shader.loadShaderString("/ui_vertex.glsl");
 			fragmentShader = Shader.loadShaderString("/ui_fragment.glsl");
 
 			uiShader = new Shader(vertexShader, fragmentShader);
-
-			ui_u_model = uiShader.getUniformLocation("u_model");
 
 			UIQuad.create();
 
@@ -102,12 +85,10 @@ public class GameState extends State {
 
 	public void tick() {
 
-		camera.rotate(.3f, .3f);
-		camera.move(4f, world);
-		camera.update(world);
+		player.tick(world);
 
-		ChunkThread.playerPostionChunk.x = Mathf.floor(camera.getPosition().x / ChunkSection.SIZE);
-		ChunkThread.playerPostionChunk.y = Mathf.floor(camera.getPosition().z / ChunkSection.SIZE);
+		ChunkThread.playerPostionChunk.x = Mathf.floor(player.getPosition().x / ChunkSection.SIZE);
+		ChunkThread.playerPostionChunk.y = Mathf.floor(player.getPosition().z / ChunkSection.SIZE);
 
 		world.addNewChunks((int) ChunkThread.playerPostionChunk.x, (int) ChunkThread.playerPostionChunk.y);
 
@@ -120,15 +101,12 @@ public class GameState extends State {
 
 		glViewport(0, 0, CloneCraftGame.getInstance().getWindow().getWidth(), CloneCraftGame.getInstance().getWindow().getHeight());
 
-		camera.getView().get(matrixBuffer4);
-		glUniformMatrix4fv(chunk_u_view, false, matrixBuffer4);
+		chunkShader.loadUniformMatrix4f("u_view", player.camera.getView());
 
-		if (camera.isProjectionDirty()) {
+		if (player.camera.isProjectionDirty()) {
 
-			camera.getProjection().get(matrixBuffer4);
-			glUniformMatrix4fv(chunk_u_projection, false, matrixBuffer4);
-
-			camera.setProjectionDirty(false);
+			chunkShader.loadUniformMatrix4f("u_projection", player.camera.getProjection());
+			player.camera.setProjectionDirty(false);
 
 		}
 
@@ -147,10 +125,8 @@ public class GameState extends State {
 		else matrix.scale(1, width / height, 1);
 		matrix.scale(.05f);
 
-		matrix.get(matrixBuffer4);
-
 		crosshair.bind(0);
-		glUniformMatrix4fv(ui_u_model, false, matrixBuffer4);
+		uiShader.loadUniformMatrix4f("u_model", matrix);
 
 		glEnable(GL_BLEND);
 		glBlendFunc(GL_ONE_MINUS_DST_COLOR, GL_ZERO);

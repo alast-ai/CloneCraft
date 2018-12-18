@@ -2,9 +2,7 @@ package cc.antho.clonecraft.client.core;
 
 import static org.lwjgl.glfw.GLFW.*;
 
-import org.joml.Matrix4f;
 import org.joml.Vector3f;
-import org.joml.Vector4f;
 
 import cc.antho.ascl8.math.Mathf;
 import cc.antho.clonecraft.client.CloneCraftClient;
@@ -12,74 +10,70 @@ import cc.antho.clonecraft.client.CloneCraftGame;
 import cc.antho.clonecraft.client.Controls;
 import cc.antho.clonecraft.client.world.BlockType;
 import cc.antho.clonecraft.client.world.World;
-import cc.antho.clonecraft.core.event.Event;
-import cc.antho.clonecraft.core.event.EventDispatcher;
-import cc.antho.clonecraft.core.event.EventListener;
-import cc.antho.clonecraft.core.event.impl.FramebufferResizeEvent;
 import cc.antho.clonecraft.core.packet.BlockUpdatePacket;
 import lombok.Getter;
-import lombok.Setter;
 
-public class Player implements EventListener {
+public class Player {
 
-	@Getter @Setter private boolean projectionDirty = true;
-	@Getter private final Matrix4f projection = new Matrix4f();
-	@Getter private final Matrix4f view = new Matrix4f();
+	public static final float SENSITIVITY_X = .3f;
+	public static final float SENSITIVITY_Y = .3f;
+	public static final float AXIS_X_LIMIT = 90f;
+	public static final float WALK_SPEED = 4f;
+	public static final float SPRINT_SPEED = 6f;
+	public static final float EYE_HEIGHT = 1.6f;
+	public static final float GRAVITY = -10f;
 
 	@Getter private final Vector3f position = new Vector3f(0, 80, 0);
-	@Getter private final Vector3f rotation = new Vector3f();
 
-	public Player() {
+	public final Camera camera = new Camera();
+	private final Vector3f velocity = new Vector3f();
 
-		EventDispatcher.addListener(this);
-
-	}
-
-	public void rotate(final float xs, final float ys) {
-
-		rotation.x += ys * CloneCraftGame.getInput().getDifferecePos().y;
-		rotation.y += xs * CloneCraftGame.getInput().getDifferecePos().x;
-
-		rotation.x = Mathf.clamp(rotation.x, -90f, 90f);
-		rotation.y %= 360f;
-
-	}
-
-	private float yVel = 0;
 	private boolean canJump = true;
+	private boolean canBreak = false;
+	private double timer = 0;
 
-	public Vector3f forward = new Vector3f();
+	public void tick(final World world) {
 
-	public void move(float speed, final World world) {
+		velocity.x = 0;
+		velocity.z = 0;
 
 		final Input input = CloneCraftGame.getInput();
-		speed *= CloneCraftGame.getInstance().getDeltaTime();
 
-		final Vector3f velocity = new Vector3f();
+		final float deltaTime = (float) CloneCraftGame.getInstance().getDeltaTime();
+
+		// Rotate the camera using the mouse
+		camera.rotation.x += SENSITIVITY_X * CloneCraftGame.getInput().getDifferecePos().y;
+		camera.rotation.y += SENSITIVITY_Y * CloneCraftGame.getInput().getDifferecePos().x;
+		camera.rotation.x = Mathf.clamp(camera.rotation.x, -AXIS_X_LIMIT, AXIS_X_LIMIT);
+		camera.rotation.y %= 360f;
 
 		float dist = 0;
-		if (input.isKeyDown(Controls.WALK_FORWARD)) dist += speed;
-		if (input.isKeyDown(Controls.WALK_BACKWARD)) dist -= speed;
+		if (input.isKeyDown(Controls.WALK_FORWARD)) dist++;
+		if (input.isKeyDown(Controls.WALK_BACKWARD)) dist--;
+		dist *= WALK_SPEED * deltaTime;
 
-		velocity.x += Mathf.sin(Mathf.toRadians(rotation.y)) * dist;
-		velocity.z -= Mathf.cos(Mathf.toRadians(rotation.y)) * dist;
+		velocity.x += Mathf.sin(Mathf.toRadians(camera.rotation.y)) * dist;
+		velocity.z -= Mathf.cos(Mathf.toRadians(camera.rotation.y)) * dist;
 
 		dist = 0;
-		if (input.isKeyDown(Controls.STRAFE_LEFT)) dist -= speed;
-		if (input.isKeyDown(Controls.STRAFE_RIGHT)) dist += speed;
+		if (input.isKeyDown(Controls.STRAFE_LEFT)) dist--;
+		if (input.isKeyDown(Controls.STRAFE_RIGHT)) dist++;
+		dist *= WALK_SPEED * deltaTime;
 
-		velocity.x += Mathf.sin(Mathf.toRadians(rotation.y + 90f)) * dist;
-		velocity.z -= Mathf.cos(Mathf.toRadians(rotation.y + 90f)) * dist;
+		velocity.x += Mathf.sin(Mathf.toRadians(camera.rotation.y + 90f)) * dist;
+		velocity.z -= Mathf.cos(Mathf.toRadians(camera.rotation.y + 90f)) * dist;
 
-		yVel -= 10f * CloneCraftGame.getInstance().getDeltaTime();
+		velocity.y += GRAVITY * deltaTime;
 
 		// if (input.isKeyDown(Controls.SNEAK)) velocity.y -= speed;
 		if (input.isKeyDown(Controls.JUMP) && canJump) {
-			yVel = 5f;
+
+			velocity.y = 5f;
 			canJump = false;
+
 		}
 
-		velocity.y = (float) (yVel * CloneCraftGame.getInstance().getDeltaTime());
+		// velocity.y *= deltaTime;
 
 		if (velocity.x < 0) {
 
@@ -131,7 +125,7 @@ public class Player implements EventListener {
 
 		if (velocity.y < 0) {
 
-			final float nextY = position.y + velocity.y;
+			final float nextY = position.y + velocity.y * deltaTime;
 
 			final int blockX = Mathf.floor(position.x);
 			final int blockZ = Mathf.floor(position.z);
@@ -140,13 +134,13 @@ public class Player implements EventListener {
 			if (world.getBlock(blockX, blockY, blockZ) == null)
 				position.y = nextY;
 			else {
-				yVel = 0;
+				velocity.y = 0;
 				canJump = true;
 			}
 
 		} else if (velocity.y > 0) {
 
-			final float nextY = position.y + velocity.y;
+			final float nextY = position.y + velocity.y * deltaTime;
 
 			final int blockX = Mathf.floor(position.x);
 			final int blockZ = Mathf.floor(position.z);
@@ -154,34 +148,13 @@ public class Player implements EventListener {
 
 			if (world.getBlock(blockX, blockY, blockZ) == null)
 				position.y = nextY;
-			else yVel = 0;
+			else velocity.y = 0;
 
 		}
 
-	}
-
-	private boolean canBreak = false;
-
-	private double timer = 0;
-
-	public void update(final World world) {
-
-		position.mul(-1f);
-
-		view.rotation(Mathf.toRadians(rotation.z), 0, 0, 1);
-		view.rotate(Mathf.toRadians(rotation.x), 1, 0, 0);
-		view.rotate(Mathf.toRadians(rotation.y), 0, 1, 0);
-		view.translate(position);
-		view.translate(0, -1.6f, 0);
-
-		position.mul(-1f);
-
-		final Matrix4f invView = new Matrix4f();
-		view.invert(invView);
-		final Vector4f v = new Vector4f(0, 0, -1, 0);
-		v.mul(invView);
-		forward.set(v.x, v.y, v.z);
-		forward.normalize();
+		camera.position.set(position);
+		camera.position.y += EYE_HEIGHT;
+		camera.tick();
 
 		if (!canBreak) {
 
@@ -195,13 +168,13 @@ public class Player implements EventListener {
 
 		}
 
-		if (CloneCraftGame.getInput().isButtonDown(GLFW_MOUSE_BUTTON_1) && canBreak) {
+		if (input.isButtonDown(GLFW_MOUSE_BUTTON_1) && canBreak) {
 
 			canBreak = false;
 
 			final Vector3f p = new Vector3f(position);
 			p.y += 1.6f;
-			final Vector3f d = new Vector3f(forward).mul(.5f);
+			final Vector3f d = new Vector3f(camera.forward).mul(.5f);
 			float current_distance = 0;
 			final float max_distance = 10;
 
@@ -226,14 +199,14 @@ public class Player implements EventListener {
 
 		}
 
-		if (CloneCraftGame.getInput().isButtonDown(GLFW_MOUSE_BUTTON_2) && canBreak) {
+		if (input.isButtonDown(GLFW_MOUSE_BUTTON_2) && canBreak) {
 
 			canBreak = false;
 
 			final Vector3f lp = new Vector3f(position);
 			final Vector3f p = new Vector3f(position);
 			p.y += 1.6f;
-			final Vector3f d = new Vector3f(forward).mul(.5f);
+			final Vector3f d = new Vector3f(camera.forward).mul(.5f);
 			float current_distance = 0;
 			final float max_distance = 10;
 
@@ -255,19 +228,6 @@ public class Player implements EventListener {
 				if (current_distance >= max_distance) break;
 
 			}
-
-		}
-
-	}
-
-	public void onEvent(final Event event) {
-
-		if (event instanceof FramebufferResizeEvent) {
-
-			final FramebufferResizeEvent e = (FramebufferResizeEvent) event;
-
-			projection.setPerspective(Mathf.toRadians(70f), (float) e.getWidth() / (float) e.getHeight(), .3f, 1000f);
-			projectionDirty = true;
 
 		}
 
