@@ -32,6 +32,8 @@ public final class CloneCraftClient {
 
 			} catch (final IOException e) {
 
+				e.printStackTrace();
+
 			}
 
 		}, "CloneCraftClient");
