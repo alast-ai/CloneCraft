@@ -103,6 +103,8 @@ public final class CloneCraftGame extends GameLoop {
 
 	protected void shutdown() {
 
+		CloneCraftClient.getNetworkClient().stop();
+
 		manager.setState(null);
 		window.shutdown();
 		GL.destroy();
