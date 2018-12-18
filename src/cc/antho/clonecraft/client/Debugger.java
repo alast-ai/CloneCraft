@@ -21,6 +21,7 @@ public class Debugger {
 
 	private static Thread thread;
 	private static int targetOffset = 0;
+	private static boolean running = true;
 
 	public static class Values {
 
@@ -98,7 +99,7 @@ public class Debugger {
 
 			float offset = 0;
 
-			while (!Thread.interrupted()) {
+			while (running) {
 
 				offset = Mathf.approachSmooth(offset, targetOffset, 1f / 10f);
 
@@ -225,6 +226,12 @@ public class Debugger {
 
 		thread.start();
 
+	}
+	
+	public static void stop() {
+		
+		running = false;
+		
 	}
 
 }

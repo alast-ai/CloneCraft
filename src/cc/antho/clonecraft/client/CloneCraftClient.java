@@ -5,13 +5,12 @@ import java.io.IOException;
 import com.esotericsoftware.kryonet.Client;
 
 import cc.antho.clonecraft.core.ClassRegister;
-import cc.antho.clonecraft.core.ConnectionDefaults;
 import lombok.Getter;
 
 public final class CloneCraftClient {
 
 	private static Thread thread;
-	@Getter private static Client client;
+	@Getter private static Client networkClient;
 
 	private CloneCraftClient() {
 
@@ -23,18 +22,27 @@ public final class CloneCraftClient {
 
 		thread = new Thread(() -> {
 
-			client = new Client();
-			ClassRegister.register(client.getKryo());
-			client.start();
-			client.addListener(new ClientListener());
+			networkClient = new Client();
+			ClassRegister.register(networkClient.getKryo());
+			networkClient.start();
+			networkClient.addListener(new ClientListener());
 
 			try {
 
-				client.connect(5000, ConnectionDefaults.ADDRESS, ConnectionDefaults.TCP_PORT, ConnectionDefaults.TCP_PORT);
+				networkClient.connect(5000, IPAddr, Port, Port);
 
 			} catch (final IOException e) {
 
-				e.printStackTrace();
+				if(e.getMessage().startsWith("Unable to connect to")) {
+					
+					if(CloneCraftGame.getInstance() != null) {
+						
+						CloneCraftGame.getInstance().stop();
+						Debugger.stop();
+						
+					}
+					
+				}
 
 			}
 
