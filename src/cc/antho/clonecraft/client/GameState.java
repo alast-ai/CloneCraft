@@ -1,6 +1,6 @@
 package cc.antho.clonecraft.client;
 
-import static org.lwjgl.opengl.GL46.*;
+import static org.lwjgl.opengl.GL11.*;
 
 import java.io.IOException;
 
@@ -11,7 +11,9 @@ import cc.antho.clonecraft.client.core.Player;
 import cc.antho.clonecraft.client.core.Shader;
 import cc.antho.clonecraft.client.core.Texture;
 import cc.antho.clonecraft.client.ui.UIQuad;
+import cc.antho.clonecraft.client.world.BlockType;
 import cc.antho.clonecraft.client.world.ChunkSection;
+import cc.antho.clonecraft.client.world.FreeBlock;
 import cc.antho.clonecraft.client.world.World;
 import cc.antho.clonecraft.client.world.thread.ChunkThread;
 import cc.antho.clonecraft.core.state.State;
@@ -94,6 +96,8 @@ public class GameState extends State {
 
 	}
 
+	FreeBlock freeBlock = new FreeBlock(BlockType.SAND);
+
 	public void render() {
 
 		atlas.bind(0);
@@ -112,7 +116,22 @@ public class GameState extends State {
 
 		glClear(Config.CLEAR);
 
+		final Matrix4f m = new Matrix4f();
+
+		chunkShader.loadUniformMatrix4f("u_model", m);
 		world.render();
+
+		synchronized (ClientListener.players) {
+
+			for (final PlayerStore store : ClientListener.players.values()) {
+
+				m.translation(store.position);
+				chunkShader.loadUniformMatrix4f("u_model", m);
+				freeBlock.render();
+
+			}
+
+		}
 
 		uiShader.bind();
 

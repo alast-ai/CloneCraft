@@ -30,7 +30,7 @@ public final class CloneCraftClient {
 
 			try {
 
-				client.connect(5000, ConnectionDefaults.ADDRESS, ConnectionDefaults.PORT);
+				client.connect(5000, ConnectionDefaults.ADDRESS, ConnectionDefaults.TCP_PORT, ConnectionDefaults.TCP_PORT);
 
 			} catch (final IOException e) {
 

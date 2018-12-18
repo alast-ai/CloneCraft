@@ -28,7 +28,7 @@ public final class CloneCraftServer {
 
 		try {
 
-			server.bind(ConnectionDefaults.PORT);
+			server.bind(ConnectionDefaults.TCP_PORT, ConnectionDefaults.TCP_PORT);
 
 		} catch (final IOException e) {
 

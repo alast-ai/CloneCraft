@@ -6,6 +6,7 @@ layout (location = 1) in vec2 in_texturecoords;
 out vec2 texturecoords;
 out float visibility;
 
+uniform mat4 u_model;
 uniform mat4 u_view;
 uniform mat4 u_projection;
 
@@ -13,7 +14,7 @@ const float density = 0.015;
 const float gradient = 3.0;
 
 void main() {
-	vec4 eyeSpace = u_view * vec4(in_position, 1.0);
+	vec4 eyeSpace = u_view * u_model * vec4(in_position, 1.0);
 	gl_Position = u_projection * eyeSpace;
 	texturecoords = in_texturecoords;
 	

@@ -11,6 +11,7 @@ import cc.antho.clonecraft.client.Controls;
 import cc.antho.clonecraft.client.world.BlockType;
 import cc.antho.clonecraft.client.world.World;
 import cc.antho.clonecraft.core.packet.BlockUpdatePacket;
+import cc.antho.clonecraft.core.packet.PlayerMovePacket;
 import lombok.Getter;
 
 public class Player {
@@ -32,6 +33,8 @@ public class Player {
 	private boolean canBreak = false;
 	private double timer = 0;
 
+	private double informTimer = 0d;
+
 	public void tick(final World world) {
 
 		velocity.x = 0;
@@ -40,6 +43,8 @@ public class Player {
 		final Input input = CloneCraftGame.getInput();
 
 		final float deltaTime = (float) CloneCraftGame.getInstance().getDeltaTime();
+
+		informTimer += deltaTime;
 
 		// Rotate the camera using the mouse
 		camera.rotation.x += SENSITIVITY_X * CloneCraftGame.getInput().getDifferecePos().y;
@@ -79,22 +84,24 @@ public class Player {
 
 			final float nextX = position.x + velocity.x;
 
-			final int blockX = Mathf.floor(nextX);
-			final int blockZ = Mathf.floor(position.z);
+			final int blockX = Mathf.floor(nextX - .2f);
+			final int blockZ0 = Mathf.floor(position.z - .2f);
+			final int blockZ1 = Mathf.floor(position.z + .2f);
 			final int blockY = Mathf.floor(position.y);
 
-			if (world.getBlock(blockX, blockY, blockZ) == null)
+			if (world.getBlock(blockX, blockY, blockZ0) == null && world.getBlock(blockX, blockY, blockZ1) == null)
 				position.x = nextX;
 
 		} else if (velocity.x > 0) {
 
 			final float nextX = position.x + velocity.x;
 
-			final int blockX = Mathf.floor(nextX);
-			final int blockZ = Mathf.floor(position.z);
+			final int blockX = Mathf.floor(nextX + .2f);
+			final int blockZ0 = Mathf.floor(position.z - .2f);
+			final int blockZ1 = Mathf.floor(position.z + .2f);
 			final int blockY = Mathf.floor(position.y);
 
-			if (world.getBlock(blockX, blockY, blockZ) == null)
+			if (world.getBlock(blockX, blockY, blockZ0) == null && world.getBlock(blockX, blockY, blockZ1) == null)
 				position.x = nextX;
 
 		}
@@ -103,22 +110,24 @@ public class Player {
 
 			final float nextZ = position.z + velocity.z;
 
-			final int blockX = Mathf.floor(position.x);
-			final int blockZ = Mathf.floor(nextZ);
+			final int blockX0 = Mathf.floor(position.x - .2f);
+			final int blockX1 = Mathf.floor(position.x + .2f);
+			final int blockZ = Mathf.floor(nextZ - .2f);
 			final int blockY = Mathf.floor(position.y);
 
-			if (world.getBlock(blockX, blockY, blockZ) == null)
+			if (world.getBlock(blockX0, blockY, blockZ) == null && world.getBlock(blockX1, blockY, blockZ) == null)
 				position.z = nextZ;
 
 		} else if (velocity.z > 0) {
 
 			final float nextZ = position.z + velocity.z;
 
-			final int blockX = Mathf.floor(position.x);
-			final int blockZ = Mathf.floor(nextZ);
+			final int blockX0 = Mathf.floor(position.x - .2f);
+			final int blockX1 = Mathf.floor(position.x + .2f);
+			final int blockZ = Mathf.floor(nextZ + .2f);
 			final int blockY = Mathf.floor(position.y);
 
-			if (world.getBlock(blockX, blockY, blockZ) == null)
+			if (world.getBlock(blockX0, blockY, blockZ) == null && world.getBlock(blockX1, blockY, blockZ) == null)
 				position.z = nextZ;
 
 		}
@@ -127,11 +136,17 @@ public class Player {
 
 			final float nextY = position.y + velocity.y * deltaTime;
 
-			final int blockX = Mathf.floor(position.x);
-			final int blockZ = Mathf.floor(position.z);
 			final int blockY = Mathf.floor(nextY);
 
-			if (world.getBlock(blockX, blockY, blockZ) == null)
+			final int blockX0 = Mathf.floor(position.x - .2f);
+			final int blockZ0 = Mathf.floor(position.z - .2f);
+			final int blockX1 = Mathf.floor(position.x + .2f);
+			final int blockZ1 = Mathf.floor(position.z + .2f);
+
+			if (world.getBlock(blockX0, blockY, blockZ0) == null &&
+					world.getBlock(blockX1, blockY, blockZ1) == null &&
+					world.getBlock(blockX0, blockY, blockZ1) == null &&
+					world.getBlock(blockX1, blockY, blockZ0) == null)
 				position.y = nextY;
 			else {
 				velocity.y = 0;
@@ -142,13 +157,26 @@ public class Player {
 
 			final float nextY = position.y + velocity.y * deltaTime;
 
-			final int blockX = Mathf.floor(position.x);
-			final int blockZ = Mathf.floor(position.z);
 			final int blockY = Mathf.floor(nextY);
 
-			if (world.getBlock(blockX, blockY, blockZ) == null)
+			final int blockX0 = Mathf.floor(position.x - .2f);
+			final int blockX1 = Mathf.floor(position.x + .2f);
+			final int blockZ0 = Mathf.floor(position.z - .2f);
+			final int blockZ1 = Mathf.floor(position.z + .2f);
+
+			if (world.getBlock(blockX0, blockY, blockZ0) == null &&
+					world.getBlock(blockX1, blockY, blockZ1) == null &&
+					world.getBlock(blockX0, blockY, blockZ1) == null &&
+					world.getBlock(blockX1, blockY, blockZ0) == null)
 				position.y = nextY;
-			else velocity.y = 0;
+			else velocity.y = 0f;
+
+		}
+
+		if (informTimer > .1f) {
+
+			informTimer = 0;
+			CloneCraftClient.getClient().sendUDP(new PlayerMovePacket(CloneCraftClient.getClient().getID(), camera.position, camera.rotation));
 
 		}
 
@@ -172,8 +200,7 @@ public class Player {
 
 			canBreak = false;
 
-			final Vector3f p = new Vector3f(position);
-			p.y += 1.6f;
+			final Vector3f p = new Vector3f(camera.position);
 			final Vector3f d = new Vector3f(camera.forward).mul(.5f);
 			float current_distance = 0;
 			final float max_distance = 10;
@@ -203,9 +230,9 @@ public class Player {
 
 			canBreak = false;
 
-			final Vector3f lp = new Vector3f(position);
-			final Vector3f p = new Vector3f(position);
-			p.y += 1.6f;
+			final Vector3f lp = new Vector3f(camera.position);
+			final Vector3f p = new Vector3f(camera.position);
+
 			final Vector3f d = new Vector3f(camera.forward).mul(.5f);
 			float current_distance = 0;
 			final float max_distance = 10;

@@ -57,7 +57,7 @@ public class Camera implements EventListener {
 
 			final FramebufferResizeEvent e = (FramebufferResizeEvent) event;
 
-			projection.setPerspective(Mathf.toRadians(70f), (float) e.getWidth() / (float) e.getHeight(), .3f, 1000f);
+			projection.setPerspective(Mathf.toRadians(70f), (float) e.getWidth() / (float) e.getHeight(), .1f, 1000f);
 			projectionDirty = true;
 
 		}
