@@ -1,5 +1,6 @@
 # CloneCraft
-CloneCraft is an open-source recreation of the game Minecraft.
+CloneCraft is a work in progress open-source recreation of the game Minecraft.
+CloneCraft is in heavy development still!
 
 ## Features
 * Servers!
