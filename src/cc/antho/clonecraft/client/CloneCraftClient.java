@@ -16,7 +16,7 @@ public final class CloneCraftClient {
 
 	}
 
-	public static final void main(String IPAddr, int Port) {
+	public static final void main(final String address, final int tcp, final int udp) {
 
 		CloneCraftGame.main();
 
@@ -29,19 +29,15 @@ public final class CloneCraftClient {
 
 			try {
 
-				networkClient.connect(5000, IPAddr, Port, Port);
+				networkClient.connect(5000, address, tcp, udp);
 
 			} catch (final IOException e) {
 
-				if(e.getMessage().startsWith("Unable to connect to")) {
-					
-					if(CloneCraftGame.getInstance() != null) {
-						
-						CloneCraftGame.getInstance().stop();
-						Debugger.getThread().interrupt();
-						
-					}
-					
+				if (e.getMessage().startsWith("Unable to connect to")) if (CloneCraftGame.getInstance() != null) {
+
+					CloneCraftGame.getInstance().stop();
+					Debugger.getThread().interrupt();
+
 				}
 
 			}
