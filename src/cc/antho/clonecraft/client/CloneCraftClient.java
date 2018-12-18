@@ -17,7 +17,7 @@ public final class CloneCraftClient {
 
 	}
 
-	public static final void main() {
+	public static final void main(String IPAddr, int Port) {
 
 		CloneCraftGame.main();
 
