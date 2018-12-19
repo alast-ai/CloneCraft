@@ -17,10 +17,13 @@ import cc.antho.clonecraft.core.packet.BlockUpdatePacket;
 import cc.antho.clonecraft.core.packet.PlayerConnectPacket;
 import cc.antho.clonecraft.core.packet.PlayerDisconnectPacket;
 import cc.antho.clonecraft.core.packet.PlayerMovePacket;
+import cc.antho.clonecraft.core.packet.PlayerSelfConnectPacket;
 
 public final class ClientListener extends Listener implements EventListener {
 
 	public static final Map<Integer, PlayerStore> players = new HashMap<>();
+	public static boolean ready = false;
+	public static float playerPacketFreq;
 
 	private final Client client;
 
@@ -65,6 +68,13 @@ public final class ClientListener extends Listener implements EventListener {
 			synchronized (players) {
 				players.remove(p.id);
 			}
+
+		} else if (object instanceof PlayerSelfConnectPacket) {
+
+			final PlayerSelfConnectPacket p = (PlayerSelfConnectPacket) object;
+			playerPacketFreq = p.playerPacketFreq;
+			ready = true;
+			System.out.println("Server Provided Base Data: PPF" + playerPacketFreq);
 
 		}
 

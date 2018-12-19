@@ -20,11 +20,11 @@ public final class CloneCraftServer {
 
 	}
 
-	private void start(final int tcp, final int udp) {
+	private void start(final int tcp, final int udp, final float ppf) {
 
 		server = new Server();
 		ClassRegister.register(server);
-		server.addListener(new ServerListener(server));
+		server.addListener(new ServerListener(server, ppf));
 		server.start();
 
 		try {
@@ -55,13 +55,13 @@ public final class CloneCraftServer {
 
 	}
 
-	public static final void main(final int tcp, final int udp) {
+	public static final void main(final int tcp, final int udp, final float ppf) {
 
 		thread = new Thread(() -> {
 
 			instance = new CloneCraftServer();
-			instance.start(tcp, udp);
-			// This only occues after the server has stopped
+			instance.start(tcp, udp, ppf);
+			// This only occurs after the server has stopped
 			instance = null;
 
 		}, "CloneCraftServer");

@@ -16,19 +16,19 @@ public final class CloneCraftClient {
 
 	}
 
-	public static final void main(final String address, final int tcp, final int udp) {
+	public static final void main(final String address, final int tcp, final int udp, final boolean openDebugger) {
 
 		thread = new Thread(() -> {
 
 			networkClient = new Client();
-			ClassRegister.register(networkClient.getKryo());
+			ClassRegister.register(networkClient);
 			networkClient.start();
 			networkClient.addListener(new ClientListener(networkClient));
 
 			try {
 
 				networkClient.connect(5000, address, tcp, udp);
-				CloneCraftGame.main();
+				CloneCraftGame.main(openDebugger);
 
 			} catch (final IOException e) {
 

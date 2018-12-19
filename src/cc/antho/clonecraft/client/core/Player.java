@@ -4,6 +4,7 @@ import static org.lwjgl.glfw.GLFW.*;
 
 import org.joml.Vector3f;
 
+import cc.antho.clonecraft.client.ClientListener;
 import cc.antho.clonecraft.client.CloneCraftClient;
 import cc.antho.clonecraft.client.CloneCraftGame;
 import cc.antho.clonecraft.client.Controls;
@@ -175,7 +176,7 @@ public class Player {
 
 		}
 
-		if (informTimer > .1f) {
+		if (ClientListener.ready && informTimer > ClientListener.playerPacketFreq) {
 
 			informTimer = 0;
 

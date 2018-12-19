@@ -33,10 +33,11 @@ public final class CloneCraftGame extends GameLoop {
 
 	}
 
-	public static final void main() {
+	public static final void main(final boolean openDebugger) {
 
 		thread = new Thread(() -> {
 
+			if (openDebugger) Debugger.start();
 			instance = new CloneCraftGame();
 			instance.start();
 
@@ -61,8 +62,6 @@ public final class CloneCraftGame extends GameLoop {
 
 		glClearColor(Config.CLEAR_RED, Config.CLEAR_GREEN, Config.CLEAR_BLUE, Config.CLEAR_ALPHA);
 		glfwMakeContextCurrent(0);
-
-		Debugger.start();
 
 	}
 

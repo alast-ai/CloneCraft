@@ -9,6 +9,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 import javax.swing.JButton;
+import javax.swing.JCheckBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -27,6 +28,17 @@ public final class CloneCraft {
 	}
 
 	public static final void main(final String[] args) {
+
+		// Log.setLogger(new Logger() {
+		//
+		// public void log(final int level, final String category, final String
+		// message, final Throwable ex) {
+		//
+		// System.out.println("[" + category + "] " + message);
+		//
+		// }
+		//
+		// });
 
 		Util.setLookAndFeel();
 
@@ -71,11 +83,20 @@ public final class CloneCraft {
 			constraints.gridy = 2;
 			panel.add(txtPortUdp, constraints);
 
+			final JCheckBox chkboxWithDebuffer = new JCheckBox("Launch with debugger");
+			constraints.gridwidth = 2;
+			constraints.gridx = 0;
+			constraints.gridy = 3;
+			constraints.anchor = GridBagConstraints.CENTER;
+			panel.add(chkboxWithDebuffer, constraints);
+			constraints.anchor = GridBagConstraints.WEST;
+			constraints.gridwidth = 1;
+
 			final JButton btnConnect = new JButton("Connect");
 			constraints.anchor = GridBagConstraints.CENTER;
 			constraints.gridwidth = 2;
 			constraints.gridx = 0;
-			constraints.gridy = 3;
+			constraints.gridy = 4;
 			panel.add(btnConnect, constraints);
 
 			// Reset these vales for next use
@@ -90,11 +111,9 @@ public final class CloneCraft {
 
 						final int tcp = Integer.parseInt(txtPortTcp.getText());
 						final int udp = Integer.parseInt(txtPortUdp.getText());
-						CloneCraftClient.main(txtAddress.getText(), tcp, udp);
+						CloneCraftClient.main(txtAddress.getText(), tcp, udp, chkboxWithDebuffer.isSelected());
 
 					} catch (final NumberFormatException e2) {
-
-						e2.printStackTrace();
 
 					}
 
@@ -129,30 +148,48 @@ public final class CloneCraft {
 			constraints.gridy = 1;
 			panel.add(txtPortUdp, constraints);
 
+			final JLabel lblPlayerPkt = new JLabel("Player packet frequency");
+			constraints.gridx = 0;
+			constraints.gridy = 2;
+			panel.add(lblPlayerPkt, constraints);
+
+			final JTextField txtPlayerPkt = new JTextField(ConnectionDefaults.PLAYER_PACKET_FREQUENCY + "", 10);
+			constraints.gridx = 1;
+			constraints.gridy = 2;
+			panel.add(txtPlayerPkt, constraints);
+
 			constraints.anchor = GridBagConstraints.CENTER;
 
 			final JButton buttonStart = new JButton("Start");
 			buttonStart.setEnabled(true);
 			constraints.gridx = 0;
-			constraints.gridy = 2;
+			constraints.gridy = 3;
 			panel.add(buttonStart, constraints);
 
 			final JButton buttonStop = new JButton("Stop");
 			buttonStop.setEnabled(false);
 			constraints.gridx = 1;
-			constraints.gridy = 2;
+			constraints.gridy = 3;
 			panel.add(buttonStop, constraints);
 
 			buttonStart.addActionListener(new ActionListener() {
 
 				public final void actionPerformed(final ActionEvent e) {
 
-					final int tcp = Integer.parseInt(txtPortTcp.getText());
-					final int udp = Integer.parseInt(txtPortUdp.getText());
-					CloneCraftServer.main(tcp, udp);
+					try {
 
-					buttonStop.setEnabled(true);
-					buttonStart.setEnabled(false);
+						final int tcp = Integer.parseInt(txtPortTcp.getText());
+						final int udp = Integer.parseInt(txtPortUdp.getText());
+						final float ppf = Float.parseFloat(txtPlayerPkt.getText());
+
+						CloneCraftServer.main(tcp, udp, ppf);
+
+						buttonStop.setEnabled(true);
+						buttonStart.setEnabled(false);
+
+					} catch (final NumberFormatException e2) {
+
+					}
 
 				}
 
@@ -176,7 +213,7 @@ public final class CloneCraft {
 		{
 
 			final JFrame f = new JFrame("CloneCraft");
-			f.setMinimumSize(new Dimension(400, 200));
+			f.setMinimumSize(new Dimension(300, 250));
 			f.setPreferredSize(new Dimension(640, 480));
 			f.setLocationRelativeTo(null);
 			f.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
