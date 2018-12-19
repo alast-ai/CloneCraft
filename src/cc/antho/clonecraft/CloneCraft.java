@@ -12,11 +12,11 @@ import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
-import javax.swing.JList;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTabbedPane;
+import javax.swing.JTextArea;
 import javax.swing.JTextField;
-import javax.swing.JTextPane;
 
 import com.esotericsoftware.minlog.Log;
 import com.esotericsoftware.minlog.Log.Logger;
@@ -28,6 +28,8 @@ import cc.antho.clonecraft.server.CloneCraftServer;
 import lombok.Getter;
 
 public final class CloneCraft {
+	
+	static CloneCraftFrame ccFrame;
 
 	private CloneCraft() {
 
@@ -35,29 +37,28 @@ public final class CloneCraft {
 
 	public static final void main(final String[] args) {
 
-		Log.setLogger(new Logger() {
-			 
-			public void log(final int level, final String category, final String message, final Throwable ex) {
-			
-				System.out.println("[" + category + "] " + message);
-			
-			}
-		
-		});
+//		Log.setLogger(new Logger() {
+//			 
+//			public void log(final int level, final String category, final String message, final Throwable ex) {
+//				
+//				System.out.println("[" + category + "] " + message);
+//			
+//			}
+//		
+//		});
 
 		Util.setLookAndFeel();
 		
-		CloneCraftFrame startFrame = new CloneCraftFrame("CloneCraft");
-
-		startFrame.getClientConnectButton().addActionListener(new ActionListener() {
+		ccFrame = new CloneCraftFrame("CloneCraft");
+		ccFrame.getClientConnectButton().addActionListener(new ActionListener() {
 
 			public final void actionPerformed(final ActionEvent e) {
 
 				try {
 
-					final int tcp = Integer.parseInt(startFrame.getClientHostPortTCP().getText());
-					final int udp = Integer.parseInt(startFrame.getClientHostPortUDP().getText());
-					CloneCraftClient.main(startFrame.getClientHostAddress().getText(), tcp, udp, startFrame.getClientDebuggerEnabled().isSelected());
+					final int tcp = Integer.parseInt(ccFrame.getClientHostPortTCP().getText());
+					final int udp = Integer.parseInt(ccFrame.getClientHostPortUDP().getText());
+					CloneCraftClient.main(ccFrame.getClientHostAddress().getText(), tcp, udp, ccFrame.getClientDebuggerEnabled().isSelected());
 
 				} catch (final NumberFormatException e2) {
 
@@ -67,20 +68,20 @@ public final class CloneCraft {
 
 		});
 
-		startFrame.getServerStartButton().addActionListener(new ActionListener() {
+		ccFrame.getServerStartButton().addActionListener(new ActionListener() {
 
 			public final void actionPerformed(final ActionEvent e) {
 
 				try {
 
-					final int tcp = Integer.parseInt(startFrame.getServerHostPortTCP().getText());
-					final int udp = Integer.parseInt(startFrame.getServerHostPortUDP().getText());
-					final float ppf = Float.parseFloat(startFrame.getServerPlayerPacketFrequency().getText());
+					final int tcp = Integer.parseInt(ccFrame.getServerHostPortTCP().getText());
+					final int udp = Integer.parseInt(ccFrame.getServerHostPortUDP().getText());
+					final float ppf = Float.parseFloat(ccFrame.getServerPlayerPacketFrequency().getText());
 
 					CloneCraftServer.main(tcp, udp, ppf);
 
-					startFrame.getServerStopButton().setEnabled(true);
-					startFrame.getServerStartButton().setEnabled(false);
+					ccFrame.getServerStopButton().setEnabled(true);
+					ccFrame.getServerStartButton().setEnabled(false);
 
 				} catch (final NumberFormatException e2) {
 
@@ -90,14 +91,14 @@ public final class CloneCraft {
 
 		});
 
-		startFrame.getServerStopButton().addActionListener(new ActionListener() {
+		ccFrame.getServerStopButton().addActionListener(new ActionListener() {
 
 			public final void actionPerformed(final ActionEvent e) {
 
 				CloneCraftServer.thread.interrupt();
 
-				startFrame.getServerStopButton().setEnabled(false);
-				startFrame.getServerStartButton().setEnabled(true);
+				ccFrame.getServerStopButton().setEnabled(false);
+				ccFrame.getServerStartButton().setEnabled(true);
 
 			}
 
@@ -108,7 +109,7 @@ public final class CloneCraft {
 	
 	static private class CloneCraftFrame extends JFrame {
 		final private GridBagConstraints constraints = new GridBagConstraints();
-		
+
 		@Getter public JTextField clientHostAddress;
 		@Getter public JTextField clientHostPortTCP;
 		@Getter public JTextField clientHostPortUDP;
@@ -208,10 +209,9 @@ public final class CloneCraft {
 			panel.add(serverPlayerPacketFrequency, constraints);
 
 			constraints.anchor = GridBagConstraints.CENTER;
-			
+
 			serverStartButton = new JButton("Start");
 			serverStartButton.setEnabled(true);
-			constraints.gridwidth = 1;
 			constraints.gridx = 0;
 			constraints.gridy = 4;
 			panel.add(serverStartButton, constraints);
@@ -247,7 +247,6 @@ public final class CloneCraft {
 			setVisible(true);
 
 		}
-		
 	}
 
 }
