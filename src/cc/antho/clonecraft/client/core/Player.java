@@ -25,9 +25,11 @@ public class Player {
 	public static final float WALK_SPEED = 4f;
 	public static final float SPRINT_SPEED = 6f;
 	public static final float EYE_HEIGHT = 1.6f;
-	public static final float GRAVITY = -10f;
+	public static final float GRAVITY = -18f;
+	public static final float JUMP_FORCE = 7f;
 
-	@Getter private final Vector3f position = new Vector3f(0, 80, 0);
+	@Getter
+	private final Vector3f position = new Vector3f(0, 80, 0);
 
 	public final Camera camera = new Camera();
 	private final Vector3f velocity = new Vector3f();
@@ -37,6 +39,9 @@ public class Player {
 	private double timer = 0;
 
 	private double informTimer = 0d;
+
+	public BlockType[] blockArray = new BlockType[] { BlockType.GRASS, BlockType.DIRT, BlockType.STONE, BlockType.LOG, BlockType.LEAVES, BlockType.BRICKS, BlockType.BEDROCK, BlockType.STONEBRICKS, BlockType.COAL_ORE, BlockType.COBBLESTONE, BlockType.SAND, BlockType.TALLGRASS, BlockType.PINK_WOOL };
+	public int blockIndex = 0;
 
 	public void tick(final World world) {
 
@@ -56,16 +61,24 @@ public class Player {
 		camera.rotation.y %= 360f;
 
 		float dist = 0;
-		if (input.isKeyDown(Controls.WALK_FORWARD)) dist++;
-		if (input.isKeyDown(Controls.WALK_BACKWARD)) dist--;
+		if (input.isKeyDown(Controls.WALK_FORWARD)) {
+			dist++;
+		}
+		if (input.isKeyDown(Controls.WALK_BACKWARD)) {
+			dist--;
+		}
 		dist *= WALK_SPEED * deltaTime;
 
 		velocity.x += Mathf.sin(Mathf.toRadians(camera.rotation.y)) * dist;
 		velocity.z -= Mathf.cos(Mathf.toRadians(camera.rotation.y)) * dist;
 
 		dist = 0;
-		if (input.isKeyDown(Controls.STRAFE_LEFT)) dist--;
-		if (input.isKeyDown(Controls.STRAFE_RIGHT)) dist++;
+		if (input.isKeyDown(Controls.STRAFE_LEFT)) {
+			dist--;
+		}
+		if (input.isKeyDown(Controls.STRAFE_RIGHT)) {
+			dist++;
+		}
 		dist *= WALK_SPEED * deltaTime;
 
 		velocity.x += Mathf.sin(Mathf.toRadians(camera.rotation.y + 90f)) * dist;
@@ -76,7 +89,7 @@ public class Player {
 		// if (input.isKeyDown(Controls.SNEAK)) velocity.y -= speed;
 		if (input.isKeyDown(Controls.JUMP) && canJump) {
 
-			velocity.y = 5f;
+			velocity.y = JUMP_FORCE;
 			canJump = false;
 
 		}
@@ -92,8 +105,9 @@ public class Player {
 			final int blockZ1 = Mathf.floor(position.z + .2f);
 			final int blockY = Mathf.floor(position.y);
 
-			if (world.getBlock(blockX, blockY, blockZ0) == null && world.getBlock(blockX, blockY, blockZ1) == null)
+			if ((world.getBlock(blockX, blockY, blockZ0) == null) && (world.getBlock(blockX, blockY, blockZ1) == null)) {
 				position.x = nextX;
+			}
 
 		} else if (velocity.x > 0) {
 
@@ -104,8 +118,9 @@ public class Player {
 			final int blockZ1 = Mathf.floor(position.z + .2f);
 			final int blockY = Mathf.floor(position.y);
 
-			if (world.getBlock(blockX, blockY, blockZ0) == null && world.getBlock(blockX, blockY, blockZ1) == null)
+			if ((world.getBlock(blockX, blockY, blockZ0) == null) && (world.getBlock(blockX, blockY, blockZ1) == null)) {
 				position.x = nextX;
+			}
 
 		}
 
@@ -118,8 +133,9 @@ public class Player {
 			final int blockZ = Mathf.floor(nextZ - .2f);
 			final int blockY = Mathf.floor(position.y);
 
-			if (world.getBlock(blockX0, blockY, blockZ) == null && world.getBlock(blockX1, blockY, blockZ) == null)
+			if ((world.getBlock(blockX0, blockY, blockZ) == null) && (world.getBlock(blockX1, blockY, blockZ) == null)) {
 				position.z = nextZ;
+			}
 
 		} else if (velocity.z > 0) {
 
@@ -130,14 +146,15 @@ public class Player {
 			final int blockZ = Mathf.floor(nextZ + .2f);
 			final int blockY = Mathf.floor(position.y);
 
-			if (world.getBlock(blockX0, blockY, blockZ) == null && world.getBlock(blockX1, blockY, blockZ) == null)
+			if ((world.getBlock(blockX0, blockY, blockZ) == null) && (world.getBlock(blockX1, blockY, blockZ) == null)) {
 				position.z = nextZ;
+			}
 
 		}
 
 		if (velocity.y < 0) {
 
-			final float nextY = position.y + velocity.y * deltaTime;
+			final float nextY = position.y + (velocity.y * deltaTime);
 
 			final int blockY = Mathf.floor(nextY);
 
@@ -146,19 +163,16 @@ public class Player {
 			final int blockX1 = Mathf.floor(position.x + .2f);
 			final int blockZ1 = Mathf.floor(position.z + .2f);
 
-			if (world.getBlock(blockX0, blockY, blockZ0) == null &&
-					world.getBlock(blockX1, blockY, blockZ1) == null &&
-					world.getBlock(blockX0, blockY, blockZ1) == null &&
-					world.getBlock(blockX1, blockY, blockZ0) == null)
+			if ((world.getBlock(blockX0, blockY, blockZ0) == null) && (world.getBlock(blockX1, blockY, blockZ1) == null) && (world.getBlock(blockX0, blockY, blockZ1) == null) && (world.getBlock(blockX1, blockY, blockZ0) == null)) {
 				position.y = nextY;
-			else {
+			} else {
 				velocity.y = 0;
 				canJump = true;
 			}
 
 		} else if (velocity.y > 0) {
 
-			final float nextY = position.y + velocity.y * deltaTime;
+			final float nextY = position.y + (velocity.y * deltaTime);
 
 			final int blockY = Mathf.floor(nextY);
 
@@ -167,16 +181,15 @@ public class Player {
 			final int blockZ0 = Mathf.floor(position.z - .2f);
 			final int blockZ1 = Mathf.floor(position.z + .2f);
 
-			if (world.getBlock(blockX0, blockY, blockZ0) == null &&
-					world.getBlock(blockX1, blockY, blockZ1) == null &&
-					world.getBlock(blockX0, blockY, blockZ1) == null &&
-					world.getBlock(blockX1, blockY, blockZ0) == null)
+			if ((world.getBlock(blockX0, blockY, blockZ0) == null) && (world.getBlock(blockX1, blockY, blockZ1) == null) && (world.getBlock(blockX0, blockY, blockZ1) == null) && (world.getBlock(blockX1, blockY, blockZ0) == null)) {
 				position.y = nextY;
-			else velocity.y = 0f;
+			} else {
+				velocity.y = 0f;
+			}
 
 		}
 
-		if (ClientListener.ready && informTimer > ClientListener.playerPacketFreq) {
+		if (ClientListener.ready && (informTimer > ClientListener.playerPacketFreq)) {
 
 			informTimer = 0;
 
@@ -197,6 +210,20 @@ public class Player {
 				canBreak = true;
 
 			}
+
+		}
+
+		if (input.isKeyDown(GLFW_KEY_LEFT)) {
+
+			if (blockIndex <= 0) blockIndex = blockArray.length - 1;
+			else blockIndex--;
+
+		}
+
+		if (input.isKeyDown(GLFW_KEY_RIGHT)) {
+
+			if (blockIndex >= (blockArray.length - 1)) blockIndex = 0;
+			else blockIndex++;
 
 		}
 
@@ -225,7 +252,9 @@ public class Player {
 
 				p.add(d);
 				current_distance += d.length();
-				if (current_distance >= max_distance) break;
+				if (current_distance >= max_distance) {
+					break;
+				}
 
 			}
 
@@ -248,16 +277,20 @@ public class Player {
 
 				if (type != null) {
 
-					world.setBlock(lp.x, lp.y, lp.z, BlockType.STONE);
-					EventDispatcher.dispatch(new NetworkPacketEvent(this, new BlockUpdatePacket(Mathf.floor(p.x), Mathf.floor(p.y), Mathf.floor(p.z), BlockType.STONE), false, true));
+					world.setBlock(lp.x, lp.y, lp.z, blockArray[blockIndex]);
+					EventDispatcher.dispatch(new NetworkPacketEvent(this, new BlockUpdatePacket(Mathf.floor(p.x), Mathf.floor(p.y), Mathf.floor(p.z), blockArray[blockIndex]), false, true));
 					world.getChunkFromWorldCoord(lp.x, lp.z).update();
 					break;
 
-				} else lp.set(p);
+				} else {
+					lp.set(p);
+				}
 
 				p.add(d);
 				current_distance += d.length();
-				if (current_distance >= max_distance) break;
+				if (current_distance >= max_distance) {
+					break;
+				}
 
 			}
 

@@ -15,9 +15,12 @@ import lombok.Getter;
 
 public class FreeBlock {
 
-	@Getter private final int vao;
-	@Getter private final int vboPositions;
-	@Getter private final int vboCoords;
+	@Getter
+	private final int vao;
+	@Getter
+	private final int vboPositions;
+	@Getter
+	private final int vboCoords;
 	private final int vertexCount;
 
 	public FreeBlock(final BlockType type) {
@@ -40,27 +43,27 @@ public class FreeBlock {
 		chunkCoords.append(coordTmp);
 		coordTmp.clear();
 		coordTmp.append(BlockFace.RIGHT.getTexCoords());
-		coordTmp.add(type.getLeft());
+		coordTmp.add(type.getRight());
 		coordTmp.mul(PackLoader.WIDTH_SCALE, PackLoader.HEIGHT_SCALE);
 		chunkCoords.append(coordTmp);
 		coordTmp.clear();
 		coordTmp.append(BlockFace.FRONT.getTexCoords());
-		coordTmp.add(type.getLeft());
+		coordTmp.add(type.getFront());
 		coordTmp.mul(PackLoader.WIDTH_SCALE, PackLoader.HEIGHT_SCALE);
 		chunkCoords.append(coordTmp);
 		coordTmp.clear();
 		coordTmp.append(BlockFace.BACK.getTexCoords());
-		coordTmp.add(type.getLeft());
+		coordTmp.add(type.getBack());
 		coordTmp.mul(PackLoader.WIDTH_SCALE, PackLoader.HEIGHT_SCALE);
 		chunkCoords.append(coordTmp);
 		coordTmp.clear();
 		coordTmp.append(BlockFace.TOP.getTexCoords());
-		coordTmp.add(type.getLeft());
+		coordTmp.add(type.getTop());
 		coordTmp.mul(PackLoader.WIDTH_SCALE, PackLoader.HEIGHT_SCALE);
 		chunkCoords.append(coordTmp);
 		coordTmp.clear();
 		coordTmp.append(BlockFace.BOTTOM.getTexCoords());
-		coordTmp.add(type.getLeft());
+		coordTmp.add(type.getBottom());
 		coordTmp.mul(PackLoader.WIDTH_SCALE, PackLoader.HEIGHT_SCALE);
 		chunkCoords.append(coordTmp);
 
