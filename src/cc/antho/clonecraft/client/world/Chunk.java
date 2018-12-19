@@ -41,13 +41,22 @@ public class Chunk {
 
 				final int height = world.getHeightAtWorldPosition(gx, gz);
 
-				for (int y = 0; y < height - 4; y++)
+				setBlock(x, 0, z, BlockType.BEDROCK);
+
+				for (int y = 1; y < height - 4; y++)
 					setBlock(x, y, z, BlockType.STONE);
 
 				for (int y = height - 4; y < height; y++)
 					setBlock(x, y, z, BlockType.DIRT);
 
-				setBlock(x, height - 1, z, BlockType.GRASS);
+				if (world.getTreeNoise().eval(gx, gz) > .7f) {
+
+					setBlock(x, height - 1, z, BlockType.DIRT);
+
+					for (int i = 0; i < 4; i++)
+						setBlock(x, height + i, z, BlockType.LOG);
+
+				} else setBlock(x, height - 1, z, BlockType.GRASS);
 
 			}
 

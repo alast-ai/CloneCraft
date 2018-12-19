@@ -14,12 +14,14 @@ public class World {
 	@Getter private volatile List<Chunk> chunks = new ArrayList<>();
 
 	@Getter private final OpenSimplexNoise noise;
+	@Getter private final OpenSimplexNoise treeNoise;
 
 	public World(final long seed) {
 
 		final Random r = new Random(seed);
 
 		noise = new OpenSimplexNoise(r.nextLong());
+		treeNoise = new OpenSimplexNoise(r.nextLong());
 
 	}
 
