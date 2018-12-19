@@ -7,8 +7,13 @@ import lombok.Getter;
 public class StateManager {
 
 	@Getter private State currentState;
+	private State nextState = null;
+	private boolean shouldUpdate = false;
 
-	public void setState(final State newState) {
+	public void updateStates() {
+
+		if (!shouldUpdate) return;
+		shouldUpdate = false;
 
 		if (currentState != null) {
 
@@ -17,7 +22,8 @@ public class StateManager {
 
 		}
 
-		currentState = newState;
+		currentState = nextState;
+		nextState = null;
 
 		if (currentState != null) {
 
@@ -25,6 +31,13 @@ public class StateManager {
 			currentState.init();
 
 		}
+
+	}
+
+	public void setState(final State newState) {
+
+		nextState = newState;
+		shouldUpdate = true;
 
 	}
 

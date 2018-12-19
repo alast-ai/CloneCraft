@@ -1,6 +1,6 @@
 package cc.antho.clonecraft.client.core;
 
-import static org.lwjgl.opengl.GL20.*;
+import static org.lwjgl.opengl.GL46.*;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -37,9 +37,21 @@ public class Shader {
 
 	private static final int createShader(final int type, final String source) {
 
+		System.out.println(source);
+
 		final int shader = glCreateShader(type);
 		glShaderSource(shader, source);
 		glCompileShader(shader);
+
+		if (glGetShaderi(shader, GL_COMPILE_STATUS) == GL_FALSE) {
+
+			System.err.println("Shader failed to compile");
+			System.err.println(glGetShaderInfoLog(shader));
+
+		}
+
+		// TODO shader should be deleted here if it fails to compile however the
+		// shader program compilation should handle it
 
 		return shader;
 
@@ -80,8 +92,27 @@ public class Shader {
 		handle = glCreateProgram();
 		glAttachShader(handle, vs);
 		glAttachShader(handle, fs);
+
 		glLinkProgram(handle);
+
+		if (glGetProgrami(handle, GL_LINK_STATUS) == GL_FALSE) {
+
+			System.err.println("Failed to link program");
+			System.err.println(glGetProgramInfoLog(handle));
+
+		}
+		// TODO delete shader if linking fails
+
 		glValidateProgram(handle);
+
+		if (glGetProgrami(handle, GL_VALIDATE_STATUS) == GL_FALSE) {
+
+			System.err.println("Failed to validate program");
+			System.err.println(glGetProgramInfoLog(handle));
+
+		}
+		// TODO delete shader if linking fails
+
 		glDetachShader(handle, vs);
 		glDetachShader(handle, fs);
 		glDeleteShader(vs);

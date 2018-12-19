@@ -7,6 +7,7 @@ import com.esotericsoftware.kryonet.Client;
 import com.esotericsoftware.kryonet.Connection;
 import com.esotericsoftware.kryonet.Listener;
 
+import cc.antho.clonecraft.client.state.GameState;
 import cc.antho.clonecraft.client.world.Chunk;
 import cc.antho.clonecraft.client.world.World;
 import cc.antho.clonecraft.core.event.Event;
