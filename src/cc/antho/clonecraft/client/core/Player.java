@@ -39,8 +39,6 @@ public class Player {
 
 	private double informTimer = 0d;
 
-	public BlockType[] blockArray = new BlockType[] { BlockType.GRASS, BlockType.DIRT, BlockType.STONE, BlockType.LOG, BlockType.LEAVES, BlockType.BRICKS, BlockType.BEDROCK, BlockType.STONEBRICKS, BlockType.COAL_ORE, BlockType.COBBLESTONE,
-			BlockType.SAND, BlockType.TALLGRASS, BlockType.PINK_WOOL };
 	public int blockIndex = 0;
 
 	public void tick(final World world) {
@@ -194,10 +192,10 @@ public class Player {
 
 		}
 
-		if (input.isKeyDown(GLFW_KEY_LEFT)) if (blockIndex <= 0) blockIndex = blockArray.length - 1;
+		if (input.isKeyDown(GLFW_KEY_LEFT)) if (blockIndex <= 0) blockIndex = BlockType.BLOCKS.length - 1;
 		else blockIndex--;
 
-		if (input.isKeyDown(GLFW_KEY_RIGHT)) if (blockIndex >= blockArray.length - 1) blockIndex = 0;
+		if (input.isKeyDown(GLFW_KEY_RIGHT)) if (blockIndex >= BlockType.BLOCKS.length - 1) blockIndex = 0;
 		else blockIndex++;
 
 		if (input.isButtonDown(GLFW_MOUSE_BUTTON_1) && canBreak) {
@@ -248,8 +246,10 @@ public class Player {
 
 				if (type != null) {
 
-					world.setBlock(lp.x, lp.y, lp.z, blockArray[blockIndex]);
-					EventDispatcher.dispatch(new NetworkPacketEvent(this, new BlockUpdatePacket(Mathf.floor(p.x), Mathf.floor(p.y), Mathf.floor(p.z), blockArray[blockIndex]), false, true));
+					final BlockType currentBlock = BlockType.BLOCKS[blockIndex];
+
+					world.setBlock(lp.x, lp.y, lp.z, currentBlock);
+					EventDispatcher.dispatch(new NetworkPacketEvent(this, new BlockUpdatePacket(Mathf.floor(p.x), Mathf.floor(p.y), Mathf.floor(p.z), currentBlock), false, true));
 					world.getChunkFromWorldCoord(lp.x, lp.z).update();
 					break;
 

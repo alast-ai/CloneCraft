@@ -109,7 +109,7 @@ public class GameState extends State {
 	}
 
 	private final FreeBlock freeBlock = new FreeBlock(BlockType.SAND);
-	private FreeBlock curBlock = new FreeBlock(player.blockArray[player.blockIndex]);
+	private FreeBlock curBlock = new FreeBlock(BlockType.SAND);
 
 	public void render() {
 
@@ -135,7 +135,7 @@ public class GameState extends State {
 		world.render();
 
 		curBlock.shutdown();
-		curBlock = new FreeBlock(player.blockArray[player.blockIndex]);
+		curBlock = new FreeBlock(BlockType.BLOCKS[player.blockIndex]);
 
 		final float offsetX = .3f;
 		final float offsetY = -.4f;

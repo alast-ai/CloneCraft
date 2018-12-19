@@ -56,6 +56,8 @@ public class BlockType implements Serializable {
 	public static final BlockType PINK_WOOL = new BlockType(
 			new Vector2i(3, 3), true);
 
+	public static final BlockType[] BLOCKS = new BlockType[] { GRASS, DIRT, STONE, LOG, LEAVES, BRICKS, BEDROCK, STONEBRICKS, COAL_ORE, COBBLESTONE, SAND, TALLGRASS, PINK_WOOL };
+
 	@Getter private final Vector2i left, right, front, back, top, bottom;
 	@Getter private final boolean breakable;
 
