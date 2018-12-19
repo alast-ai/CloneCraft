@@ -5,6 +5,7 @@ import static org.lwjgl.opengl.GL11.*;
 import java.io.IOException;
 
 import org.joml.Matrix4f;
+import org.joml.Vector3f;
 
 import cc.antho.clonecraft.client.core.Player;
 import cc.antho.clonecraft.client.core.Shader;
@@ -23,7 +24,8 @@ public class GameState extends State {
 
 	private final Player player = new Player();
 
-	@Getter private World world;
+	@Getter
+	private World world;
 	private Shader chunkShader, uiShader;
 	private Texture atlas, crosshair;
 
@@ -31,7 +33,7 @@ public class GameState extends State {
 
 		ChunkThread.startThreads();
 
-		world = new World("Oniichan");
+		world = new World("NFzttn4UxfQD8aOhYyeNDXs3FnXHEioT");
 
 		loadShader();
 		loadAtlas();
@@ -97,6 +99,7 @@ public class GameState extends State {
 	}
 
 	FreeBlock freeBlock = new FreeBlock(BlockType.SAND);
+	FreeBlock curBlock = new FreeBlock(player.blockArray[player.blockIndex]);
 
 	public void render() {
 
@@ -120,6 +123,16 @@ public class GameState extends State {
 
 		chunkShader.loadUniformMatrix4f("u_model", m);
 		world.render();
+
+		// TODO: Shutdown curBlock
+		curBlock = new FreeBlock(player.blockArray[player.blockIndex]);
+
+		// TODO: Fix this when matrix thing is possible (looking at you, Antho!)
+		m.translation(player.getPosition());
+		m.translate(new Vector3f(1, 1, 1));
+		m.scale(.5f);
+		chunkShader.loadUniformMatrix4f("u_model", m);
+		curBlock.render();
 
 		synchronized (ClientListener.players) {
 
