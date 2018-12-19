@@ -192,10 +192,10 @@ public class Player {
 
 		}
 
-		if (input.isKeyDown(GLFW_KEY_LEFT)) if (blockIndex <= 0) blockIndex = BlockType.BLOCKS.length - 1;
+		if (input.isKeyPressed(GLFW_KEY_LEFT)) if (blockIndex <= 0) blockIndex = BlockType.BLOCKS.length - 1;
 		else blockIndex--;
 
-		if (input.isKeyDown(GLFW_KEY_RIGHT)) if (blockIndex >= BlockType.BLOCKS.length - 1) blockIndex = 0;
+		if (input.isKeyPressed(GLFW_KEY_RIGHT)) if (blockIndex >= BlockType.BLOCKS.length - 1) blockIndex = 0;
 		else blockIndex++;
 
 		if (input.isButtonDown(GLFW_MOUSE_BUTTON_1) && canBreak) {
