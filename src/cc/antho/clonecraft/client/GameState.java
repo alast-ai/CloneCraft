@@ -24,8 +24,7 @@ public class GameState extends State {
 
 	private final Player player = new Player();
 
-	@Getter
-	private World world;
+	@Getter private World world;
 	private Shader chunkShader, uiShader;
 	private Texture atlas, crosshair;
 
@@ -98,8 +97,8 @@ public class GameState extends State {
 
 	}
 
-	FreeBlock freeBlock = new FreeBlock(BlockType.SAND);
-	FreeBlock curBlock = new FreeBlock(player.blockArray[player.blockIndex]);
+	private final FreeBlock freeBlock = new FreeBlock(BlockType.SAND);
+	private FreeBlock curBlock = new FreeBlock(player.blockArray[player.blockIndex]);
 
 	public void render() {
 
@@ -124,7 +123,7 @@ public class GameState extends State {
 		chunkShader.loadUniformMatrix4f("u_model", m);
 		world.render();
 
-		// TODO: Shutdown curBlock
+		curBlock.shutdown();
 		curBlock = new FreeBlock(player.blockArray[player.blockIndex]);
 
 		// TODO: Fix this when matrix thing is possible (looking at you, Antho!)

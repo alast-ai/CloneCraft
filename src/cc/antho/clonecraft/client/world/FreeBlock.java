@@ -15,12 +15,9 @@ import lombok.Getter;
 
 public class FreeBlock {
 
-	@Getter
-	private final int vao;
-	@Getter
-	private final int vboPositions;
-	@Getter
-	private final int vboCoords;
+	@Getter private final int vao;
+	@Getter private final int vboPositions;
+	@Getter private final int vboCoords;
 	private final int vertexCount;
 
 	public FreeBlock(final BlockType type) {
@@ -112,6 +109,14 @@ public class FreeBlock {
 
 		glBindVertexArray(0);
 		glBindBuffer(GL_ARRAY_BUFFER, 0);
+
+	}
+
+	public void shutdown() {
+
+		glDeleteVertexArrays(vao);
+		glDeleteBuffers(vboPositions);
+		glDeleteBuffers(vboCoords);
 
 	}
 
