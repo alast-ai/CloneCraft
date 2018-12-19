@@ -80,6 +80,12 @@ public final class ClientListener extends Listener implements EventListener {
 
 	}
 
+	public void disconnected (Connection connection) {
+
+		CloneCraftGame.getInstance().stop();
+
+	}
+
 	public void onEvent(final Event event) {
 
 		if (event instanceof NetworkPacketEvent) {
