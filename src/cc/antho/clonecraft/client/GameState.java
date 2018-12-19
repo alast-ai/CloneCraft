@@ -50,7 +50,7 @@ public class GameState extends State {
 
 		try {
 
-			atlas = new Texture("/atlas.png", true);
+			atlas = new Texture("/textures/blocks/atlas.png", true);
 			crosshair = new Texture("/crosshair.png", false);
 
 		} catch (final IOException e) {
