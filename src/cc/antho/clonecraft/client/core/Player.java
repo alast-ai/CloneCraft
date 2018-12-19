@@ -4,12 +4,15 @@ import static org.lwjgl.glfw.GLFW.*;
 
 import org.joml.Vector3f;
 
-import cc.antho.ascl8.math.Mathf;
+import cc.antho.clonecraft.client.ClientListener;
 import cc.antho.clonecraft.client.CloneCraftClient;
 import cc.antho.clonecraft.client.CloneCraftGame;
 import cc.antho.clonecraft.client.Controls;
 import cc.antho.clonecraft.client.world.BlockType;
 import cc.antho.clonecraft.client.world.World;
+import cc.antho.clonecraft.core.Mathf;
+import cc.antho.clonecraft.core.event.EventDispatcher;
+import cc.antho.clonecraft.core.events.NetworkPacketEvent;
 import cc.antho.clonecraft.core.packet.BlockUpdatePacket;
 import cc.antho.clonecraft.core.packet.PlayerMovePacket;
 import lombok.Getter;
@@ -173,10 +176,11 @@ public class Player {
 
 		}
 
-		if (informTimer > .1f) {
+		if (ClientListener.ready && informTimer > ClientListener.playerPacketFreq) {
 
 			informTimer = 0;
-			CloneCraftClient.getNetworkClient().sendUDP(new PlayerMovePacket(CloneCraftClient.getNetworkClient().getID(), camera.position, camera.rotation));
+
+			EventDispatcher.dispatch(new NetworkPacketEvent(this, new PlayerMovePacket(CloneCraftClient.getNetworkClient().getID(), camera.position, camera.rotation), false, false));
 
 		}
 
@@ -211,7 +215,8 @@ public class Player {
 				if (type != null) {
 
 					world.setBlock(p.x, p.y, p.z, null);
-					CloneCraftClient.getNetworkClient().sendTCP(new BlockUpdatePacket(Mathf.floor(p.x), Mathf.floor(p.y), Mathf.floor(p.z), null));
+
+					EventDispatcher.dispatch(new NetworkPacketEvent(this, new BlockUpdatePacket(Mathf.floor(p.x), Mathf.floor(p.y), Mathf.floor(p.z), null), false, true));
 
 					world.getChunkFromWorldCoord(p.x, p.z).update();
 					break;
@@ -244,7 +249,7 @@ public class Player {
 				if (type != null) {
 
 					world.setBlock(lp.x, lp.y, lp.z, BlockType.STONE);
-					CloneCraftClient.getNetworkClient().sendTCP(new BlockUpdatePacket(Mathf.floor(lp.x), Mathf.floor(lp.y), Mathf.floor(lp.z), BlockType.STONE));
+					EventDispatcher.dispatch(new NetworkPacketEvent(this, new BlockUpdatePacket(Mathf.floor(p.x), Mathf.floor(p.y), Mathf.floor(p.z), BlockType.STONE), false, true));
 					world.getChunkFromWorldCoord(lp.x, lp.z).update();
 					break;
 

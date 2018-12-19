@@ -4,11 +4,11 @@ import org.joml.Matrix4f;
 import org.joml.Vector3f;
 import org.joml.Vector4f;
 
-import cc.antho.ascl8.math.Mathf;
+import cc.antho.clonecraft.core.Mathf;
 import cc.antho.clonecraft.core.event.Event;
 import cc.antho.clonecraft.core.event.EventDispatcher;
 import cc.antho.clonecraft.core.event.EventListener;
-import cc.antho.clonecraft.core.event.impl.FramebufferResizeEvent;
+import cc.antho.clonecraft.core.events.FramebufferResizeEvent;
 import lombok.Getter;
 import lombok.Setter;
 

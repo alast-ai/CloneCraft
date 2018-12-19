@@ -27,9 +27,9 @@ import javax.imageio.ImageIO;
 
 import org.lwjgl.BufferUtils;
 
-import cc.antho.ascl8.math.Mathf;
 import cc.antho.clonecraft.client.CloneCraftGame;
 import cc.antho.clonecraft.client.pack.PackLoader;
+import cc.antho.clonecraft.core.Mathf;
 import lombok.Getter;
 
 public class Texture {

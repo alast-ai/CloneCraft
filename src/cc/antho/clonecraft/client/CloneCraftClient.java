@@ -16,33 +16,23 @@ public final class CloneCraftClient {
 
 	}
 
-	public static final void main(String IPAddr, int Port) {
-
-		CloneCraftGame.main();
+	public static final void main(final String address, final int tcp, final int udp, final boolean openDebugger) {
 
 		thread = new Thread(() -> {
 
 			networkClient = new Client();
-			ClassRegister.register(networkClient.getKryo());
+			ClassRegister.register(networkClient);
 			networkClient.start();
-			networkClient.addListener(new ClientListener());
+			networkClient.addListener(new ClientListener(networkClient));
 
 			try {
 
-				networkClient.connect(5000, IPAddr, Port, Port);
+				networkClient.connect(5000, address, tcp, udp);
+				CloneCraftGame.main(openDebugger);
 
 			} catch (final IOException e) {
 
-				if(e.getMessage().startsWith("Unable to connect to")) {
-					
-					if(CloneCraftGame.getInstance() != null) {
-						
-						CloneCraftGame.getInstance().stop();
-						Debugger.getThread().interrupt();
-						
-					}
-					
-				}
+				e.printStackTrace();
 
 			}
 

@@ -12,7 +12,7 @@ import org.lwjgl.glfw.GLFWKeyCallback;
 import org.lwjgl.glfw.GLFWMouseButtonCallback;
 
 import cc.antho.clonecraft.core.event.EventDispatcher;
-import cc.antho.clonecraft.core.event.impl.FramebufferResizeEvent;
+import cc.antho.clonecraft.core.events.FramebufferResizeEvent;
 import lombok.Getter;
 
 public class Input {
@@ -40,7 +40,7 @@ public class Input {
 
 			public final void invoke(final long window, final int width, final int height) {
 
-				EventDispatcher.dispatch(new FramebufferResizeEvent(this, "", width, height));
+				EventDispatcher.dispatch(new FramebufferResizeEvent(this, width, height));
 
 			}
 

@@ -13,6 +13,7 @@ import cc.antho.clonecraft.core.packet.Packet;
 import cc.antho.clonecraft.core.packet.PlayerConnectPacket;
 import cc.antho.clonecraft.core.packet.PlayerDisconnectPacket;
 import cc.antho.clonecraft.core.packet.PlayerMovePacket;
+import cc.antho.clonecraft.core.packet.PlayerSelfConnectPacket;
 
 public final class ClassRegister {
 
@@ -28,6 +29,7 @@ public final class ClassRegister {
 		kryo.register(PlayerConnectPacket.class);
 		kryo.register(PlayerDisconnectPacket.class);
 		kryo.register(PlayerMovePacket.class);
+		kryo.register(PlayerSelfConnectPacket.class);
 
 	}
 

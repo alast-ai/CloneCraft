@@ -1,5 +1,7 @@
 package cc.antho.clonecraft;
 
+import java.awt.BorderLayout;
+import java.awt.Dimension;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
@@ -7,11 +9,12 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 import javax.swing.JButton;
+import javax.swing.JCheckBox;
 import javax.swing.JFrame;
+import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTabbedPane;
 import javax.swing.JTextField;
-import javax.swing.JLabel;
 
 import cc.antho.clonecraft.client.CloneCraftClient;
 import cc.antho.clonecraft.core.ConnectionDefaults;
@@ -21,133 +24,204 @@ import cc.antho.clonecraft.server.CloneCraftServer;
 public final class CloneCraft {
 
 	private CloneCraft() {
-		
+
 	}
 
 	public static final void main(final String[] args) {
 
+		// Log.setLogger(new Logger() {
+		//
+		// public void log(final int level, final String category, final String
+		// message, final Throwable ex) {
+		//
+		// System.out.println("[" + category + "] " + message);
+		//
+		// }
+		//
+		// });
+
 		Util.setLookAndFeel();
 
-		JFrame f = new JFrame("CloneCraft");
-		f.setSize(200, 170);
-		f.setLocation(300, 200);
-		JTabbedPane tabbedPane = new JTabbedPane();
-		
-		GridBagConstraints constraints = new GridBagConstraints();
+		final JTabbedPane tabbedPane = new JTabbedPane();
+
+		final GridBagConstraints constraints = new GridBagConstraints();
 		constraints.anchor = GridBagConstraints.WEST;
 		constraints.insets = new Insets(5, 5, 5, 5);
-		
+
 		{
-			
-			JPanel panel = new JPanel(new GridBagLayout());
+
+			final JPanel panel = new JPanel(new GridBagLayout());
 			tabbedPane.addTab("Client", panel);
-			
+
 			final JLabel lblAddress = new JLabel("Host Address");
 			constraints.gridx = 0;
 			constraints.gridy = 0;
 			panel.add(lblAddress, constraints);
-			
+
 			final JTextField txtAddress = new JTextField(ConnectionDefaults.ADDRESS, 10);
 			constraints.gridx = 1;
 			constraints.gridy = 0;
 			panel.add(txtAddress, constraints);
-			
-			final JLabel lblPort = new JLabel("Host Port");
+
+			final JLabel lblPortTcp = new JLabel("Host Port (TCP)");
 			constraints.gridx = 0;
 			constraints.gridy = 1;
-			panel.add(lblPort, constraints);
-			
-			final JTextField txtPort = new JTextField(ConnectionDefaults.TCP_PORT+"", 10);
+			panel.add(lblPortTcp, constraints);
+
+			final JTextField txtPortTcp = new JTextField(ConnectionDefaults.TCP_PORT + "", 10);
 			constraints.gridx = 1;
 			constraints.gridy = 1;
-			panel.add(txtPort, constraints);
-			
-			final JButton btnConnect = new JButton("Connect");
-			constraints.anchor = GridBagConstraints.EAST;
+			panel.add(txtPortTcp, constraints);
+
+			final JLabel lblPortUdp = new JLabel("Host Port (UDP)");
+			constraints.gridx = 0;
+			constraints.gridy = 2;
+			panel.add(lblPortUdp, constraints);
+
+			final JTextField txtPortUdp = new JTextField(ConnectionDefaults.UDP_PORT + "", 10);
 			constraints.gridx = 1;
 			constraints.gridy = 2;
+			panel.add(txtPortUdp, constraints);
+
+			final JCheckBox chkboxWithDebuffer = new JCheckBox("Launch with debugger");
+			constraints.gridwidth = 2;
+			constraints.gridx = 0;
+			constraints.gridy = 3;
+			constraints.anchor = GridBagConstraints.CENTER;
+			panel.add(chkboxWithDebuffer, constraints);
+			constraints.anchor = GridBagConstraints.WEST;
+			constraints.gridwidth = 1;
+
+			final JButton btnConnect = new JButton("Connect");
+			constraints.anchor = GridBagConstraints.CENTER;
+			constraints.gridwidth = 2;
+			constraints.gridx = 0;
+			constraints.gridy = 4;
 			panel.add(btnConnect, constraints);
-			
+
+			// Reset these vales for next use
+			constraints.anchor = GridBagConstraints.WEST;
+			constraints.gridwidth = 1;
+
 			btnConnect.addActionListener(new ActionListener() {
-				
-				@Override
-				public void actionPerformed(ActionEvent e) {
-					
-					CloneCraftClient.main(txtAddress.getText(), Integer.parseInt(txtPort.getText()));
-					
-				}
-				
-			});
-			
-		}
-		
-		{
-			
-			JPanel panel = new JPanel(new GridBagLayout());
-			tabbedPane.addTab("Server", panel);
-			
-			final JLabel lblPort = new JLabel("Host on port");
-			constraints.gridx = 0;
-			constraints.gridy = 0;
-			panel.add(lblPort, constraints);
-			
-			final JTextField txtPort = new JTextField(ConnectionDefaults.TCP_PORT+"", 10);
-			constraints.gridx = 1;
-			constraints.gridy = 0;
-			panel.add(txtPort, constraints);
-			
-			final JButton serverStart = new JButton("Start");
-			final JButton serverStop = new JButton("Stop");
-			serverStop.setEnabled(false);
-			serverStart.setEnabled(true);
-			
-			constraints.anchor = GridBagConstraints.EAST;
-			constraints.gridx = 0;
-			constraints.gridy = 1;
-			panel.add(serverStart, constraints);
-			
-			serverStart.addActionListener(new ActionListener() {
-				
-				@Override
-				public void actionPerformed(ActionEvent e) {
-					
-					if(CloneCraftServer.instance != null && CloneCraftServer.instance.started) return;
-					if(CloneCraftServer.instance == null) CloneCraftServer.main(Integer.parseInt(txtPort.getText()));
-					
-					serverStop.setEnabled(true);
-					serverStart.setEnabled(false);
-				}
-				
-			});
-			
-			constraints.anchor = GridBagConstraints.EAST;
-			constraints.gridx = 1;
-			constraints.gridy = 1;
-			panel.add(serverStop, constraints);
-			
-			serverStop.addActionListener(new ActionListener() {
-				
-				@Override
-				public void actionPerformed(ActionEvent e) {
-					
-					CloneCraftServer.instance.getServer().stop();
-					serverStop.setEnabled(false);
-					synchronized(CloneCraftServer.instance.getServer().getUpdateThread()) {
-						
-						System.out.println("Server Stopped");
-						CloneCraftServer.instance.started = false;
-						serverStart.setEnabled(true);
-						
+
+				public final void actionPerformed(final ActionEvent e) {
+
+					try {
+
+						final int tcp = Integer.parseInt(txtPortTcp.getText());
+						final int udp = Integer.parseInt(txtPortUdp.getText());
+						CloneCraftClient.main(txtAddress.getText(), tcp, udp, chkboxWithDebuffer.isSelected());
+
+					} catch (final NumberFormatException e2) {
+
 					}
-	
+
 				}
-				
+
 			});
+
 		}
 
-		f.add(tabbedPane);
-		f.setVisible(true);
-		f.setResizable(false);
+		{
+
+			final JPanel panel = new JPanel(new GridBagLayout());
+			tabbedPane.addTab("Server", panel);
+
+			final JLabel lblPortTcp = new JLabel("Port (TCP)");
+			constraints.gridx = 0;
+			constraints.gridy = 0;
+			panel.add(lblPortTcp, constraints);
+
+			final JTextField txtPortTcp = new JTextField(ConnectionDefaults.TCP_PORT + "", 10);
+			constraints.gridx = 1;
+			constraints.gridy = 0;
+			panel.add(txtPortTcp, constraints);
+
+			final JLabel lblPortUdp = new JLabel("Port (UDP)");
+			constraints.gridx = 0;
+			constraints.gridy = 1;
+			panel.add(lblPortUdp, constraints);
+
+			final JTextField txtPortUdp = new JTextField(ConnectionDefaults.UDP_PORT + "", 10);
+			constraints.gridx = 1;
+			constraints.gridy = 1;
+			panel.add(txtPortUdp, constraints);
+
+			final JLabel lblPlayerPkt = new JLabel("Player packet frequency");
+			constraints.gridx = 0;
+			constraints.gridy = 2;
+			panel.add(lblPlayerPkt, constraints);
+
+			final JTextField txtPlayerPkt = new JTextField(ConnectionDefaults.PLAYER_PACKET_FREQUENCY + "", 10);
+			constraints.gridx = 1;
+			constraints.gridy = 2;
+			panel.add(txtPlayerPkt, constraints);
+
+			constraints.anchor = GridBagConstraints.CENTER;
+
+			final JButton buttonStart = new JButton("Start");
+			buttonStart.setEnabled(true);
+			constraints.gridx = 0;
+			constraints.gridy = 3;
+			panel.add(buttonStart, constraints);
+
+			final JButton buttonStop = new JButton("Stop");
+			buttonStop.setEnabled(false);
+			constraints.gridx = 1;
+			constraints.gridy = 3;
+			panel.add(buttonStop, constraints);
+
+			buttonStart.addActionListener(new ActionListener() {
+
+				public final void actionPerformed(final ActionEvent e) {
+
+					try {
+
+						final int tcp = Integer.parseInt(txtPortTcp.getText());
+						final int udp = Integer.parseInt(txtPortUdp.getText());
+						final float ppf = Float.parseFloat(txtPlayerPkt.getText());
+
+						CloneCraftServer.main(tcp, udp, ppf);
+
+						buttonStop.setEnabled(true);
+						buttonStart.setEnabled(false);
+
+					} catch (final NumberFormatException e2) {
+
+					}
+
+				}
+
+			});
+
+			buttonStop.addActionListener(new ActionListener() {
+
+				public final void actionPerformed(final ActionEvent e) {
+
+					CloneCraftServer.thread.interrupt();
+
+					buttonStop.setEnabled(false);
+					buttonStart.setEnabled(true);
+
+				}
+
+			});
+
+		}
+
+		{
+
+			final JFrame f = new JFrame("CloneCraft");
+			f.setMinimumSize(new Dimension(300, 250));
+			f.setPreferredSize(new Dimension(640, 480));
+			f.setLocationRelativeTo(null);
+			f.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+			f.setLayout(new BorderLayout());
+			f.add(tabbedPane, BorderLayout.CENTER);
+			f.setVisible(true);
+
+		}
 
 	}
 

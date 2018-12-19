@@ -9,7 +9,7 @@ import org.lwjgl.system.Callback;
 import cc.antho.clonecraft.core.event.Event;
 import cc.antho.clonecraft.core.event.EventDispatcher;
 import cc.antho.clonecraft.core.event.EventListener;
-import cc.antho.clonecraft.core.event.impl.FramebufferResizeEvent;
+import cc.antho.clonecraft.core.events.FramebufferResizeEvent;
 import lombok.Getter;
 
 public class Window implements EventListener {
@@ -52,7 +52,7 @@ public class Window implements EventListener {
 
 	public void trigger() {
 
-		EventDispatcher.dispatch(new FramebufferResizeEvent(this, null, width, height));
+		EventDispatcher.dispatch(new FramebufferResizeEvent(this, width, height));
 
 	}
 

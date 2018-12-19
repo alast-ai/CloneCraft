@@ -7,6 +7,5 @@ import lombok.Getter;
 public class Event {
 
 	@Getter private final Object sender;
-	@Getter private final String message;
 
 }

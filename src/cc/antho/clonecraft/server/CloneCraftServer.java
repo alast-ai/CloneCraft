@@ -5,7 +5,6 @@ import java.io.IOException;
 import com.esotericsoftware.kryonet.Server;
 
 import cc.antho.clonecraft.core.ClassRegister;
-import cc.antho.clonecraft.core.ConnectionDefaults;
 import lombok.Getter;
 
 public final class CloneCraftServer {
@@ -14,23 +13,23 @@ public final class CloneCraftServer {
 	public static CloneCraftServer instance;
 
 	@Getter private Server server;
-	@Getter public Boolean started = false;
+
+	private final Object lock = new Object();
 
 	private CloneCraftServer() {
 
 	}
 
-	private void start(final int Port) {
+	private void start(final int tcp, final int udp, final float ppf) {
 
 		server = new Server();
 		ClassRegister.register(server);
-		server.addListener(new ServerListener(server));
+		server.addListener(new ServerListener(server, ppf));
 		server.start();
 
 		try {
 
-			server.bind(Port, Port);
-			started = true;
+			server.bind(tcp, udp);
 
 		} catch (final IOException e) {
 
@@ -38,14 +37,32 @@ public final class CloneCraftServer {
 
 		}
 
+		try {
+
+			synchronized (lock) {
+
+				lock.wait();
+
+			}
+
+		} catch (final InterruptedException e) {
+
+			// We expect this exception to be thrown
+
+		}
+
+		server.stop();
+
 	}
 
-	public static final void main(final int Port) {
+	public static final void main(final int tcp, final int udp, final float ppf) {
 
 		thread = new Thread(() -> {
 
 			instance = new CloneCraftServer();
-			instance.start(Port);
+			instance.start(tcp, udp, ppf);
+			// This only occurs after the server has stopped
+			instance = null;
 
 		}, "CloneCraftServer");
 
