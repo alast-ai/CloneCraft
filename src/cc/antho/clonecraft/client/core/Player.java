@@ -230,10 +230,10 @@ public class Player {
 
 		}
 
-		if (input.isKeyPressed(GLFW_KEY_LEFT)) if (blockIndex <= 0) blockIndex = BlockType.BLOCKS.length - 1;
+		if (input.isKeyPressed(GLFW_KEY_LEFT)) if (blockIndex <= 0) blockIndex = BlockType.getBlocks().size() - 1;
 		else blockIndex--;
 
-		if (input.isKeyPressed(GLFW_KEY_RIGHT)) if (blockIndex >= BlockType.BLOCKS.length - 1) blockIndex = 0;
+		if (input.isKeyPressed(GLFW_KEY_RIGHT)) if (blockIndex >= BlockType.getBlocks().size() - 1) blockIndex = 0;
 		else blockIndex++;
 
 		if (input.isButtonDown(GLFW_MOUSE_BUTTON_1) && canBreak) {
@@ -284,7 +284,7 @@ public class Player {
 
 				if (type != null) {
 
-					final BlockType currentBlock = BlockType.BLOCKS[blockIndex];
+					final BlockType currentBlock = BlockType.getBlocks().get(blockIndex);
 
 					world.setBlock(lp.x, lp.y, lp.z, currentBlock);
 					EventDispatcher.dispatch(new NetworkPacketEvent(this, new BlockUpdatePacket(Mathf.floor(lp.x), Mathf.floor(lp.y), Mathf.floor(lp.z), currentBlock), false, true));

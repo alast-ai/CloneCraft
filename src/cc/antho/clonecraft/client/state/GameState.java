@@ -41,8 +41,8 @@ public class GameState extends State {
 		ChunkThread.lock.lock();
 		glfwMakeContextCurrent(CloneCraftGame.getInstance().getWindow().getHandle());
 
-		freeBlock = new FreeBlock(BlockType.SAND);
-		curBlock = new FreeBlock(BlockType.SAND);
+		freeBlock = new FreeBlock(BlockType.getBlock("core.sand"));
+		curBlock = new FreeBlock(BlockType.getBlock("core.sand"));
 
 		world = new World("NFzttn4UxfQD8aOhYyeNDXs3FnXHEioT");
 
@@ -138,7 +138,7 @@ public class GameState extends State {
 		world.render();
 
 		curBlock.shutdown();
-		curBlock = new FreeBlock(BlockType.BLOCKS[player.blockIndex]);
+		curBlock = new FreeBlock(BlockType.getBlocks().get(player.blockIndex));
 
 		final float offsetX = .3f;
 		final float offsetY = -.6f;
