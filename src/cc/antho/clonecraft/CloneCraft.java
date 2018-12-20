@@ -20,16 +20,6 @@ public final class CloneCraft {
 
 	public static final void main(final String[] args) {
 
-//		Log.setLogger(new Logger() {
-//			 
-//			public void log(final int level, final String category, final String message, final Throwable ex) {
-//				
-//				System.out.println("[" + category + "] " + message);
-//			
-//			}
-//		
-//		});
-
 		Util.setLookAndFeel();
 		
 		ccFrame = new CloneCraftFrame("CloneCraft");

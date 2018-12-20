@@ -28,6 +28,7 @@ public class Input {
 	private final Window window;
 
 	private final Set<Integer> keys = new HashSet<>();
+	private final Set<Integer> keysLast = new HashSet<>();
 	private final Set<Integer> buttons = new HashSet<>();
 
 	public Input(final Window window) {
@@ -50,8 +51,10 @@ public class Input {
 
 			public final void invoke(final long window, final int key, final int scancode, final int action, final int mods) {
 
-				if (action == GLFW_PRESS && !keys.contains(key)) keys.add(key);
-				else if (action == GLFW_RELEASE && keys.contains(key)) keys.remove(key);
+				if (action == GLFW_PRESS && !keys.contains(key)) {
+					keys.add(key);
+					keysLast.add(key);
+				} else if (action == GLFW_RELEASE && keys.contains(key)) keys.remove(key);
 
 			}
 
@@ -80,6 +83,18 @@ public class Input {
 
 	}
 
+	public void clearLastKeys() {
+
+		keysLast.clear();
+
+	}
+
+	public boolean isKeyPressed(final int key) {
+
+		return keysLast.contains(key);
+
+	}
+
 	public boolean isKeyDown(final int key) {
 
 		return keys.contains(key);
@@ -94,6 +109,7 @@ public class Input {
 
 	public void update() {
 
+		clearLastKeys();
 		lastPos.set(currentPos);
 		glfwPollEvents();
 		differecePos.set(currentPos).sub(lastPos);

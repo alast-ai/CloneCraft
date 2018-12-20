@@ -39,8 +39,6 @@ public class Player {
 
 	private double informTimer = 0d;
 
-	public BlockType[] blockArray = new BlockType[] { BlockType.GRASS, BlockType.DIRT, BlockType.STONE, BlockType.LOG, BlockType.LEAVES, BlockType.BRICKS, BlockType.BEDROCK, BlockType.STONEBRICKS, BlockType.COAL_ORE, BlockType.COBBLESTONE,
-			BlockType.SAND, BlockType.TALLGRASS, BlockType.PINK_WOOL };
 	public int blockIndex = 0;
 
 	public void tick(final World world) {
@@ -97,7 +95,12 @@ public class Player {
 			final int blockZ1 = Mathf.floor(position.z + .2f);
 			final int blockY = Mathf.floor(position.y);
 
-			if (world.getBlock(blockX, blockY, blockZ0) == null && world.getBlock(blockX, blockY, blockZ1) == null) position.x = nextX;
+			final BlockType b0 = world.getBlock(blockX, blockY, blockZ0);
+			final BlockType b1 = world.getBlock(blockX, blockY, blockZ1);
+			final boolean b0Collide = b0 == null || b0.isUseXModel();
+			final boolean b1Collide = b1 == null || b1.isUseXModel();
+
+			if (b0Collide && b1Collide) position.x = nextX;
 
 		} else if (velocity.x > 0) {
 
@@ -108,7 +111,12 @@ public class Player {
 			final int blockZ1 = Mathf.floor(position.z + .2f);
 			final int blockY = Mathf.floor(position.y);
 
-			if (world.getBlock(blockX, blockY, blockZ0) == null && world.getBlock(blockX, blockY, blockZ1) == null) position.x = nextX;
+			final BlockType b0 = world.getBlock(blockX, blockY, blockZ0);
+			final BlockType b1 = world.getBlock(blockX, blockY, blockZ1);
+			final boolean b0Collide = b0 == null || b0.isUseXModel();
+			final boolean b1Collide = b1 == null || b1.isUseXModel();
+
+			if (b0Collide && b1Collide) position.x = nextX;
 
 		}
 
@@ -121,7 +129,12 @@ public class Player {
 			final int blockZ = Mathf.floor(nextZ - .2f);
 			final int blockY = Mathf.floor(position.y);
 
-			if (world.getBlock(blockX0, blockY, blockZ) == null && world.getBlock(blockX1, blockY, blockZ) == null) position.z = nextZ;
+			final BlockType b0 = world.getBlock(blockX0, blockY, blockZ);
+			final BlockType b1 = world.getBlock(blockX1, blockY, blockZ);
+			final boolean b0Collide = b0 == null || b0.isUseXModel();
+			final boolean b1Collide = b1 == null || b1.isUseXModel();
+
+			if (b0Collide && b1Collide) position.z = nextZ;
 
 		} else if (velocity.z > 0) {
 
@@ -132,7 +145,12 @@ public class Player {
 			final int blockZ = Mathf.floor(nextZ + .2f);
 			final int blockY = Mathf.floor(position.y);
 
-			if (world.getBlock(blockX0, blockY, blockZ) == null && world.getBlock(blockX1, blockY, blockZ) == null) position.z = nextZ;
+			final BlockType b0 = world.getBlock(blockX0, blockY, blockZ);
+			final BlockType b1 = world.getBlock(blockX1, blockY, blockZ);
+			final boolean b0Collide = b0 == null || b0.isUseXModel();
+			final boolean b1Collide = b1 == null || b1.isUseXModel();
+
+			if (b0Collide && b1Collide) position.z = nextZ;
 
 		}
 
@@ -147,8 +165,17 @@ public class Player {
 			final int blockX1 = Mathf.floor(position.x + .2f);
 			final int blockZ1 = Mathf.floor(position.z + .2f);
 
-			if (world.getBlock(blockX0, blockY, blockZ0) == null && world.getBlock(blockX1, blockY, blockZ1) == null && world.getBlock(blockX0, blockY, blockZ1) == null && world.getBlock(blockX1, blockY, blockZ0) == null)
-				position.y = nextY;
+			final BlockType b0 = world.getBlock(blockX0, blockY, blockZ0);
+			final BlockType b1 = world.getBlock(blockX1, blockY, blockZ1);
+			final BlockType b2 = world.getBlock(blockX0, blockY, blockZ1);
+			final BlockType b3 = world.getBlock(blockX1, blockY, blockZ0);
+
+			final boolean b0Collide = b0 == null || b0.isUseXModel();
+			final boolean b1Collide = b1 == null || b1.isUseXModel();
+			final boolean b2Collide = b2 == null || b2.isUseXModel();
+			final boolean b3Collide = b3 == null || b3.isUseXModel();
+
+			if (b0Collide && b1Collide && b2Collide && b3Collide) position.y = nextY;
 			else {
 				velocity.y = 0;
 				canJump = true;
@@ -165,8 +192,17 @@ public class Player {
 			final int blockZ0 = Mathf.floor(position.z - .2f);
 			final int blockZ1 = Mathf.floor(position.z + .2f);
 
-			if (world.getBlock(blockX0, blockY, blockZ0) == null && world.getBlock(blockX1, blockY, blockZ1) == null && world.getBlock(blockX0, blockY, blockZ1) == null && world.getBlock(blockX1, blockY, blockZ0) == null)
-				position.y = nextY;
+			final BlockType b0 = world.getBlock(blockX0, blockY, blockZ0);
+			final BlockType b1 = world.getBlock(blockX1, blockY, blockZ1);
+			final BlockType b2 = world.getBlock(blockX0, blockY, blockZ1);
+			final BlockType b3 = world.getBlock(blockX1, blockY, blockZ0);
+
+			final boolean b0Collide = b0 == null || b0.isUseXModel();
+			final boolean b1Collide = b1 == null || b1.isUseXModel();
+			final boolean b2Collide = b2 == null || b2.isUseXModel();
+			final boolean b3Collide = b3 == null || b3.isUseXModel();
+
+			if (b0Collide && b1Collide && b2Collide && b3Collide) position.y = nextY;
 			else velocity.y = 0f;
 
 		}
@@ -194,10 +230,10 @@ public class Player {
 
 		}
 
-		if (input.isKeyDown(GLFW_KEY_LEFT)) if (blockIndex <= 0) blockIndex = blockArray.length - 1;
+		if (input.isKeyPressed(GLFW_KEY_LEFT)) if (blockIndex <= 0) blockIndex = BlockType.getBlocks().size() - 1;
 		else blockIndex--;
 
-		if (input.isKeyDown(GLFW_KEY_RIGHT)) if (blockIndex >= blockArray.length - 1) blockIndex = 0;
+		if (input.isKeyPressed(GLFW_KEY_RIGHT)) if (blockIndex >= BlockType.getBlocks().size() - 1) blockIndex = 0;
 		else blockIndex++;
 
 		if (input.isButtonDown(GLFW_MOUSE_BUTTON_1) && canBreak) {
@@ -248,8 +284,10 @@ public class Player {
 
 				if (type != null) {
 
-					world.setBlock(lp.x, lp.y, lp.z, blockArray[blockIndex]);
-					EventDispatcher.dispatch(new NetworkPacketEvent(this, new BlockUpdatePacket(Mathf.floor(p.x), Mathf.floor(p.y), Mathf.floor(p.z), blockArray[blockIndex]), false, true));
+					final BlockType currentBlock = BlockType.getBlocks().get(blockIndex);
+
+					world.setBlock(lp.x, lp.y, lp.z, currentBlock);
+					EventDispatcher.dispatch(new NetworkPacketEvent(this, new BlockUpdatePacket(Mathf.floor(lp.x), Mathf.floor(lp.y), Mathf.floor(lp.z), currentBlock), false, true));
 					world.getChunkFromWorldCoord(lp.x, lp.z).update();
 					break;
 

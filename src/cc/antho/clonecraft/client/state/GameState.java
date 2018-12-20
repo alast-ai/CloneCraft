@@ -1,5 +1,6 @@
-package cc.antho.clonecraft.client;
+package cc.antho.clonecraft.client.state;
 
+import static org.lwjgl.glfw.GLFW.*;
 import static org.lwjgl.opengl.GL11.*;
 
 import java.io.IOException;
@@ -7,6 +8,10 @@ import java.io.IOException;
 import org.joml.Matrix4f;
 import org.joml.Vector3f;
 
+import cc.antho.clonecraft.client.ClientListener;
+import cc.antho.clonecraft.client.CloneCraftGame;
+import cc.antho.clonecraft.client.Config;
+import cc.antho.clonecraft.client.PlayerStore;
 import cc.antho.clonecraft.client.core.Player;
 import cc.antho.clonecraft.client.core.Shader;
 import cc.antho.clonecraft.client.core.Texture;
@@ -28,9 +33,16 @@ public class GameState extends State {
 	private Shader chunkShader, uiShader;
 	private Texture atlas, crosshair;
 
+	private FreeBlock freeBlock;
+	private FreeBlock curBlock;
+
 	public void init() {
 
-		ChunkThread.startThreads();
+		ChunkThread.lock.lock();
+		glfwMakeContextCurrent(CloneCraftGame.getInstance().getWindow().getHandle());
+
+		freeBlock = new FreeBlock(BlockType.getBlock("core.sand"));
+		curBlock = new FreeBlock(BlockType.getBlock("core.sand"));
 
 		world = new World("NFzttn4UxfQD8aOhYyeNDXs3FnXHEioT");
 
@@ -44,6 +56,11 @@ public class GameState extends State {
 		glCullFace(GL_BACK);
 
 		CloneCraftGame.getInstance().getWindow().trigger();
+
+		glfwMakeContextCurrent(0);
+		ChunkThread.lock.unlock();
+
+		ChunkThread.startThreads();
 
 	}
 
@@ -66,13 +83,13 @@ public class GameState extends State {
 
 		try {
 
-			String vertexShader = Shader.loadShaderString("/chunk_vertex.glsl");
-			String fragmentShader = Shader.loadShaderString("/chunk_fragment.glsl");
+			String vertexShader = Shader.loadShaderString("/shaders/chunk_vertex.glsl");
+			String fragmentShader = Shader.loadShaderString("/shaders/chunk_fragment.glsl");
 
 			chunkShader = new Shader(vertexShader, fragmentShader);
 
-			vertexShader = Shader.loadShaderString("/ui_vertex.glsl");
-			fragmentShader = Shader.loadShaderString("/ui_fragment.glsl");
+			vertexShader = Shader.loadShaderString("/shaders/ui_vertex.glsl");
+			fragmentShader = Shader.loadShaderString("/shaders/ui_fragment.glsl");
 
 			uiShader = new Shader(vertexShader, fragmentShader);
 
@@ -96,9 +113,6 @@ public class GameState extends State {
 		world.addNewChunks((int) ChunkThread.playerPostionChunk.x, (int) ChunkThread.playerPostionChunk.y);
 
 	}
-
-	private final FreeBlock freeBlock = new FreeBlock(BlockType.SAND);
-	private FreeBlock curBlock = new FreeBlock(player.blockArray[player.blockIndex]);
 
 	public void render() {
 
@@ -124,12 +138,23 @@ public class GameState extends State {
 		world.render();
 
 		curBlock.shutdown();
-		curBlock = new FreeBlock(player.blockArray[player.blockIndex]);
+		curBlock = new FreeBlock(BlockType.getBlocks().get(player.blockIndex));
 
-		// TODO: Fix this when matrix thing is possible (looking at you, Antho!)
-		m.translation(player.getPosition());
-		m.translate(new Vector3f(1, 1, 1));
-		m.scale(.5f);
+		final float offsetX = .3f;
+		final float offsetY = -.6f;
+		final float offsetZ = .7f;
+
+		final Vector3f handPosition = new Vector3f();
+		handPosition.add(new Vector3f(player.camera.forward).mul(offsetZ));
+		handPosition.add(new Vector3f(player.camera.right).mul(offsetX));
+		handPosition.add(new Vector3f(player.camera.up).mul(offsetY));
+		handPosition.add(player.camera.position);
+
+		m.translation(handPosition);
+		m.scale(.4f);
+		m.rotate(Mathf.toRadians(-player.camera.rotation.z), 0, 0, 1);
+		m.rotate(Mathf.toRadians(-player.camera.rotation.y), 0, 1, 0);
+		m.rotate(Mathf.toRadians(-player.camera.rotation.x), 1, 0, 0);
 		chunkShader.loadUniformMatrix4f("u_model", m);
 		curBlock.render();
 
@@ -139,6 +164,7 @@ public class GameState extends State {
 
 				m.translation(store.position);
 				chunkShader.loadUniformMatrix4f("u_model", m);
+
 				freeBlock.render();
 
 			}

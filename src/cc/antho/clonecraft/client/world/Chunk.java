@@ -33,32 +33,7 @@ public class Chunk {
 
 		if (status.generated) return;
 
-		for (int z = 0; z < ChunkSection.SIZE; z++)
-			for (int x = 0; x < ChunkSection.SIZE; x++) {
-
-				final int gx = x + getX() * ChunkSection.SIZE;
-				final int gz = z + getZ() * ChunkSection.SIZE;
-
-				final int height = world.getHeightAtWorldPosition(gx, gz);
-
-				setBlock(x, 0, z, BlockType.BEDROCK);
-
-				for (int y = 1; y < height - 4; y++)
-					setBlock(x, y, z, BlockType.STONE);
-
-				for (int y = height - 4; y < height; y++)
-					setBlock(x, y, z, BlockType.DIRT);
-
-				if (world.getTreeNoise().eval(gx, gz) > .7f) {
-
-					setBlock(x, height - 1, z, BlockType.DIRT);
-
-					for (int i = 0; i < 4; i++)
-						setBlock(x, height + i, z, BlockType.LOG);
-
-				} else setBlock(x, height - 1, z, BlockType.GRASS);
-
-			}
+		ChunkGenerator.generate(this, world);
 
 		status.generated = true;
 

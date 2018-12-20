@@ -56,59 +56,87 @@ public class ChunkMesh {
 							final FloatVertexArray blockData = new FloatVertexArray();
 							final FloatVertexArray blockDataTexs = new FloatVertexArray();
 
-							if (chunk.getWorld().getBlock(wx - 1, wy, wz) == null) {
-								blockData.append(BlockFace.LEFT.getPositions());
+							final BlockType left = chunk.getWorld().getBlock(wx - 1, wy, wz);
+							final BlockType right = chunk.getWorld().getBlock(wx + 1, wy, wz);
+							final BlockType front = chunk.getWorld().getBlock(wx, wy, wz + 1);
+							final BlockType back = chunk.getWorld().getBlock(wx, wy, wz - 1);
+							final BlockType top = chunk.getWorld().getBlock(wx, wy + 1, wz);
+							final BlockType bottom = chunk.getWorld().getBlock(wx, wy - 1, wz);
+
+							final boolean includeLeft = left == null || left.isTransparent();
+							final boolean includeRight = right == null || right.isTransparent();
+							final boolean includeFront = front == null || front.isTransparent();
+							final boolean includeBack = back == null || back.isTransparent();
+							final boolean includeTop = top == null || top.isTransparent();
+							final boolean includeBottom = bottom == null || bottom.isTransparent();
+
+							if (block.isUseXModel()) {
+
+								blockData.append(BlockFace.X.getPositions());
 
 								coordTmp.clear();
-								coordTmp.append(BlockFace.LEFT.getTexCoords());
+								coordTmp.append(BlockFace.X.getTexCoords());
 								coordTmp.add(block.getLeft());
 								coordTmp.mul(PackLoader.WIDTH_SCALE, PackLoader.HEIGHT_SCALE);
 								blockDataTexs.append(coordTmp);
-							}
-							if (chunk.getWorld().getBlock(wx + 1, wy, wz) == null) {
-								blockData.append(BlockFace.RIGHT.getPositions());
 
-								coordTmp.clear();
-								coordTmp.append(BlockFace.RIGHT.getTexCoords());
-								coordTmp.add(block.getRight());
-								coordTmp.mul(PackLoader.WIDTH_SCALE, PackLoader.HEIGHT_SCALE);
-								blockDataTexs.append(coordTmp);
-							}
-							if (chunk.getWorld().getBlock(wx, wy, wz + 1) == null) {
-								blockData.append(BlockFace.FRONT.getPositions());
+							} else {
 
-								coordTmp.clear();
-								coordTmp.append(BlockFace.FRONT.getTexCoords());
-								coordTmp.add(block.getFront());
-								coordTmp.mul(PackLoader.WIDTH_SCALE, PackLoader.HEIGHT_SCALE);
-								blockDataTexs.append(coordTmp);
-							}
-							if (chunk.getWorld().getBlock(wx, wy, wz - 1) == null) {
-								blockData.append(BlockFace.BACK.getPositions());
+								if (includeLeft) {
+									blockData.append(BlockFace.LEFT.getPositions());
 
-								coordTmp.clear();
-								coordTmp.append(BlockFace.BACK.getTexCoords());
-								coordTmp.add(block.getBack());
-								coordTmp.mul(PackLoader.WIDTH_SCALE, PackLoader.HEIGHT_SCALE);
-								blockDataTexs.append(coordTmp);
-							}
-							if (chunk.getWorld().getBlock(wx, wy + 1, wz) == null) {
-								blockData.append(BlockFace.TOP.getPositions());
+									coordTmp.clear();
+									coordTmp.append(BlockFace.LEFT.getTexCoords());
+									coordTmp.add(block.getLeft());
+									coordTmp.mul(PackLoader.WIDTH_SCALE, PackLoader.HEIGHT_SCALE);
+									blockDataTexs.append(coordTmp);
+								}
+								if (includeRight) {
+									blockData.append(BlockFace.RIGHT.getPositions());
 
-								coordTmp.clear();
-								coordTmp.append(BlockFace.TOP.getTexCoords());
-								coordTmp.add(block.getTop());
-								coordTmp.mul(PackLoader.WIDTH_SCALE, PackLoader.HEIGHT_SCALE);
-								blockDataTexs.append(coordTmp);
-							}
-							if (chunk.getWorld().getBlock(wx, wy - 1, wz) == null) {
-								blockData.append(BlockFace.BOTTOM.getPositions());
+									coordTmp.clear();
+									coordTmp.append(BlockFace.RIGHT.getTexCoords());
+									coordTmp.add(block.getRight());
+									coordTmp.mul(PackLoader.WIDTH_SCALE, PackLoader.HEIGHT_SCALE);
+									blockDataTexs.append(coordTmp);
+								}
+								if (includeFront) {
+									blockData.append(BlockFace.FRONT.getPositions());
 
-								coordTmp.clear();
-								coordTmp.append(BlockFace.BOTTOM.getTexCoords());
-								coordTmp.add(block.getBottom());
-								coordTmp.mul(PackLoader.WIDTH_SCALE, PackLoader.HEIGHT_SCALE);
-								blockDataTexs.append(coordTmp);
+									coordTmp.clear();
+									coordTmp.append(BlockFace.FRONT.getTexCoords());
+									coordTmp.add(block.getFront());
+									coordTmp.mul(PackLoader.WIDTH_SCALE, PackLoader.HEIGHT_SCALE);
+									blockDataTexs.append(coordTmp);
+								}
+								if (includeBack) {
+									blockData.append(BlockFace.BACK.getPositions());
+
+									coordTmp.clear();
+									coordTmp.append(BlockFace.BACK.getTexCoords());
+									coordTmp.add(block.getBack());
+									coordTmp.mul(PackLoader.WIDTH_SCALE, PackLoader.HEIGHT_SCALE);
+									blockDataTexs.append(coordTmp);
+								}
+								if (includeTop) {
+									blockData.append(BlockFace.TOP.getPositions());
+
+									coordTmp.clear();
+									coordTmp.append(BlockFace.TOP.getTexCoords());
+									coordTmp.add(block.getTop());
+									coordTmp.mul(PackLoader.WIDTH_SCALE, PackLoader.HEIGHT_SCALE);
+									blockDataTexs.append(coordTmp);
+								}
+								if (includeBottom) {
+									blockData.append(BlockFace.BOTTOM.getPositions());
+
+									coordTmp.clear();
+									coordTmp.append(BlockFace.BOTTOM.getTexCoords());
+									coordTmp.add(block.getBottom());
+									coordTmp.mul(PackLoader.WIDTH_SCALE, PackLoader.HEIGHT_SCALE);
+									blockDataTexs.append(coordTmp);
+								}
+
 							}
 
 							chunkCoords.append(blockDataTexs);

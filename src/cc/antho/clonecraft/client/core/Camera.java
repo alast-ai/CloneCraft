@@ -22,6 +22,8 @@ public class Camera implements EventListener {
 	public final Vector3f rotation = new Vector3f();
 
 	public final Vector3f forward = new Vector3f();
+	public final Vector3f up = new Vector3f();
+	public final Vector3f right = new Vector3f();
 
 	public Camera() {
 
@@ -43,11 +45,28 @@ public class Camera implements EventListener {
 		final Matrix4f invView = new Matrix4f();
 		view.invert(invView);
 
-		final Vector4f v = new Vector4f(0f, 0f, -1f, 0f);
-		v.mul(invView);
+		{
 
-		forward.set(v.x, v.y, v.z);
-		forward.normalize();
+			final Vector4f v = new Vector4f(0f, 0f, -1f, 0f);
+			v.mul(invView);
+
+			forward.set(v.x, v.y, v.z);
+			forward.normalize();
+
+		}
+
+		{
+
+			final Vector4f v = new Vector4f(0f, 1f, 0f, 0f);
+			v.mul(invView);
+
+			up.set(v.x, v.y, v.z);
+			up.normalize();
+
+		}
+
+		forward.cross(up, right);
+		right.normalize();
 
 	}
 
