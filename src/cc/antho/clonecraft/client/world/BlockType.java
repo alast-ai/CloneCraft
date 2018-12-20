@@ -56,16 +56,24 @@ public class BlockType implements Serializable {
 	public static final BlockType PINK_WOOL = new BlockType(
 			new Vector2i(3, 3), true, false);
 
-	public static final BlockType[] BLOCKS = new BlockType[] { GRASS, DIRT, STONE, LOG, LEAVES, BRICKS, BEDROCK, STONEBRICKS, COAL_ORE, COBBLESTONE, SAND, /*
-																																							 * TALLGRASS,
-																																							 */ PINK_WOOL };
+	public static final BlockType PLANKS = new BlockType(
+			new Vector2i(4, 0), true, false);
+
+	static {
+
+		TALLGRASS.useXModel = true;
+
+	}
+
+	public static final BlockType[] BLOCKS = new BlockType[] { GRASS, DIRT, STONE, LOG, LEAVES, BRICKS, BEDROCK, STONEBRICKS, COAL_ORE, COBBLESTONE, SAND, TALLGRASS, PINK_WOOL, PLANKS };
 
 	@Getter private final Vector2i left, right, front, back, top, bottom;
 	@Getter private final boolean breakable, transparent;
+	@Getter private boolean useXModel = false;
 
 	private BlockType(final Vector2i side, final Vector2i top, final Vector2i bottom, final boolean breakable, final boolean transparent) {
 
-		this(side, side, side, side, top, bottom, breakable, transparent);
+		this(side, side, side, side, top, bottom, breakable, transparent, false);
 
 	}
 

@@ -8,7 +8,7 @@ import cc.antho.clonecraft.client.CloneCraftGame;
 
 public class PackLoader {
 
-	public static final int WIDTH = 4;
+	public static final int WIDTH = 5;
 	public static final int HEIGHT = 4;
 	public static final float WIDTH_SCALE = 1f / WIDTH;
 	public static final float HEIGHT_SCALE = 1f / HEIGHT;

@@ -26,43 +26,57 @@ public class FreeBlock {
 		final FloatVertexArray chunkPositions = new FloatVertexArray();
 		final FloatVertexArray chunkCoords = new FloatVertexArray();
 
-		chunkPositions.append(BlockFace.LEFT.getPositions());
-		chunkPositions.append(BlockFace.RIGHT.getPositions());
-		chunkPositions.append(BlockFace.FRONT.getPositions());
-		chunkPositions.append(BlockFace.BACK.getPositions());
-		chunkPositions.append(BlockFace.TOP.getPositions());
-		chunkPositions.append(BlockFace.BOTTOM.getPositions());
+		if (type.isUseXModel()) {
 
-		coordTmp.clear();
-		coordTmp.append(BlockFace.LEFT.getTexCoords());
-		coordTmp.add(type.getLeft());
-		coordTmp.mul(PackLoader.WIDTH_SCALE, PackLoader.HEIGHT_SCALE);
-		chunkCoords.append(coordTmp);
-		coordTmp.clear();
-		coordTmp.append(BlockFace.RIGHT.getTexCoords());
-		coordTmp.add(type.getRight());
-		coordTmp.mul(PackLoader.WIDTH_SCALE, PackLoader.HEIGHT_SCALE);
-		chunkCoords.append(coordTmp);
-		coordTmp.clear();
-		coordTmp.append(BlockFace.FRONT.getTexCoords());
-		coordTmp.add(type.getFront());
-		coordTmp.mul(PackLoader.WIDTH_SCALE, PackLoader.HEIGHT_SCALE);
-		chunkCoords.append(coordTmp);
-		coordTmp.clear();
-		coordTmp.append(BlockFace.BACK.getTexCoords());
-		coordTmp.add(type.getBack());
-		coordTmp.mul(PackLoader.WIDTH_SCALE, PackLoader.HEIGHT_SCALE);
-		chunkCoords.append(coordTmp);
-		coordTmp.clear();
-		coordTmp.append(BlockFace.TOP.getTexCoords());
-		coordTmp.add(type.getTop());
-		coordTmp.mul(PackLoader.WIDTH_SCALE, PackLoader.HEIGHT_SCALE);
-		chunkCoords.append(coordTmp);
-		coordTmp.clear();
-		coordTmp.append(BlockFace.BOTTOM.getTexCoords());
-		coordTmp.add(type.getBottom());
-		coordTmp.mul(PackLoader.WIDTH_SCALE, PackLoader.HEIGHT_SCALE);
-		chunkCoords.append(coordTmp);
+			chunkPositions.append(BlockFace.X.getPositions());
+
+			coordTmp.clear();
+			coordTmp.append(BlockFace.X.getTexCoords());
+			coordTmp.add(type.getFront());
+			coordTmp.mul(PackLoader.WIDTH_SCALE, PackLoader.HEIGHT_SCALE);
+			chunkCoords.append(coordTmp);
+
+		} else {
+
+			chunkPositions.append(BlockFace.LEFT.getPositions());
+			chunkPositions.append(BlockFace.RIGHT.getPositions());
+			chunkPositions.append(BlockFace.FRONT.getPositions());
+			chunkPositions.append(BlockFace.BACK.getPositions());
+			chunkPositions.append(BlockFace.TOP.getPositions());
+			chunkPositions.append(BlockFace.BOTTOM.getPositions());
+
+			coordTmp.clear();
+			coordTmp.append(BlockFace.LEFT.getTexCoords());
+			coordTmp.add(type.getLeft());
+			coordTmp.mul(PackLoader.WIDTH_SCALE, PackLoader.HEIGHT_SCALE);
+			chunkCoords.append(coordTmp);
+			coordTmp.clear();
+			coordTmp.append(BlockFace.RIGHT.getTexCoords());
+			coordTmp.add(type.getRight());
+			coordTmp.mul(PackLoader.WIDTH_SCALE, PackLoader.HEIGHT_SCALE);
+			chunkCoords.append(coordTmp);
+			coordTmp.clear();
+			coordTmp.append(BlockFace.FRONT.getTexCoords());
+			coordTmp.add(type.getFront());
+			coordTmp.mul(PackLoader.WIDTH_SCALE, PackLoader.HEIGHT_SCALE);
+			chunkCoords.append(coordTmp);
+			coordTmp.clear();
+			coordTmp.append(BlockFace.BACK.getTexCoords());
+			coordTmp.add(type.getBack());
+			coordTmp.mul(PackLoader.WIDTH_SCALE, PackLoader.HEIGHT_SCALE);
+			chunkCoords.append(coordTmp);
+			coordTmp.clear();
+			coordTmp.append(BlockFace.TOP.getTexCoords());
+			coordTmp.add(type.getTop());
+			coordTmp.mul(PackLoader.WIDTH_SCALE, PackLoader.HEIGHT_SCALE);
+			chunkCoords.append(coordTmp);
+			coordTmp.clear();
+			coordTmp.append(BlockFace.BOTTOM.getTexCoords());
+			coordTmp.add(type.getBottom());
+			coordTmp.mul(PackLoader.WIDTH_SCALE, PackLoader.HEIGHT_SCALE);
+			chunkCoords.append(coordTmp);
+
+		}
 
 		vertexCount = chunkPositions.size() / 3;
 

@@ -95,7 +95,12 @@ public class Player {
 			final int blockZ1 = Mathf.floor(position.z + .2f);
 			final int blockY = Mathf.floor(position.y);
 
-			if (world.getBlock(blockX, blockY, blockZ0) == null && world.getBlock(blockX, blockY, blockZ1) == null) position.x = nextX;
+			final BlockType b0 = world.getBlock(blockX, blockY, blockZ0);
+			final BlockType b1 = world.getBlock(blockX, blockY, blockZ1);
+			final boolean b0Collide = b0 == null || b0.isUseXModel();
+			final boolean b1Collide = b1 == null || b1.isUseXModel();
+
+			if (b0Collide && b1Collide) position.x = nextX;
 
 		} else if (velocity.x > 0) {
 
@@ -106,7 +111,12 @@ public class Player {
 			final int blockZ1 = Mathf.floor(position.z + .2f);
 			final int blockY = Mathf.floor(position.y);
 
-			if (world.getBlock(blockX, blockY, blockZ0) == null && world.getBlock(blockX, blockY, blockZ1) == null) position.x = nextX;
+			final BlockType b0 = world.getBlock(blockX, blockY, blockZ0);
+			final BlockType b1 = world.getBlock(blockX, blockY, blockZ1);
+			final boolean b0Collide = b0 == null || b0.isUseXModel();
+			final boolean b1Collide = b1 == null || b1.isUseXModel();
+
+			if (b0Collide && b1Collide) position.x = nextX;
 
 		}
 
@@ -119,7 +129,12 @@ public class Player {
 			final int blockZ = Mathf.floor(nextZ - .2f);
 			final int blockY = Mathf.floor(position.y);
 
-			if (world.getBlock(blockX0, blockY, blockZ) == null && world.getBlock(blockX1, blockY, blockZ) == null) position.z = nextZ;
+			final BlockType b0 = world.getBlock(blockX0, blockY, blockZ);
+			final BlockType b1 = world.getBlock(blockX1, blockY, blockZ);
+			final boolean b0Collide = b0 == null || b0.isUseXModel();
+			final boolean b1Collide = b1 == null || b1.isUseXModel();
+
+			if (b0Collide && b1Collide) position.z = nextZ;
 
 		} else if (velocity.z > 0) {
 
@@ -130,7 +145,12 @@ public class Player {
 			final int blockZ = Mathf.floor(nextZ + .2f);
 			final int blockY = Mathf.floor(position.y);
 
-			if (world.getBlock(blockX0, blockY, blockZ) == null && world.getBlock(blockX1, blockY, blockZ) == null) position.z = nextZ;
+			final BlockType b0 = world.getBlock(blockX0, blockY, blockZ);
+			final BlockType b1 = world.getBlock(blockX1, blockY, blockZ);
+			final boolean b0Collide = b0 == null || b0.isUseXModel();
+			final boolean b1Collide = b1 == null || b1.isUseXModel();
+
+			if (b0Collide && b1Collide) position.z = nextZ;
 
 		}
 
@@ -145,8 +165,17 @@ public class Player {
 			final int blockX1 = Mathf.floor(position.x + .2f);
 			final int blockZ1 = Mathf.floor(position.z + .2f);
 
-			if (world.getBlock(blockX0, blockY, blockZ0) == null && world.getBlock(blockX1, blockY, blockZ1) == null && world.getBlock(blockX0, blockY, blockZ1) == null && world.getBlock(blockX1, blockY, blockZ0) == null)
-				position.y = nextY;
+			final BlockType b0 = world.getBlock(blockX0, blockY, blockZ0);
+			final BlockType b1 = world.getBlock(blockX1, blockY, blockZ1);
+			final BlockType b2 = world.getBlock(blockX0, blockY, blockZ1);
+			final BlockType b3 = world.getBlock(blockX1, blockY, blockZ0);
+
+			final boolean b0Collide = b0 == null || b0.isUseXModel();
+			final boolean b1Collide = b1 == null || b1.isUseXModel();
+			final boolean b2Collide = b2 == null || b2.isUseXModel();
+			final boolean b3Collide = b3 == null || b3.isUseXModel();
+
+			if (b0Collide && b1Collide && b2Collide && b3Collide) position.y = nextY;
 			else {
 				velocity.y = 0;
 				canJump = true;
@@ -163,8 +192,17 @@ public class Player {
 			final int blockZ0 = Mathf.floor(position.z - .2f);
 			final int blockZ1 = Mathf.floor(position.z + .2f);
 
-			if (world.getBlock(blockX0, blockY, blockZ0) == null && world.getBlock(blockX1, blockY, blockZ1) == null && world.getBlock(blockX0, blockY, blockZ1) == null && world.getBlock(blockX1, blockY, blockZ0) == null)
-				position.y = nextY;
+			final BlockType b0 = world.getBlock(blockX0, blockY, blockZ0);
+			final BlockType b1 = world.getBlock(blockX1, blockY, blockZ1);
+			final BlockType b2 = world.getBlock(blockX0, blockY, blockZ1);
+			final BlockType b3 = world.getBlock(blockX1, blockY, blockZ0);
+
+			final boolean b0Collide = b0 == null || b0.isUseXModel();
+			final boolean b1Collide = b1 == null || b1.isUseXModel();
+			final boolean b2Collide = b2 == null || b2.isUseXModel();
+			final boolean b3Collide = b3 == null || b3.isUseXModel();
+
+			if (b0Collide && b1Collide && b2Collide && b3Collide) position.y = nextY;
 			else velocity.y = 0f;
 
 		}

@@ -15,6 +15,7 @@ public class World {
 
 	@Getter private final OpenSimplexNoise noise;
 	@Getter private final OpenSimplexNoise treeNoise;
+	@Getter private final OpenSimplexNoise grassNoise;
 
 	public World(final long seed) {
 
@@ -22,6 +23,7 @@ public class World {
 
 		noise = new OpenSimplexNoise(r.nextLong());
 		treeNoise = new OpenSimplexNoise(r.nextLong());
+		grassNoise = new OpenSimplexNoise(r.nextLong());
 
 	}
 
