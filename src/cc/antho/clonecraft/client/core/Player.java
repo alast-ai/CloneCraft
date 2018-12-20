@@ -249,7 +249,7 @@ public class Player {
 					final BlockType currentBlock = BlockType.BLOCKS[blockIndex];
 
 					world.setBlock(lp.x, lp.y, lp.z, currentBlock);
-					EventDispatcher.dispatch(new NetworkPacketEvent(this, new BlockUpdatePacket(Mathf.floor(p.x), Mathf.floor(p.y), Mathf.floor(p.z), currentBlock), false, true));
+					EventDispatcher.dispatch(new NetworkPacketEvent(this, new BlockUpdatePacket(Mathf.floor(lp.x), Mathf.floor(lp.y), Mathf.floor(lp.z), currentBlock), false, true));
 					world.getChunkFromWorldCoord(lp.x, lp.z).update();
 					break;
 

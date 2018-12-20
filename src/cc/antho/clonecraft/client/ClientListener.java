@@ -81,7 +81,7 @@ public final class ClientListener extends Listener implements EventListener {
 
 	}
 
-	public void disconnected (Connection connection) {
+	public void disconnected(final Connection connection) {
 
 		CloneCraftGame.getInstance().stop();
 

@@ -33,10 +33,16 @@ public class GameState extends State {
 	private Shader chunkShader, uiShader;
 	private Texture atlas, crosshair;
 
+	private FreeBlock freeBlock;
+	private FreeBlock curBlock;
+
 	public void init() {
 
 		ChunkThread.lock.lock();
 		glfwMakeContextCurrent(CloneCraftGame.getInstance().getWindow().getHandle());
+
+		freeBlock = new FreeBlock(BlockType.SAND);
+		curBlock = new FreeBlock(BlockType.SAND);
 
 		world = new World("NFzttn4UxfQD8aOhYyeNDXs3FnXHEioT");
 
@@ -108,9 +114,6 @@ public class GameState extends State {
 
 	}
 
-	private final FreeBlock freeBlock = new FreeBlock(BlockType.SAND);
-	private FreeBlock curBlock = new FreeBlock(BlockType.SAND);
-
 	public void render() {
 
 		atlas.bind(0);
@@ -138,8 +141,8 @@ public class GameState extends State {
 		curBlock = new FreeBlock(BlockType.BLOCKS[player.blockIndex]);
 
 		final float offsetX = .3f;
-		final float offsetY = -.4f;
-		final float offsetZ = 1f;
+		final float offsetY = -.6f;
+		final float offsetZ = .7f;
 
 		final Vector3f handPosition = new Vector3f();
 		handPosition.add(new Vector3f(player.camera.forward).mul(offsetZ));
@@ -161,6 +164,7 @@ public class GameState extends State {
 
 				m.translation(store.position);
 				chunkShader.loadUniformMatrix4f("u_model", m);
+
 				freeBlock.render();
 
 			}
