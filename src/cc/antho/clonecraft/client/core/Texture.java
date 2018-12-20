@@ -1,8 +1,12 @@
 package cc.antho.clonecraft.client.core;
 
-import static org.lwjgl.opengl.GL46.*;
+import static org.lwjgl.opengl.GL11.*;
+import static org.lwjgl.opengl.GL12.*;
+import static org.lwjgl.opengl.GL13.*;
+import static org.lwjgl.opengl.GL30.*;
 
 import java.awt.image.BufferedImage;
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.ByteBuffer;
@@ -21,12 +25,40 @@ public class Texture {
 	@Getter private final int handle;
 	@Getter private final int width, height;
 
-	public Texture(final String file, final boolean atlas) throws IOException {
+	public static final BufferedImage loadBufferedImage(final String file) throws IOException {
+
+		if (file.startsWith("/")) {
+
+			final InputStream is = CloneCraftGame.class.getResourceAsStream(file);
+			final BufferedImage image = ImageIO.read(is);
+			is.close();
+			image.flush();
+			return image;
+
+		} else {
+
+			final File f = new File(file);
+			final BufferedImage image = ImageIO.read(f);
+			image.flush();
+			return image;
+
+		}
+
+	}
+
+	public static final Texture create(final String file, final boolean atlas) throws IOException {
 
 		final InputStream is = CloneCraftGame.class.getResourceAsStream(file);
 		final BufferedImage image = ImageIO.read(is);
+		final Texture texture = new Texture(image, atlas);
 		is.close();
 		image.flush();
+
+		return texture;
+
+	}
+
+	public Texture(final BufferedImage image, final boolean atlas) throws IOException {
 
 		width = image.getWidth();
 		height = image.getHeight();
@@ -53,7 +85,7 @@ public class Texture {
 		bind(0);
 
 		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA8, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, buffer);
-		if (atlas) glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAX_LEVEL, (int) Mathf.log(PackLoader.pack.getSize(), 2));
+		if (atlas) glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAX_LEVEL, (int) Mathf.log(PackLoader.SIZE, 2));
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST_MIPMAP_LINEAR);
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);

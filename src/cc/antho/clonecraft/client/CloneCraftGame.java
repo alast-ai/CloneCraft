@@ -8,7 +8,6 @@ import org.lwjgl.opengl.GL;
 import cc.antho.clonecraft.client.core.GameLoop;
 import cc.antho.clonecraft.client.core.Input;
 import cc.antho.clonecraft.client.core.Window;
-import cc.antho.clonecraft.client.pack.PackLoader;
 import cc.antho.clonecraft.client.state.MenuState;
 import cc.antho.clonecraft.client.world.thread.ChunkThread;
 import cc.antho.clonecraft.core.state.StateManager;
@@ -50,8 +49,6 @@ public final class CloneCraftGame extends GameLoop {
 	}
 
 	protected void init() {
-
-		PackLoader.load();
 
 		if (!glfwInit()) new IllegalStateException("GLFW Failed to initialize").printStackTrace();
 

@@ -7,7 +7,6 @@ import com.esotericsoftware.kryo.Kryo;
 import com.esotericsoftware.kryonet.Client;
 import com.esotericsoftware.kryonet.Server;
 
-import cc.antho.clonecraft.client.world.BlockType;
 import cc.antho.clonecraft.core.packet.BlockUpdatePacket;
 import cc.antho.clonecraft.core.packet.Packet;
 import cc.antho.clonecraft.core.packet.PlayerConnectPacket;
@@ -21,8 +20,6 @@ public final class ClassRegister {
 
 		kryo.register(Vector2i.class);
 		kryo.register(Vector3f.class);
-
-		kryo.register(BlockType.class);
 
 		kryo.register(Packet.class);
 		kryo.register(BlockUpdatePacket.class);
