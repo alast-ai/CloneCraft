@@ -19,6 +19,8 @@ import javax.swing.JTextField;
 import cc.antho.clonecraft.client.CloneCraftClient;
 import cc.antho.clonecraft.core.ConnectionDefaults;
 import cc.antho.clonecraft.core.Util;
+import cc.antho.clonecraft.core.log.Logger;
+import cc.antho.clonecraft.core.log.LoggerImpl;
 import cc.antho.clonecraft.server.CloneCraftServer;
 
 public final class CloneCraft {
@@ -29,6 +31,10 @@ public final class CloneCraft {
 
 	public static final void main(final String[] args) {
 
+		Logger.logger = new LoggerImpl();
+		Logger.info("Starting CloneCraft");
+
+		Logger.debug("Setting look and feel to system");
 		Util.setLookAndFeel();
 
 		final JTabbedPane tabbedPane = new JTabbedPane();
@@ -171,12 +177,14 @@ public final class CloneCraft {
 						final int udp = Integer.parseInt(txtPortUdp.getText());
 						final float ppf = Float.parseFloat(txtPlayerPkt.getText());
 
-						CloneCraftServer.main(tcp, udp, ppf);
+						CloneCraftServer.startThread(tcp, udp, ppf);
 
 						buttonStop.setEnabled(true);
 						buttonStart.setEnabled(false);
 
 					} catch (final NumberFormatException e2) {
+
+						e2.printStackTrace();
 
 					}
 
@@ -210,6 +218,7 @@ public final class CloneCraft {
 			f.setLayout(new BorderLayout());
 			f.add(tabbedPane, BorderLayout.CENTER);
 			f.setVisible(true);
+			Logger.info("Main UI shown");
 
 		}
 
