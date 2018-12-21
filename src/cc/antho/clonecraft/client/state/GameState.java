@@ -19,6 +19,7 @@ import org.joml.Vector2i;
 import org.joml.Vector3f;
 
 import cc.antho.clonecraft.client.ClientListener;
+import cc.antho.clonecraft.client.CloneCraftClient;
 import cc.antho.clonecraft.client.CloneCraftGame;
 import cc.antho.clonecraft.client.Config;
 import cc.antho.clonecraft.client.PlayerStore;
@@ -48,6 +49,8 @@ public class GameState extends State {
 	private FreeBlock curBlock;
 
 	public void init() {
+
+		CloneCraftClient.main();
 
 		ChunkThread.lock.lock();
 		glfwMakeContextCurrent(CloneCraftGame.getInstance().getWindow().getHandle());

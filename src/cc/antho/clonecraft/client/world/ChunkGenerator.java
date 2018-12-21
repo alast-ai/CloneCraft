@@ -1,6 +1,9 @@
 package cc.antho.clonecraft.client.world;
 
 import cc.antho.clonecraft.core.Mathf;
+import cc.antho.clonecraft.core.event.EventDispatcher;
+import cc.antho.clonecraft.core.events.NetworkPacketEvent;
+import cc.antho.clonecraft.core.packet.ChunkChangesPacket;
 
 public class ChunkGenerator {
 
@@ -36,6 +39,8 @@ public class ChunkGenerator {
 				} else chunk.setBlock(x, height - 1, z, BlockType.getBlock("core.grass"));
 
 			}
+
+		EventDispatcher.dispatch(new NetworkPacketEvent(null, new ChunkChangesPacket(null, chunk.getX(), chunk.getZ()), false, true));
 
 	}
 

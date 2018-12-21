@@ -17,6 +17,7 @@ import javax.swing.JTabbedPane;
 import javax.swing.JTextField;
 
 import cc.antho.clonecraft.client.CloneCraftClient;
+import cc.antho.clonecraft.client.CloneCraftGame;
 import cc.antho.clonecraft.core.ConnectionDefaults;
 import cc.antho.clonecraft.core.Util;
 import cc.antho.clonecraft.core.log.Logger;
@@ -106,7 +107,10 @@ public final class CloneCraft {
 
 						final int tcp = Integer.parseInt(txtPortTcp.getText());
 						final int udp = Integer.parseInt(txtPortUdp.getText());
-						CloneCraftClient.main(txtAddress.getText(), tcp, udp, chkboxWithDebuffer.isSelected());
+						CloneCraftClient.address = txtAddress.getText();
+						CloneCraftClient.tcp = tcp;
+						CloneCraftClient.udp = udp;
+						CloneCraftGame.main(chkboxWithDebuffer.isSelected());
 
 					} catch (final NumberFormatException e2) {
 

@@ -16,6 +16,7 @@ import cc.antho.clonecraft.core.event.EventDispatcher;
 import cc.antho.clonecraft.core.event.EventListener;
 import cc.antho.clonecraft.core.events.NetworkPacketEvent;
 import cc.antho.clonecraft.core.packet.BlockUpdatePacket;
+import cc.antho.clonecraft.core.packet.ChunkChangesPacket;
 import cc.antho.clonecraft.core.packet.PlayerConnectPacket;
 import cc.antho.clonecraft.core.packet.PlayerDisconnectPacket;
 import cc.antho.clonecraft.core.packet.PlayerMovePacket;
@@ -78,13 +79,25 @@ public final class ClientListener extends Listener implements EventListener {
 			ready = true;
 			System.out.println("Server Provided Base Data: PPF" + playerPacketFreq);
 
+		} else if (object instanceof ChunkChangesPacket) {
+
+			final ChunkChangesPacket packet = (ChunkChangesPacket) object;
+
+			final World world = ((GameState) CloneCraftGame.getInstance().getManager().getCurrentState()).getWorld();
+
+			for (final BlockUpdatePacket p : packet.changes)
+				world.setBlock(p.x, p.y, p.z, BlockType.getBlock(p.type));
+
+			final Chunk chunk = world.getChunk(packet.x, packet.z);
+			if (chunk != null) chunk.update();
+
 		}
 
 	}
 
 	public void disconnected(final Connection connection) {
 
-		CloneCraftGame.getInstance().stop();
+		// CloneCraftGame.getInstance().stop();
 
 	}
 

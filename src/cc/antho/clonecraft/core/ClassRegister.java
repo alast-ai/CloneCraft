@@ -1,5 +1,7 @@
 package cc.antho.clonecraft.core;
 
+import java.util.ArrayList;
+
 import org.joml.Vector2i;
 import org.joml.Vector3f;
 
@@ -8,6 +10,7 @@ import com.esotericsoftware.kryonet.Client;
 import com.esotericsoftware.kryonet.Server;
 
 import cc.antho.clonecraft.core.packet.BlockUpdatePacket;
+import cc.antho.clonecraft.core.packet.ChunkChangesPacket;
 import cc.antho.clonecraft.core.packet.Packet;
 import cc.antho.clonecraft.core.packet.PlayerConnectPacket;
 import cc.antho.clonecraft.core.packet.PlayerDisconnectPacket;
@@ -20,6 +23,7 @@ public final class ClassRegister {
 
 		kryo.register(Vector2i.class);
 		kryo.register(Vector3f.class);
+		kryo.register(ArrayList.class);
 
 		kryo.register(Packet.class);
 		kryo.register(BlockUpdatePacket.class);
@@ -27,6 +31,7 @@ public final class ClassRegister {
 		kryo.register(PlayerDisconnectPacket.class);
 		kryo.register(PlayerMovePacket.class);
 		kryo.register(PlayerSelfConnectPacket.class);
+		kryo.register(ChunkChangesPacket.class);
 
 	}
 
