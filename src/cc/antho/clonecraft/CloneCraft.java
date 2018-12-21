@@ -212,6 +212,7 @@ public final class CloneCraft {
 			final JFrame f = new JFrame("CloneCraft");
 			f.setMinimumSize(new Dimension(300, 250));
 			f.setPreferredSize(new Dimension(640, 480));
+			f.setSize(new Dimension(640, 480));
 			f.setLocationRelativeTo(null);
 			f.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 			f.setLayout(new BorderLayout());
