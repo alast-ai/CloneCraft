@@ -5,6 +5,7 @@ import java.io.IOException;
 import com.esotericsoftware.kryonet.Server;
 
 import cc.antho.clonecraft.core.ClassRegister;
+import cc.antho.clonecraft.core.log.Logger;
 import lombok.Getter;
 
 public final class CloneCraftServer {
@@ -55,9 +56,11 @@ public final class CloneCraftServer {
 
 	}
 
-	public static final void main(final int tcp, final int udp, final float ppf) {
+	public static final void startThread(final int tcp, final int udp, final float ppf) {
 
 		thread = new Thread(() -> {
+
+			Logger.info("Server thread started");
 
 			instance = new CloneCraftServer();
 			instance.start(tcp, udp, ppf);
@@ -66,6 +69,7 @@ public final class CloneCraftServer {
 
 		}, "CloneCraftServer");
 
+		Logger.info("Starting server thread");
 		thread.setPriority(Thread.MAX_PRIORITY);
 		thread.start();
 
