@@ -1,5 +1,8 @@
 package cc.antho.clonecraft.client.world;
 
+import java.util.Random;
+import java.util.concurrent.ThreadLocalRandom;
+
 public class ChunkGenerator {
 
 	public static void generate(final Chunk chunk, final World world) {
@@ -25,9 +28,12 @@ public class ChunkGenerator {
 				if (world.getTreeNoise().eval(gx, gz) > .8f) {
 
 					chunk.setBlock(x, height - 1, z, BlockType.getBlock("core.dirt"));
+					
+					int treeHeight = ThreadLocalRandom.current().nextInt(4, 6 + 1);
 
-					for (int i = 0; i < 4; i++)
+					for (int i = 0; i < treeHeight; i++)
 						chunk.setBlock(x, height + i, z, BlockType.getBlock("core.log"));
+
 
 				} else chunk.setBlock(x, height - 1, z, BlockType.getBlock("core.grass"));
 
