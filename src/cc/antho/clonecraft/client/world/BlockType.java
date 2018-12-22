@@ -15,6 +15,7 @@ import lombok.Getter;
 public class BlockType {
 
 	private static final Map<String, BlockType> types = new HashMap<>();
+	private static List<BlockType> palette = new ArrayList<>();
 
 	public static final BlockType getBlock(final String name) {
 
@@ -34,21 +35,30 @@ public class BlockType {
 
 	}
 
-	public static void registerBlock(final String name, final Vector2i left, final Vector2i right, final Vector2i front, final Vector2i back, final Vector2i top, final Vector2i bottom, final boolean breakable, final boolean transparent,
-			final boolean xmodel) {
+	public static final List<BlockType> getPalette() {
 
-		types.put(name, new BlockType(name, left, right, front, back, top, bottom, breakable, transparent, xmodel));
+		return palette;
+
+	}
+
+	public static void registerBlock(final String name, final Vector2i left, final Vector2i right, final Vector2i front, final Vector2i back, final Vector2i top, final Vector2i bottom, final boolean breakable, final boolean transparent,
+			final boolean xmodel, final boolean inPalette) {
+
+		final BlockType type = new BlockType(name, left, right, front, back, top, bottom, breakable, transparent, xmodel, inPalette);
+
+		types.put(name, type);
+		if (inPalette) palette.add(type);
 
 	}
 
 	@Getter private final String name;
 	@Getter private final Vector2i left, right, front, back, top, bottom;
 	@Getter private final boolean breakable, transparent;
-	@Getter private final boolean useXModel;
+	@Getter private final boolean useXModel, inPalette;
 
 	private BlockType() {
 
-		this(null, null, null, null, null, null, null, false, false, false);
+		this(null, null, null, null, null, null, null, false, false, false, false);
 
 	}
 

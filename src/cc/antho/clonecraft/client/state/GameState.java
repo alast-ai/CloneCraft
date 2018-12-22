@@ -172,8 +172,9 @@ public class GameState extends State {
 						final boolean breakable = Boolean.parseBoolean(properties.getProperty("breakable"));
 						final boolean transparent = Boolean.parseBoolean(properties.getProperty("transparent"));
 						final boolean xModel = Boolean.parseBoolean(properties.getProperty("xModel"));
+						final boolean inPalette = Boolean.parseBoolean(properties.getProperty("palette"));
 
-						BlockType.registerBlock(name, left, right, front, back, top, bottom, breakable, transparent, xModel);
+						BlockType.registerBlock(name, left, right, front, back, top, bottom, breakable, transparent, xModel, inPalette);
 
 					}
 
@@ -250,7 +251,7 @@ public class GameState extends State {
 		world.render();
 
 		curBlock.shutdown();
-		curBlock = new FreeBlock(BlockType.getBlocks().get(player.blockIndex));
+		curBlock = new FreeBlock(BlockType.getPalette().get(player.blockIndex));
 
 		final float offsetX = .3f;
 		final float offsetY = -.6f;
