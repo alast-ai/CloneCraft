@@ -1,14 +1,18 @@
+![CloneCraft][image.png]
+
 # CloneCraft
 CloneCraft is a work in progress open-source recreation of the game Minecraft.
 CloneCraft is in heavy development still!
 
 ## Features
-* Servers!
-* You can build awesome structures with stone!
+* Breaking and placing different types of blocks.
+* Basic multiplayer.
+* Native modding support.
 * It's made in Java, which is pretty awesome.
 
-## Contributors
+## Lead Developer
 * [**Antho**](https://github.com/RealAnthowo)
+## Contributors
 * [**Aaron**](https://github.com/gear4s)
 * [**Alast-ai**](https://github.com/alast-ai)
 
