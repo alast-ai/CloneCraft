@@ -7,11 +7,6 @@ import com.esotericsoftware.minlog.Log;
 import com.esotericsoftware.minlog.Log.Logger;
 
 import cc.antho.clonecraft.client.CloneCraftClient;
-<<<<<<< HEAD
-=======
-import cc.antho.clonecraft.client.CloneCraftGame;
-import cc.antho.clonecraft.core.ConnectionDefaults;
->>>>>>> a1cdf54453ead1616c2210efdc4a58dd9368f794
 import cc.antho.clonecraft.core.Util;
 import cc.antho.clonecraft.core.log.Logger;
 import cc.antho.clonecraft.core.log.LoggerImpl;
