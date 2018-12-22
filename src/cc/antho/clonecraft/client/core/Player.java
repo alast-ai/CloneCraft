@@ -248,7 +248,7 @@ public class Player {
 			while (true) {
 
 				final BlockType type = world.getBlock(p.x, p.y, p.z);
-				if (type != null) {
+				if (type != null && type.isBreakable()) {
 
 					world.setBlock(p.x, p.y, p.z, null);
 
