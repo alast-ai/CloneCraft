@@ -1,4 +1,4 @@
-package cc.antho.clonecraft.core;
+package cc.antho.clonecraft.core.math;
 
 /**
  * An implentation of OpenSimplexNoise in java.

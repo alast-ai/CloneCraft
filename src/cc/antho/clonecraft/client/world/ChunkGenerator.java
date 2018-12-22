@@ -1,8 +1,8 @@
 package cc.antho.clonecraft.client.world;
 
-import cc.antho.clonecraft.core.Mathf;
 import cc.antho.clonecraft.core.event.EventDispatcher;
 import cc.antho.clonecraft.core.events.NetworkPacketEvent;
+import cc.antho.clonecraft.core.math.Mathf;
 import cc.antho.clonecraft.core.packet.ChunkChangesPacket;
 
 public class ChunkGenerator {

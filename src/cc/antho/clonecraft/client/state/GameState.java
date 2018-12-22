@@ -33,7 +33,7 @@ import cc.antho.clonecraft.client.world.ChunkSection;
 import cc.antho.clonecraft.client.world.FreeBlock;
 import cc.antho.clonecraft.client.world.World;
 import cc.antho.clonecraft.client.world.thread.ChunkThread;
-import cc.antho.clonecraft.core.Mathf;
+import cc.antho.clonecraft.core.math.Mathf;
 import cc.antho.clonecraft.core.state.State;
 import lombok.Getter;
 
@@ -310,6 +310,8 @@ public class GameState extends State {
 	}
 
 	public void shutdown() {
+
+		CloneCraftClient.getNetworkClient().stop();
 
 		ChunkThread.stopThreads();
 		chunkShader.shutdown();

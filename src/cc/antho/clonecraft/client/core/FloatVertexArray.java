@@ -5,6 +5,8 @@ import java.util.List;
 
 import org.joml.Vector2i;
 
+import cc.antho.clonecraft.core.math.RawFloat;
+
 public class FloatVertexArray {
 
 	private final List<RawFloat> data = new ArrayList<>();

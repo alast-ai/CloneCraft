@@ -8,7 +8,7 @@ import com.esotericsoftware.kryonet.Listener;
 import com.esotericsoftware.kryonet.Server;
 
 import cc.antho.clonecraft.client.world.ChunkSection;
-import cc.antho.clonecraft.core.Mathf;
+import cc.antho.clonecraft.core.math.Mathf;
 import cc.antho.clonecraft.core.packet.BlockUpdatePacket;
 import cc.antho.clonecraft.core.packet.ChunkChangesPacket;
 import cc.antho.clonecraft.core.packet.PlayerConnectPacket;
