@@ -9,6 +9,7 @@ public final class Controls {
 	public static final int STRAFE_LEFT = GLFW_KEY_A;
 	public static final int STRAFE_RIGHT = GLFW_KEY_D;
 	public static final int SNEAK = GLFW_KEY_LEFT_SHIFT;
+	public static final int RUN = GLFW_KEY_LEFT_CONTROL;
 	public static final int JUMP = GLFW_KEY_SPACE;
 
 	private Controls() {
