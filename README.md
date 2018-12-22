@@ -1,4 +1,4 @@
-![CloneCraft][https://github.com/RealAnthowo/CloneCraft/blob/master/image.png]
+![CloneCraft](image.png)
 
 # CloneCraft
 CloneCraft is a work in progress open-source recreation of the game Minecraft.
