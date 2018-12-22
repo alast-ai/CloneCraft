@@ -1,5 +1,10 @@
 package cc.antho.clonecraft.client.world;
 
+import cc.antho.clonecraft.core.Mathf;
+import cc.antho.clonecraft.core.event.EventDispatcher;
+import cc.antho.clonecraft.core.events.NetworkPacketEvent;
+import cc.antho.clonecraft.core.packet.ChunkChangesPacket;
+
 public class ChunkGenerator {
 
 	public static void generate(final Chunk chunk, final World world) {
@@ -26,12 +31,16 @@ public class ChunkGenerator {
 
 					chunk.setBlock(x, height - 1, z, BlockType.getBlock("core.dirt"));
 
-					for (int i = 0; i < 4; i++)
+					final int treeHeight = Mathf.round((float) (world.getTreeNoise().eval(gx * 2f, gz * 2f) * 2f + 4f));
+
+					for (int i = 0; i < treeHeight; i++)
 						chunk.setBlock(x, height + i, z, BlockType.getBlock("core.log"));
 
 				} else chunk.setBlock(x, height - 1, z, BlockType.getBlock("core.grass"));
 
 			}
+
+		EventDispatcher.dispatch(new NetworkPacketEvent(null, new ChunkChangesPacket(null, chunk.getX(), chunk.getZ()), false, true));
 
 	}
 

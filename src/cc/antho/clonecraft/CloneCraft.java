@@ -7,7 +7,14 @@ import com.esotericsoftware.minlog.Log;
 import com.esotericsoftware.minlog.Log.Logger;
 
 import cc.antho.clonecraft.client.CloneCraftClient;
+<<<<<<< HEAD
+=======
+import cc.antho.clonecraft.client.CloneCraftGame;
+import cc.antho.clonecraft.core.ConnectionDefaults;
+>>>>>>> a1cdf54453ead1616c2210efdc4a58dd9368f794
 import cc.antho.clonecraft.core.Util;
+import cc.antho.clonecraft.core.log.Logger;
+import cc.antho.clonecraft.core.log.LoggerImpl;
 import cc.antho.clonecraft.server.CloneCraftServer;
 
 public final class CloneCraft {
@@ -20,6 +27,10 @@ public final class CloneCraft {
 
 	public static final void main(final String[] args) {
 
+		Logger.logger = new LoggerImpl();
+		Logger.info("Starting CloneCraft");
+
+		Logger.debug("Setting look and feel to system");
 		Util.setLookAndFeel();
 		
 		ccFrame = new CloneCraftFrame("CloneCraft");
@@ -32,9 +43,9 @@ public final class CloneCraft {
 					final int tcp = Integer.parseInt(ccFrame.getClientHostPortTCP().getText());
 					final int udp = Integer.parseInt(ccFrame.getClientHostPortUDP().getText());
 					CloneCraftClient.main(ccFrame.getClientHostAddress().getText(), tcp, udp, ccFrame.getClientDebuggerEnabled().isSelected());
-
+					
 				} catch (final NumberFormatException e2) {
-
+					
 				}
 
 			}
@@ -76,7 +87,6 @@ public final class CloneCraft {
 			}
 
 		});
-
 
 	}
 

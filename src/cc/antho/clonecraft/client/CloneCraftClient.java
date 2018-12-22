@@ -9,6 +9,9 @@ import lombok.Getter;
 
 public final class CloneCraftClient {
 
+	public static String address;
+	public static int tcp, udp;
+
 	private static Thread thread;
 	@Getter private static Client networkClient;
 
@@ -16,19 +19,18 @@ public final class CloneCraftClient {
 
 	}
 
-	public static final void main(final String address, final int tcp, final int udp, final boolean openDebugger) {
+	public static final void main() {
 
 		thread = new Thread(() -> {
 
 			networkClient = new Client();
 			ClassRegister.register(networkClient);
-			networkClient.start();
 			networkClient.addListener(new ClientListener(networkClient));
+			networkClient.start();
 
 			try {
 
 				networkClient.connect(5000, address, tcp, udp);
-				CloneCraftGame.main(openDebugger);
 
 			} catch (final IOException e) {
 

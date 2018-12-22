@@ -19,6 +19,7 @@ import org.joml.Vector2i;
 import org.joml.Vector3f;
 
 import cc.antho.clonecraft.client.ClientListener;
+import cc.antho.clonecraft.client.CloneCraftClient;
 import cc.antho.clonecraft.client.CloneCraftGame;
 import cc.antho.clonecraft.client.Config;
 import cc.antho.clonecraft.client.PlayerStore;
@@ -48,6 +49,8 @@ public class GameState extends State {
 	private FreeBlock curBlock;
 
 	public void init() {
+
+		CloneCraftClient.main();
 
 		ChunkThread.lock.lock();
 		glfwMakeContextCurrent(CloneCraftGame.getInstance().getWindow().getHandle());
@@ -158,23 +161,17 @@ public class GameState extends State {
 						properties.load(fis);
 						fis.close();
 
+						String p;
 						final String name = mod + "." + blockname.substring(0, blockname.lastIndexOf('.'));
-						final Vector2i left = textures_mapping.get(properties.getProperty("face_left"));
-						final Vector2i right = textures_mapping.get(properties.getProperty("face_right"));
-						final Vector2i front = textures_mapping.get(properties.getProperty("face_front"));
-						final Vector2i back = textures_mapping.get(properties.getProperty("face_back"));
-						final Vector2i top = textures_mapping.get(properties.getProperty("face_top"));
-						final Vector2i bottom = textures_mapping.get(properties.getProperty("face_bottom"));
+						final Vector2i left = textures_mapping.get((p = properties.getProperty("face_left")).contains(".") ? p : mod + "." + p);
+						final Vector2i right = textures_mapping.get((p = properties.getProperty("face_right")).contains(".") ? p : mod + "." + p);
+						final Vector2i front = textures_mapping.get((p = properties.getProperty("face_front")).contains(".") ? p : mod + "." + p);
+						final Vector2i back = textures_mapping.get((p = properties.getProperty("face_back")).contains(".") ? p : mod + "." + p);
+						final Vector2i top = textures_mapping.get((p = properties.getProperty("face_top")).contains(".") ? p : mod + "." + p);
+						final Vector2i bottom = textures_mapping.get((p = properties.getProperty("face_bottom")).contains(".") ? p : mod + "." + p);
 						final boolean breakable = Boolean.parseBoolean(properties.getProperty("breakable"));
 						final boolean transparent = Boolean.parseBoolean(properties.getProperty("transparent"));
 						final boolean xModel = Boolean.parseBoolean(properties.getProperty("xModel"));
-
-						System.out.println(left);
-						System.out.println(right);
-						System.out.println(front);
-						System.out.println(back);
-						System.out.println(top);
-						System.out.println(bottom);
 
 						BlockType.registerBlock(name, left, right, front, back, top, bottom, breakable, transparent, xModel);
 
