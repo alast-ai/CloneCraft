@@ -18,6 +18,7 @@ import org.joml.Vector4f;
 import org.lwjgl.BufferUtils;
 
 import cc.antho.clonecraft.client.CloneCraftGame;
+import cc.antho.clonecraft.core.log.Logger;
 import lombok.Getter;
 
 public class Shader {
@@ -36,8 +37,6 @@ public class Shader {
 	private final Map<String, Integer> uniforms = new HashMap<>();
 
 	private static final int createShader(final int type, final String source) {
-
-		System.out.println(source);
 
 		final int shader = glCreateShader(type);
 		glShaderSource(shader, source);
@@ -118,6 +117,8 @@ public class Shader {
 		glDeleteShader(vs);
 		glDeleteShader(fs);
 		bind();
+
+		Logger.debug("Created shader " + handle);
 
 	}
 
