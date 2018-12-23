@@ -37,7 +37,6 @@ public class GameState extends State {
 	private Texture atlas, crosshair;
 
 	private FreeBlock freeBlock;
-	private FreeBlock curBlock;
 
 	public void init() {
 
@@ -50,7 +49,6 @@ public class GameState extends State {
 		loadAtlas();
 
 		freeBlock = new FreeBlock(BlockType.getBlock("core.sand"));
-		curBlock = new FreeBlock(BlockType.getBlock("core.sand"));
 
 		world = new World("NFzttn4UxfQD8aOhYyeNDXs3FnXHEioT");
 
@@ -148,8 +146,14 @@ public class GameState extends State {
 		chunkShader.loadUniformMatrix4f("u_model", m);
 		world.render();
 
-		curBlock.shutdown();
-		curBlock = new FreeBlock(BlockType.getPalette().get(player.blockIndex));
+		if (player.curDirty) {
+
+			if (player.curBlock != null) player.curBlock.shutdown();
+
+			player.curBlock = new FreeBlock(BlockType.getPalette().get(player.blockIndex));
+			player.curDirty = false;
+
+		}
 
 		final float offsetX = .3f;
 		final float offsetY = -.6f;
@@ -167,7 +171,7 @@ public class GameState extends State {
 		m.rotate(Mathf.toRadians(-player.camera.rotation.y), 0, 1, 0);
 		m.rotate(Mathf.toRadians(-player.camera.rotation.x), 1, 0, 0);
 		chunkShader.loadUniformMatrix4f("u_model", m);
-		curBlock.render();
+		player.curBlock.render();
 
 		synchronized (ClientListener.players) {
 

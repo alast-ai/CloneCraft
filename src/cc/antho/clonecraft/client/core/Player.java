@@ -9,6 +9,7 @@ import cc.antho.clonecraft.client.CloneCraftClient;
 import cc.antho.clonecraft.client.CloneCraftGame;
 import cc.antho.clonecraft.client.Controls;
 import cc.antho.clonecraft.client.world.BlockType;
+import cc.antho.clonecraft.client.world.FreeBlock;
 import cc.antho.clonecraft.client.world.World;
 import cc.antho.clonecraft.core.event.EventDispatcher;
 import cc.antho.clonecraft.core.events.NetworkPacketEvent;
@@ -19,8 +20,6 @@ import lombok.Getter;
 
 public class Player {
 
-	public static final float SENSITIVITY_X = .3f;
-	public static final float SENSITIVITY_Y = .3f;
 	public static final float AXIS_X_LIMIT = 90f;
 	public static final float WALK_SPEED = 4f;
 	public static final float SPRINT_SPEED = 6f;
@@ -28,9 +27,13 @@ public class Player {
 	public static final float GRAVITY = -18f;
 	public static final float JUMP_FORCE = 7f;
 
-	private static float TEMP_WALK_SPEED = WALK_SPEED;
+	private float speed = WALK_SPEED;
 
 	@Getter private final Vector3f position = new Vector3f(0, 80, 0);
+
+	public boolean curDirty = true;
+	public FreeBlock curBlock;
+	public int blockIndex = 0;
 
 	public final Camera camera = new Camera();
 	private final Vector3f velocity = new Vector3f();
@@ -40,8 +43,6 @@ public class Player {
 	private double timer = 0;
 
 	private double informTimer = 0d;
-
-	public int blockIndex = 0;
 
 	public void tick(final World world) {
 
@@ -55,18 +56,18 @@ public class Player {
 		informTimer += deltaTime;
 
 		// Rotate the camera using the mouse
-		camera.rotation.x += SENSITIVITY_X * CloneCraftGame.getInput().getDifferecePos().y;
-		camera.rotation.y += SENSITIVITY_Y * CloneCraftGame.getInput().getDifferecePos().x;
+		camera.rotation.x += Controls.SENSITIVITY_Y * CloneCraftGame.getInput().getDifferecePos().y;
+		camera.rotation.y += Controls.SENSITIVITY_X * CloneCraftGame.getInput().getDifferecePos().x;
 		camera.rotation.x = Mathf.clamp(camera.rotation.x, -AXIS_X_LIMIT, AXIS_X_LIMIT);
 		camera.rotation.y %= 360f;
 
-		if (input.isKeyDown(Controls.RUN)) TEMP_WALK_SPEED = WALK_SPEED * 2;
-		else TEMP_WALK_SPEED = WALK_SPEED;
+		if (input.isKeyDown(Controls.RUN)) speed = WALK_SPEED * 2;
+		else speed = WALK_SPEED;
 
 		float dist = 0;
 		if (input.isKeyDown(Controls.WALK_FORWARD)) dist++;
 		if (input.isKeyDown(Controls.WALK_BACKWARD)) dist--;
-		dist *= TEMP_WALK_SPEED * deltaTime;
+		dist *= speed * deltaTime;
 
 		velocity.x += Mathf.sin(Mathf.toRadians(camera.rotation.y)) * dist;
 		velocity.z -= Mathf.cos(Mathf.toRadians(camera.rotation.y)) * dist;
@@ -74,7 +75,7 @@ public class Player {
 		dist = 0;
 		if (input.isKeyDown(Controls.STRAFE_LEFT)) dist--;
 		if (input.isKeyDown(Controls.STRAFE_RIGHT)) dist++;
-		dist *= TEMP_WALK_SPEED * deltaTime;
+		dist *= speed * deltaTime;
 
 		velocity.x += Mathf.sin(Mathf.toRadians(camera.rotation.y + 90f)) * dist;
 		velocity.z -= Mathf.cos(Mathf.toRadians(camera.rotation.y + 90f)) * dist;
@@ -235,13 +236,51 @@ public class Player {
 
 		}
 
-		if (input.isKeyPressed(GLFW_KEY_LEFT)) if (blockIndex <= 0) blockIndex = BlockType.getPalette().size() - 1;
-		else blockIndex--;
+		if (input.isKeyPressed(GLFW_KEY_LEFT)) {
 
-		if (input.isKeyPressed(GLFW_KEY_RIGHT)) if (blockIndex >= BlockType.getPalette().size() - 1) blockIndex = 0;
-		else blockIndex++;
+			if (blockIndex <= 0) blockIndex = BlockType.getPalette().size() - 1;
+			else blockIndex--;
 
-		if (input.isButtonDown(GLFW_MOUSE_BUTTON_1) && canBreak) {
+			curDirty = true;
+
+		}
+
+		if (input.isKeyPressed(GLFW_KEY_RIGHT)) {
+
+			if (blockIndex >= BlockType.getPalette().size() - 1) blockIndex = 0;
+			else blockIndex++;
+
+			curDirty = true;
+
+		}
+
+		if (input.isButtonDown(Controls.BLOCK_PICK)) {
+
+			final Vector3f p = new Vector3f(camera.position);
+			final Vector3f d = new Vector3f(camera.forward).mul(.5f);
+			float current_distance = 0;
+			final float max_distance = 10;
+
+			while (true) {
+
+				final BlockType type = world.getBlock(p.x, p.y, p.z);
+				if (type != null && type.isInPalette()) {
+
+					curDirty = true;
+					blockIndex = BlockType.getPalette().indexOf(type);
+					break;
+
+				}
+
+				p.add(d);
+				current_distance += d.length();
+				if (current_distance >= max_distance) break;
+
+			}
+
+		}
+
+		if (input.isButtonDown(Controls.BLOCK_BREAK) && canBreak) {
 
 			canBreak = false;
 
@@ -272,7 +311,7 @@ public class Player {
 
 		}
 
-		if (input.isButtonDown(GLFW_MOUSE_BUTTON_2) && canBreak) {
+		if (input.isButtonDown(Controls.BLOCK_PLACE) && canBreak) {
 
 			canBreak = false;
 
