@@ -81,16 +81,16 @@ public class Mod {
 
 			String p;
 			final String name = this.name + "." + blockname.substring(0, blockname.lastIndexOf('.'));
-			final Vector2i left = textures_mapping.get((p = properties.getProperty("face_left")).contains(".") ? p : this.name + "." + p);
-			final Vector2i right = textures_mapping.get((p = properties.getProperty("face_right")).contains(".") ? p : this.name + "." + p);
-			final Vector2i front = textures_mapping.get((p = properties.getProperty("face_front")).contains(".") ? p : this.name + "." + p);
-			final Vector2i back = textures_mapping.get((p = properties.getProperty("face_back")).contains(".") ? p : this.name + "." + p);
-			final Vector2i top = textures_mapping.get((p = properties.getProperty("face_top")).contains(".") ? p : this.name + "." + p);
-			final Vector2i bottom = textures_mapping.get((p = properties.getProperty("face_bottom")).contains(".") ? p : this.name + "." + p);
-			final boolean breakable = Boolean.parseBoolean(properties.getProperty("breakable"));
-			final boolean transparent = Boolean.parseBoolean(properties.getProperty("transparent"));
-			final boolean xModel = Boolean.parseBoolean(properties.getProperty("xModel"));
-			final boolean inPalette = Boolean.parseBoolean(properties.getProperty("palette"));
+			final Vector2i left = textures_mapping.get((p = properties.getProperty("face_left", "core.unknown")).contains(".") ? p : this.name + "." + p);
+			final Vector2i right = textures_mapping.get((p = properties.getProperty("face_right", "core.unknown")).contains(".") ? p : this.name + "." + p);
+			final Vector2i front = textures_mapping.get((p = properties.getProperty("face_front", "core.unknown")).contains(".") ? p : this.name + "." + p);
+			final Vector2i back = textures_mapping.get((p = properties.getProperty("face_back", "core.unknown")).contains(".") ? p : this.name + "." + p);
+			final Vector2i top = textures_mapping.get((p = properties.getProperty("face_top", "core.unknown")).contains(".") ? p : this.name + "." + p);
+			final Vector2i bottom = textures_mapping.get((p = properties.getProperty("face_bottom", "core.unknown")).contains(".") ? p : this.name + "." + p);
+			final boolean breakable = Boolean.parseBoolean(properties.getProperty("breakable", "true"));
+			final boolean transparent = Boolean.parseBoolean(properties.getProperty("transparent", "false"));
+			final boolean xModel = Boolean.parseBoolean(properties.getProperty("xModel", "false"));
+			final boolean inPalette = Boolean.parseBoolean(properties.getProperty("palette", "true"));
 
 			BlockType.registerBlock(name, left, right, front, back, top, bottom, breakable, transparent, xModel, inPalette);
 

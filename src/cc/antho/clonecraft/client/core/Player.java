@@ -27,7 +27,7 @@ public class Player {
 	public static final float EYE_HEIGHT = 1.6f;
 	public static final float GRAVITY = -18f;
 	public static final float JUMP_FORCE = 7f;
-	
+
 	private static float TEMP_WALK_SPEED = WALK_SPEED;
 
 	@Getter private final Vector3f position = new Vector3f(0, 80, 0);
@@ -59,10 +59,10 @@ public class Player {
 		camera.rotation.y += SENSITIVITY_Y * CloneCraftGame.getInput().getDifferecePos().x;
 		camera.rotation.x = Mathf.clamp(camera.rotation.x, -AXIS_X_LIMIT, AXIS_X_LIMIT);
 		camera.rotation.y %= 360f;
-		
+
 		if (input.isKeyDown(Controls.RUN)) TEMP_WALK_SPEED = WALK_SPEED * 2;
 		else TEMP_WALK_SPEED = WALK_SPEED;
-		
+
 		float dist = 0;
 		if (input.isKeyDown(Controls.WALK_FORWARD)) dist++;
 		if (input.isKeyDown(Controls.WALK_BACKWARD)) dist--;
