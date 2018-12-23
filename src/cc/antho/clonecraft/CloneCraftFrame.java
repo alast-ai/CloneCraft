@@ -18,6 +18,9 @@ import cc.antho.clonecraft.core.Config;
 import lombok.Getter;
 
 public class CloneCraftFrame extends JFrame {
+
+	private static final long serialVersionUID = 1L;
+
 	final private GridBagConstraints constraints = new GridBagConstraints();
 
 	@Getter public JTextField clientHostAddress;
@@ -25,13 +28,13 @@ public class CloneCraftFrame extends JFrame {
 	@Getter public JTextField clientHostPortUDP;
 	@Getter public JCheckBox clientDebuggerEnabled;
 	@Getter public JButton clientConnectButton;
-	
+
 	@Getter public JTextField serverHostPortTCP;
 	@Getter public JTextField serverHostPortUDP;
 	@Getter public JTextField serverPlayerPacketFrequency;
 	@Getter public JButton serverStartButton;
 	@Getter public JButton serverStopButton;
-	
+
 	private final JPanel createClientPanel() {
 		final JPanel panel = new JPanel(new GridBagLayout());
 
@@ -71,7 +74,7 @@ public class CloneCraftFrame extends JFrame {
 		constraints.gridy = 3;
 		constraints.anchor = GridBagConstraints.CENTER;
 		panel.add(clientDebuggerEnabled, constraints);
-		
+
 		constraints.anchor = GridBagConstraints.WEST;
 		constraints.gridwidth = 1;
 
@@ -84,10 +87,10 @@ public class CloneCraftFrame extends JFrame {
 
 		return panel;
 	}
-	
+
 	private final JPanel createServerPanel() {
 		final JPanel panel = new JPanel(new GridBagLayout());
-		
+
 		final JLabel lblPortTcp = new JLabel("Port (TCP)");
 		constraints.gridx = 0;
 		constraints.gridy = 0;
@@ -131,27 +134,27 @@ public class CloneCraftFrame extends JFrame {
 		constraints.gridx = 1;
 		constraints.gridy = 4;
 		panel.add(serverStopButton, constraints);
-		
+
 		return panel;
 	}
 
-	public CloneCraftFrame(String title) {
+	public CloneCraftFrame(final String title) {
 		super(title);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setMinimumSize(new Dimension(300, 250));
 		setPreferredSize(new Dimension(640, 480));
 		setLocationRelativeTo(null);
 		setLayout(new BorderLayout());
-		
+
 		constraints.anchor = GridBagConstraints.WEST;
 		constraints.insets = new Insets(5, 5, 5, 5);
 
 		final JTabbedPane tabbedPane = new JTabbedPane();
 		tabbedPane.add("Server", createServerPanel());
-		
+
 		constraints.anchor = GridBagConstraints.WEST; // reset for client panel
 		tabbedPane.insertTab("Client", null, createClientPanel(), null, 0);
-		
+
 		add(tabbedPane, BorderLayout.CENTER);
 		tabbedPane.setSelectedIndex(0);
 		setVisible(true);
