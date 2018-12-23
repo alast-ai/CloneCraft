@@ -3,19 +3,10 @@ package cc.antho.clonecraft.client.state;
 import static org.lwjgl.glfw.GLFW.*;
 import static org.lwjgl.opengl.GL11.*;
 
-import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
-import java.io.File;
-import java.io.FileInputStream;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Properties;
 
 import org.joml.Matrix4f;
-import org.joml.Vector2i;
 import org.joml.Vector3f;
 
 import cc.antho.clonecraft.client.ClientListener;
@@ -26,7 +17,7 @@ import cc.antho.clonecraft.client.PlayerStore;
 import cc.antho.clonecraft.client.core.Player;
 import cc.antho.clonecraft.client.core.Shader;
 import cc.antho.clonecraft.client.core.Texture;
-import cc.antho.clonecraft.client.pack.PackLoader;
+import cc.antho.clonecraft.client.mod.ModLoader;
 import cc.antho.clonecraft.client.ui.UIQuad;
 import cc.antho.clonecraft.client.world.BlockType;
 import cc.antho.clonecraft.client.world.ChunkSection;
@@ -82,105 +73,8 @@ public class GameState extends State {
 
 		try {
 
-			{
-
-				final File modsFolder = new File("./CloneCraft/mods/");
-				if (!modsFolder.exists()) throw new RuntimeException("Cannot load game without mod folder");
-
-				final Map<String, BufferedImage> textures = new HashMap<>();
-
-				for (final String mod : modsFolder.list()) {
-
-					System.out.println("Loading textures from mod: " + mod);
-
-					final File modTextureFolder = new File("./CloneCraft/mods/" + mod + "/textures/");
-					if (modTextureFolder.exists()) for (final String texturename : modTextureFolder.list()) {
-						System.out.println(texturename);
-						textures.put(mod + "." + texturename.substring(0, texturename.lastIndexOf('.')), Texture.loadBufferedImage("./CloneCraft/mods/" + mod + "/textures/" + texturename));
-
-					}
-
-				}
-
-				// generate texture atlas
-
-				int size = 0;
-
-				for (final BufferedImage image : textures.values()) {
-
-					if (image.getWidth() > size) size = image.getWidth();
-					if (image.getHeight() > size) size = image.getHeight();
-
-				}
-
-				// TODO resize textures
-
-				PackLoader.SIZE = size;
-				System.out.println("Largest image is: " + size);
-				final int numtexs = textures.values().size();
-				System.out.println(numtexs + " textures were loaded");
-				final int image_dir_size = Mathf.ceil(Mathf.sqrt(numtexs));
-
-				final BufferedImage atlas = new BufferedImage(image_dir_size * size, image_dir_size * size, BufferedImage.TYPE_INT_ARGB);
-				final Graphics2D g = (Graphics2D) atlas.getGraphics();
-
-				final List<String> textures_keys = new ArrayList<>(textures.keySet());
-				final List<BufferedImage> textures_values = new ArrayList<>(textures.values());
-
-				final Map<String, Vector2i> textures_mapping = new HashMap<>();
-
-				for (int y = 0; y < image_dir_size; y++)
-					for (int x = 0; x < image_dir_size; x++) {
-
-						final int index = x + y * image_dir_size;
-
-						if (index >= textures.keySet().size()) break;
-
-						textures_mapping.put(textures_keys.get(index), new Vector2i(x, image_dir_size - y - 1));
-
-						g.drawImage(textures_values.get(index), x * size, y * size, size, size, null);
-
-					}
-
-				g.dispose();
-
-				PackLoader.set(image_dir_size);
-				this.atlas = new Texture(atlas, true);
-
-				for (final String mod : modsFolder.list()) {
-
-					System.out.println("Loading blocks from mod: " + mod);
-
-					final File modBlockFolder = new File("./CloneCraft/mods/" + mod + "/blocks/");
-					if (modBlockFolder.exists()) for (final String blockname : modBlockFolder.list()) {
-
-						System.out.println(blockname);
-
-						final FileInputStream fis = new FileInputStream(new File("./CloneCraft/mods/" + mod + "/blocks/" + blockname));
-						final Properties properties = new Properties();
-						properties.load(fis);
-						fis.close();
-
-						String p;
-						final String name = mod + "." + blockname.substring(0, blockname.lastIndexOf('.'));
-						final Vector2i left = textures_mapping.get((p = properties.getProperty("face_left")).contains(".") ? p : mod + "." + p);
-						final Vector2i right = textures_mapping.get((p = properties.getProperty("face_right")).contains(".") ? p : mod + "." + p);
-						final Vector2i front = textures_mapping.get((p = properties.getProperty("face_front")).contains(".") ? p : mod + "." + p);
-						final Vector2i back = textures_mapping.get((p = properties.getProperty("face_back")).contains(".") ? p : mod + "." + p);
-						final Vector2i top = textures_mapping.get((p = properties.getProperty("face_top")).contains(".") ? p : mod + "." + p);
-						final Vector2i bottom = textures_mapping.get((p = properties.getProperty("face_bottom")).contains(".") ? p : mod + "." + p);
-						final boolean breakable = Boolean.parseBoolean(properties.getProperty("breakable"));
-						final boolean transparent = Boolean.parseBoolean(properties.getProperty("transparent"));
-						final boolean xModel = Boolean.parseBoolean(properties.getProperty("xModel"));
-						final boolean inPalette = Boolean.parseBoolean(properties.getProperty("palette"));
-
-						BlockType.registerBlock(name, left, right, front, back, top, bottom, breakable, transparent, xModel, inPalette);
-
-					}
-
-				}
-
-			}
+			final BufferedImage atlas = new ModLoader().loadAll();
+			this.atlas = new Texture(atlas, true);
 
 			crosshair = Texture.create("/textures/crosshair.png", false);
 
@@ -189,6 +83,10 @@ public class GameState extends State {
 			e.printStackTrace();
 
 		}
+
+		// After load all the images such we should just call the garbage
+		// collector before starting the game
+		System.gc();
 
 	}
 
