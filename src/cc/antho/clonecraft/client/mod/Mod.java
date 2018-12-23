@@ -1,5 +1,6 @@
 package cc.antho.clonecraft.client.mod;
 
+import java.awt.Graphics;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.FileInputStream;
@@ -12,6 +13,7 @@ import org.joml.Vector2i;
 
 import cc.antho.clonecraft.client.core.Texture;
 import cc.antho.clonecraft.client.world.BlockType;
+import cc.antho.clonecraft.core.Loader;
 import cc.antho.clonecraft.core.log.Logger;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
@@ -46,6 +48,66 @@ public class Mod {
 			} catch (final IOException e) {
 
 				Logger.debug("Failed to load image: " + texturename);
+
+			}
+
+		}
+
+	}
+
+	public void loadModifiers() {
+
+		Logger.debug("Loading modifiers for mod: " + name);
+		final File file = new File("./CloneCraft/mods/" + name + "/modifiers/");
+
+		if (!file.exists()) {
+
+			Logger.debug("No modifiers found");
+			return;
+
+		}
+
+		for (final String name : file.list()) {
+
+			final BufferedImage image = textures.get(name);
+
+			try {
+
+				for (final String line : Loader.loadFileIntoString("./CloneCraft/mods/" + this.name + "/modifiers/" + name).split("\n")) {
+
+					final String[] tokens = line.split(" ");
+
+					if (tokens[0].equals("mul")) for (int y = 0; y < image.getHeight(); y++)
+						for (int x = 0; x < image.getWidth(); x++) {
+
+							final int p = image.getRGB(x, y);
+							final int a = (int) (((p & 0xFF000000) >> 24) * Float.parseFloat(tokens[4]));
+							final int r = (int) (((p & 0x00FF0000) >> 16) * Float.parseFloat(tokens[1]));
+							final int g = (int) (((p & 0x0000FF00) >> 8) * Float.parseFloat(tokens[2]));
+							final int b = (int) ((p & 0x000000FF) * Float.parseFloat(tokens[3]));
+
+							image.setRGB(x, y, a << 24 | r << 16 | g << 8 | b);
+
+						}
+					else if (tokens[0].equals("underlay")) {
+
+						final BufferedImage l0 = textures.get(tokens[1]);
+						final BufferedImage l1 = new BufferedImage(image.getWidth(), image.getHeight(), BufferedImage.TYPE_INT_ARGB);
+						Graphics g = l1.getGraphics();
+						g.drawImage(image, 0, 0, null);
+						g.dispose();
+						g = image.getGraphics();
+						g.drawImage(l0, 0, 0, null);
+						g.drawImage(l1, 0, 0, null);
+						g.dispose();
+
+					}
+
+				}
+
+			} catch (final IOException e) {
+
+				e.printStackTrace();
 
 			}
 

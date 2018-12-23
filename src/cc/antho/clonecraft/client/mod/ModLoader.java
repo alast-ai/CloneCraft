@@ -52,6 +52,10 @@ public class ModLoader {
 		for (final Mod mod : mods)
 			mod.loadTextures();
 
+		Logger.debug("Loading modifiers for mods...");
+		for (final Mod mod : mods)
+			mod.loadModifiers();
+
 		Logger.debug("Creating texture atlas...");
 		final BufferedImage atlas = createAtlas();
 
