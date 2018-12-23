@@ -5,8 +5,8 @@ import java.util.List;
 import java.util.Random;
 
 import cc.antho.clonecraft.client.world.thread.ChunkThread;
-import cc.antho.clonecraft.core.Mathf;
-import cc.antho.clonecraft.core.OpenSimplexNoise;
+import cc.antho.clonecraft.core.math.Mathf;
+import cc.antho.clonecraft.core.math.OpenSimplexNoise;
 import lombok.Getter;
 
 public class World {

@@ -7,6 +7,8 @@ import com.esotericsoftware.minlog.Log;
 import com.esotericsoftware.minlog.Log.Logger;
 
 import cc.antho.clonecraft.client.CloneCraftClient;
+import cc.antho.clonecraft.client.CloneCraftGame;
+import cc.antho.clonecraft.core.Config;
 import cc.antho.clonecraft.core.Util;
 import cc.antho.clonecraft.core.log.Logger;
 import cc.antho.clonecraft.core.log.LoggerImpl;
@@ -27,6 +29,9 @@ public final class CloneCraft {
 
 		Logger.debug("Setting look and feel to system");
 		Util.setLookAndFeel();
+
+		Logger.debug("Loading config");
+		Config.loadConfig();
 		
 		ccFrame = new CloneCraftFrame("CloneCraft");
 		ccFrame.getClientConnectButton().addActionListener(new ActionListener() {
@@ -37,7 +42,10 @@ public final class CloneCraft {
 
 					final int tcp = Integer.parseInt(ccFrame.getClientHostPortTCP().getText());
 					final int udp = Integer.parseInt(ccFrame.getClientHostPortUDP().getText());
-					CloneCraftClient.main(ccFrame.getClientHostAddress().getText(), tcp, udp, ccFrame.getClientDebuggerEnabled().isSelected());
+					CloneCraftClient.address = ccFrame.getClientHostAddress().getText();
+					CloneCraftClient.tcp = tcp;
+					CloneCraftClient.udp = udp;
+					CloneCraftGame.main(ccFrame.getClientDebuggerEnabled().isSelected());
 					
 				} catch (final NumberFormatException e2) {
 					
@@ -63,6 +71,8 @@ public final class CloneCraft {
 					ccFrame.getServerStartButton().setEnabled(false);
 
 				} catch (final NumberFormatException e2) {
+
+					e2.printStackTrace()
 
 				}
 

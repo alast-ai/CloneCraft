@@ -14,7 +14,7 @@ import javax.swing.JPanel;
 import javax.swing.JTabbedPane;
 import javax.swing.JTextField;
 
-import cc.antho.clonecraft.core.ConnectionDefaults;
+import cc.antho.clonecraft.core.Config;
 import lombok.Getter;
 
 public class CloneCraftFrame extends JFrame {
@@ -40,7 +40,7 @@ public class CloneCraftFrame extends JFrame {
 		constraints.gridy = 0;
 		panel.add(lblAddress, constraints);
 
-		clientHostAddress = new JTextField(ConnectionDefaults.ADDRESS, 10);
+		clientHostAddress = new JTextField(Config.ADDRESS, 10);
 		constraints.gridx = 1;
 		constraints.gridy = 0;
 		panel.add(clientHostAddress, constraints);
@@ -50,7 +50,7 @@ public class CloneCraftFrame extends JFrame {
 		constraints.gridy = 1;
 		panel.add(lblPortTcp, constraints);
 
-		clientHostPortTCP = new JTextField(ConnectionDefaults.TCP_PORT + "", 10);
+		clientHostPortTCP = new JTextField(Config.TCP_PORT + "", 10);
 		constraints.gridx = 1;
 		constraints.gridy = 1;
 		panel.add(clientHostPortTCP, constraints);
@@ -60,7 +60,7 @@ public class CloneCraftFrame extends JFrame {
 		constraints.gridy = 2;
 		panel.add(lblPortUdp, constraints);
 
-		clientHostPortUDP = new JTextField(ConnectionDefaults.UDP_PORT + "", 10);
+		clientHostPortUDP = new JTextField(Config.UDP_PORT + "", 10);
 		constraints.gridx = 1;
 		constraints.gridy = 2;
 		panel.add(clientHostPortUDP, constraints);
@@ -93,7 +93,7 @@ public class CloneCraftFrame extends JFrame {
 		constraints.gridy = 0;
 		panel.add(lblPortTcp, constraints);
 
-		serverHostPortTCP = new JTextField(ConnectionDefaults.TCP_PORT + "", 10);
+		serverHostPortTCP = new JTextField(Config.TCP_PORT + "", 10);
 		constraints.gridx = 1;
 		constraints.gridy = 0;
 		panel.add(serverHostPortTCP, constraints);
@@ -103,7 +103,7 @@ public class CloneCraftFrame extends JFrame {
 		constraints.gridy = 1;
 		panel.add(lblPortUdp, constraints);
 
-		serverHostPortUDP = new JTextField(ConnectionDefaults.UDP_PORT + "", 10);
+		serverHostPortUDP = new JTextField(Config.UDP_PORT + "", 10);
 		constraints.gridx = 1;
 		constraints.gridy = 1;
 		panel.add(serverHostPortUDP, constraints);
@@ -113,7 +113,7 @@ public class CloneCraftFrame extends JFrame {
 		constraints.gridy = 2;
 		panel.add(lblPlayerPkt, constraints);
 
-		serverPlayerPacketFrequency = new JTextField(ConnectionDefaults.PLAYER_PACKET_FREQUENCY + "", 10);
+		serverPlayerPacketFrequency = new JTextField(Config.PLAYER_PACKET_FREQUENCY + "", 10);
 		constraints.gridx = 1;
 		constraints.gridy = 2;
 		panel.add(serverPlayerPacketFrequency, constraints);

@@ -1,4 +1,4 @@
-package cc.antho.clonecraft.client.core;
+package cc.antho.clonecraft.core.math;
 
 public class RawFloat {
 

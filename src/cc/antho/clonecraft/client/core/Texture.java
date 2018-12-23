@@ -17,7 +17,8 @@ import org.lwjgl.BufferUtils;
 
 import cc.antho.clonecraft.client.CloneCraftGame;
 import cc.antho.clonecraft.client.pack.PackLoader;
-import cc.antho.clonecraft.core.Mathf;
+import cc.antho.clonecraft.core.log.Logger;
+import cc.antho.clonecraft.core.math.Mathf;
 import lombok.Getter;
 
 public class Texture {
@@ -53,6 +54,8 @@ public class Texture {
 		final Texture texture = new Texture(image, atlas);
 		is.close();
 		image.flush();
+
+		Logger.debug("Created texture " + file);
 
 		return texture;
 

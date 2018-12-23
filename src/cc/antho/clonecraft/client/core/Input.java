@@ -10,6 +10,7 @@ import org.lwjgl.glfw.GLFWCursorPosCallback;
 import org.lwjgl.glfw.GLFWFramebufferSizeCallback;
 import org.lwjgl.glfw.GLFWKeyCallback;
 import org.lwjgl.glfw.GLFWMouseButtonCallback;
+import org.lwjgl.glfw.GLFWScrollCallback;
 
 import cc.antho.clonecraft.core.event.EventDispatcher;
 import cc.antho.clonecraft.core.events.FramebufferResizeEvent;
@@ -21,10 +22,12 @@ public class Input {
 	GLFWKeyCallback keyCallback;
 	GLFWCursorPosCallback cursorPosCallback;
 	GLFWMouseButtonCallback mouseButtonCallback;
+	GLFWScrollCallback scrollCallback;
 
 	@Getter private final Vector2f lastPos = new Vector2f();
 	@Getter private final Vector2f currentPos = new Vector2f();
 	@Getter private final Vector2f differecePos = new Vector2f();
+	@Getter private final Vector2f scrollBar = new Vector2f();
 	private final Window window;
 
 	private final Set<Integer> keys = new HashSet<>();
@@ -81,6 +84,16 @@ public class Input {
 
 		});
 
+		glfwSetScrollCallback(window.getHandle(), scrollCallback = new GLFWScrollCallback() {
+
+			public final void invoke(final long window, final double xoffset, final double yoffset) {
+
+				scrollBar.set((float) xoffset, (float) yoffset);
+
+			}
+
+		});
+
 	}
 
 	public void clearLastKeys() {
@@ -122,7 +135,9 @@ public class Input {
 		glfwSetKeyCallback(window.getHandle(), null);
 		glfwSetCursorPosCallback(window.getHandle(), null);
 		glfwSetMouseButtonCallback(window.getHandle(), null);
+		glfwSetScrollCallback(window.getHandle(), null);
 
+		scrollCallback.free();
 		framebufferSizeCallback.free();
 		keyCallback.free();
 		cursorPosCallback.free();

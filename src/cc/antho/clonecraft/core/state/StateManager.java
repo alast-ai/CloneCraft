@@ -2,6 +2,7 @@ package cc.antho.clonecraft.core.state;
 
 import java.util.Objects;
 
+import cc.antho.clonecraft.core.log.Logger;
 import lombok.Getter;
 
 public class StateManager {
@@ -24,6 +25,8 @@ public class StateManager {
 
 		currentState = nextState;
 		nextState = null;
+
+		Logger.debug("State set to " + currentState);
 
 		if (currentState != null) {
 

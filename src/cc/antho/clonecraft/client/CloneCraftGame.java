@@ -8,8 +8,10 @@ import org.lwjgl.opengl.GL;
 import cc.antho.clonecraft.client.core.GameLoop;
 import cc.antho.clonecraft.client.core.Input;
 import cc.antho.clonecraft.client.core.Window;
-import cc.antho.clonecraft.client.state.MenuState;
+import cc.antho.clonecraft.client.state.SplashState;
 import cc.antho.clonecraft.client.world.thread.ChunkThread;
+import cc.antho.clonecraft.core.Config;
+import cc.antho.clonecraft.core.log.Logger;
 import cc.antho.clonecraft.core.state.StateManager;
 import lombok.Getter;
 
@@ -51,12 +53,14 @@ public final class CloneCraftGame extends GameLoop {
 	protected void init() {
 
 		if (!glfwInit()) new IllegalStateException("GLFW Failed to initialize").printStackTrace();
+		Logger.debug("Initialized glfw");
 
 		window = new Window(Config.DEFAULT_WIDTH, Config.DEFAULT_HEIGHT, Config.USE_FULLSCREEN, Config.USE_VSYNC);
+		Logger.info("Created window");
 
-		manager.setState(new MenuState());
+		manager.setState(new SplashState());
 
-		System.out.println(glGetString(GL_VERSION));
+		Logger.info(glGetString(GL_VERSION));
 
 		glClearColor(Config.CLEAR_RED, Config.CLEAR_GREEN, Config.CLEAR_BLUE, Config.CLEAR_ALPHA);
 		glfwMakeContextCurrent(0);
@@ -101,8 +105,6 @@ public final class CloneCraftGame extends GameLoop {
 	}
 
 	protected void shutdown() {
-
-		CloneCraftClient.getNetworkClient().stop();
 
 		manager.setState(null);
 		window.shutdown();

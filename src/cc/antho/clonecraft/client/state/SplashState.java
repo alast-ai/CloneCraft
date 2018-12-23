@@ -8,14 +8,14 @@ import java.io.IOException;
 import org.joml.Matrix4f;
 
 import cc.antho.clonecraft.client.CloneCraftGame;
-import cc.antho.clonecraft.client.Config;
 import cc.antho.clonecraft.client.core.Shader;
 import cc.antho.clonecraft.client.core.Texture;
 import cc.antho.clonecraft.client.ui.UIQuad;
 import cc.antho.clonecraft.client.world.thread.ChunkThread;
+import cc.antho.clonecraft.core.Config;
 import cc.antho.clonecraft.core.state.State;
 
-public class MenuState extends State {
+public class SplashState extends State {
 
 	// TODO there shouldn't be a black screen
 
@@ -50,7 +50,7 @@ public class MenuState extends State {
 			final String fragmentShader = Shader.loadShaderString("/shaders/ui_fragment.glsl");
 
 			uiShader = new Shader(vertexShader, fragmentShader);
-			splash = Texture.create("/textures/clonecraft_splash.png", false);
+			splash = Texture.create("/textures/clonecraft_splash_l.png", false);
 
 			UIQuad.create();
 
