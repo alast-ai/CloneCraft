@@ -62,6 +62,6 @@ We really like public contributions! Before contributing, please review [CONTRIB
 
 # License
 
-CloneCraft is licensed under the GLU General Public license. See the [LICENSE](LICENSE) file for more details.
+CloneCraft is licensed under the GNU General Public license. See the [LICENSE](LICENSE) file for more details.
 
 **[Back to top](#table-of-contents)**
