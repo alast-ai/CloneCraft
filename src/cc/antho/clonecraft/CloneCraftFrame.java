@@ -142,7 +142,7 @@ public class CloneCraftFrame extends JFrame {
 		super(title);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setMinimumSize(new Dimension(300, 250));
-		setPreferredSize(new Dimension(640, 480));
+		setSize(new Dimension(640, 480));
 		setLocationRelativeTo(null);
 		setLayout(new BorderLayout());
 
