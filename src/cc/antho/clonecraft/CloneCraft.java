@@ -3,9 +3,6 @@ package cc.antho.clonecraft;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-import com.esotericsoftware.minlog.Log;
-import com.esotericsoftware.minlog.Log.Logger;
-
 import cc.antho.clonecraft.client.CloneCraftClient;
 import cc.antho.clonecraft.client.CloneCraftGame;
 import cc.antho.clonecraft.core.Config;
@@ -65,14 +62,14 @@ public final class CloneCraft {
 					final int udp = Integer.parseInt(ccFrame.getServerHostPortUDP().getText());
 					final float ppf = Float.parseFloat(ccFrame.getServerPlayerPacketFrequency().getText());
 
-					CloneCraftServer.main(tcp, udp, ppf);
+					CloneCraftServer.startThread(tcp, udp, ppf);
 
 					ccFrame.getServerStopButton().setEnabled(true);
 					ccFrame.getServerStartButton().setEnabled(false);
 
 				} catch (final NumberFormatException e2) {
 
-					e2.printStackTrace()
+					e2.printStackTrace();
 
 				}
 
