@@ -18,8 +18,7 @@ import javax.swing.JTextField;
 
 import cc.antho.clonecraft.client.CloneCraftClient;
 import cc.antho.clonecraft.client.CloneCraftGame;
-import cc.antho.clonecraft.client.Config;
-import cc.antho.clonecraft.core.ConnectionDefaults;
+import cc.antho.clonecraft.core.Config;
 import cc.antho.clonecraft.core.Util;
 import cc.antho.clonecraft.core.log.Logger;
 import cc.antho.clonecraft.core.log.LoggerImpl;
@@ -58,7 +57,7 @@ public final class CloneCraft {
 			constraints.gridy = 0;
 			panel.add(lblAddress, constraints);
 
-			final JTextField txtAddress = new JTextField(ConnectionDefaults.ADDRESS, 10);
+			final JTextField txtAddress = new JTextField(Config.ADDRESS, 10);
 			constraints.gridx = 1;
 			constraints.gridy = 0;
 			panel.add(txtAddress, constraints);
@@ -68,7 +67,7 @@ public final class CloneCraft {
 			constraints.gridy = 1;
 			panel.add(lblPortTcp, constraints);
 
-			final JTextField txtPortTcp = new JTextField(ConnectionDefaults.TCP_PORT + "", 10);
+			final JTextField txtPortTcp = new JTextField(Config.TCP_PORT + "", 10);
 			constraints.gridx = 1;
 			constraints.gridy = 1;
 			panel.add(txtPortTcp, constraints);
@@ -78,7 +77,7 @@ public final class CloneCraft {
 			constraints.gridy = 2;
 			panel.add(lblPortUdp, constraints);
 
-			final JTextField txtPortUdp = new JTextField(ConnectionDefaults.UDP_PORT + "", 10);
+			final JTextField txtPortUdp = new JTextField(Config.UDP_PORT + "", 10);
 			constraints.gridx = 1;
 			constraints.gridy = 2;
 			panel.add(txtPortUdp, constraints);
@@ -136,7 +135,7 @@ public final class CloneCraft {
 			constraints.gridy = 0;
 			panel.add(lblPortTcp, constraints);
 
-			final JTextField txtPortTcp = new JTextField(ConnectionDefaults.TCP_PORT + "", 10);
+			final JTextField txtPortTcp = new JTextField(Config.TCP_PORT + "", 10);
 			constraints.gridx = 1;
 			constraints.gridy = 0;
 			panel.add(txtPortTcp, constraints);
@@ -146,7 +145,7 @@ public final class CloneCraft {
 			constraints.gridy = 1;
 			panel.add(lblPortUdp, constraints);
 
-			final JTextField txtPortUdp = new JTextField(ConnectionDefaults.UDP_PORT + "", 10);
+			final JTextField txtPortUdp = new JTextField(Config.UDP_PORT + "", 10);
 			constraints.gridx = 1;
 			constraints.gridy = 1;
 			panel.add(txtPortUdp, constraints);
@@ -156,7 +155,7 @@ public final class CloneCraft {
 			constraints.gridy = 2;
 			panel.add(lblPlayerPkt, constraints);
 
-			final JTextField txtPlayerPkt = new JTextField(ConnectionDefaults.PLAYER_PACKET_FREQUENCY + "", 10);
+			final JTextField txtPlayerPkt = new JTextField(Config.PLAYER_PACKET_FREQUENCY + "", 10);
 			constraints.gridx = 1;
 			constraints.gridy = 2;
 			panel.add(txtPlayerPkt, constraints);

@@ -10,6 +10,7 @@ import cc.antho.clonecraft.client.core.Input;
 import cc.antho.clonecraft.client.core.Window;
 import cc.antho.clonecraft.client.state.SplashState;
 import cc.antho.clonecraft.client.world.thread.ChunkThread;
+import cc.antho.clonecraft.core.Config;
 import cc.antho.clonecraft.core.log.Logger;
 import cc.antho.clonecraft.core.state.StateManager;
 import lombok.Getter;
