@@ -22,14 +22,31 @@ public class ModLoader {
 	private final List<Mod> mods = new ArrayList<>();
 	private final Map<String, Vector2i> textures_mapping = new HashMap<>();
 
+	public Mod getMod(final String name) {
+
+		for (final Mod mod : mods)
+			if (mod.getName().equals(name)) return mod;
+
+		return null;
+
+	}
+
 	public BufferedImage loadAll() throws IOException {
 
 		final File modsFolder = new File(MOD_FOLDER);
 		if (!modsFolder.exists()) throw new RuntimeException("Cannot load game without mod folder");
 
 		Logger.debug("Discovering mods...");
-		for (final String mod : modsFolder.list())
+		for (final String mod : modsFolder.list()) {
+
+			Logger.debug("Found mod " + mod);
 			mods.add(new Mod(mod));
+
+		}
+
+		Logger.debug("Loading crosshairs for mods...");
+		for (final Mod mod : mods)
+			mod.loadCrosshair();
 
 		Logger.debug("Loading images for mods...");
 		for (final Mod mod : mods)

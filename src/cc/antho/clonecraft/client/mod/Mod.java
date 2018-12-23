@@ -13,14 +13,15 @@ import org.joml.Vector2i;
 import cc.antho.clonecraft.client.core.Texture;
 import cc.antho.clonecraft.client.world.BlockType;
 import cc.antho.clonecraft.core.log.Logger;
-import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.RequiredArgsConstructor;
 
-@AllArgsConstructor
+@RequiredArgsConstructor
 public class Mod {
 
 	@Getter private final String name;
 	@Getter private final Map<String, BufferedImage> textures = new HashMap<>();
+	@Getter private BufferedImage crosshair;
 
 	public void loadTextures() {
 
@@ -47,6 +48,30 @@ public class Mod {
 				Logger.debug("Failed to load image: " + texturename);
 
 			}
+
+		}
+
+	}
+
+	public void loadCrosshair() {
+
+		Logger.debug("Loading crosshair for mod: " + name);
+		final File crosshairfile = new File("./CloneCraft/mods/" + name + "/crosshair.png");
+
+		if (!crosshairfile.exists()) {
+
+			Logger.debug("Crosshair not found");
+			return;
+
+		}
+
+		try {
+
+			crosshair = Texture.loadBufferedImage(crosshairfile.getAbsolutePath());
+
+		} catch (final IOException e) {
+
+			Logger.debug("Crosshair failed to load");
 
 		}
 

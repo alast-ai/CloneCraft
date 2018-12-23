@@ -18,6 +18,7 @@ import javax.swing.JTextField;
 
 import cc.antho.clonecraft.client.CloneCraftClient;
 import cc.antho.clonecraft.client.CloneCraftGame;
+import cc.antho.clonecraft.client.Config;
 import cc.antho.clonecraft.core.ConnectionDefaults;
 import cc.antho.clonecraft.core.Util;
 import cc.antho.clonecraft.core.log.Logger;
@@ -37,6 +38,9 @@ public final class CloneCraft {
 
 		Logger.debug("Setting look and feel to system");
 		Util.setLookAndFeel();
+
+		Logger.debug("Loading config");
+		Config.loadConfig();
 
 		final JTabbedPane tabbedPane = new JTabbedPane();
 

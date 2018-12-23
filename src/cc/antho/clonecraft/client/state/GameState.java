@@ -71,10 +71,11 @@ public class GameState extends State {
 
 		try {
 
-			final BufferedImage atlas = new ModLoader().loadAll();
+			final ModLoader loader = new ModLoader();
+			final BufferedImage atlas = loader.loadAll();
 			this.atlas = new Texture(atlas, true);
 
-			crosshair = Texture.create("/textures/crosshair.png", false);
+			crosshair = new Texture(loader.getMod(Config.CROSSHAIR).getCrosshair(), false);
 
 		} catch (final IOException e) {
 
