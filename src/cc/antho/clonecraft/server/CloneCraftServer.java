@@ -23,7 +23,7 @@ public final class CloneCraftServer {
 
 	private void start(final int tcp, final int udp, final float ppf) {
 
-		server = new Server();
+		server = new Server(16384, 2048);
 		ClassRegister.register(server);
 		server.addListener(new ServerListener(server, ppf));
 		server.start();

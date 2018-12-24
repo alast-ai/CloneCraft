@@ -23,7 +23,7 @@ public final class CloneCraftClient {
 
 		thread = new Thread(() -> {
 
-			networkClient = new Client();
+			networkClient = new Client(16384, 2048);
 			ClassRegister.register(networkClient);
 			networkClient.addListener(new ClientListener(networkClient));
 			networkClient.start();

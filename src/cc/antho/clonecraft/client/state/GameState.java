@@ -172,7 +172,10 @@ public class GameState extends State {
 		m.rotate(Mathf.toRadians(-player.camera.rotation.y), 0, 1, 0);
 		m.rotate(Mathf.toRadians(-player.camera.rotation.x), 1, 0, 0);
 		chunkShader.loadUniformMatrix4f("u_model", m);
+
+		glDisable(GL_DEPTH_TEST);
 		player.curBlock.render();
+		glEnable(GL_DEPTH_TEST);
 
 		synchronized (ClientListener.players) {
 

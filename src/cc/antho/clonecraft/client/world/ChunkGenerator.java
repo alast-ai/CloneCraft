@@ -15,28 +15,40 @@ public class ChunkGenerator {
 				final int gx = x + chunk.getX() * ChunkSection.SIZE;
 				final int gz = z + chunk.getZ() * ChunkSection.SIZE;
 
+				Biome biome;
+				final double biomeValue = world.getBiomeNoise().eval(gx / 128d, gz / 128d);
+
+				if (biomeValue > .3d) biome = Biome.DESERT;
+				else biome = Biome.GRASSLAND;
+
 				final int height = world.getHeightAtWorldPosition(gx, gz);
 
 				chunk.setBlock(x, 0, z, BlockType.getBlock("core.bedrock"));
 
 				for (int y = 1; y < height - 4; y++)
-					chunk.setBlock(x, y, z, BlockType.getBlock("core.stone"));
+					if (world.getCoalNoise().eval(gx / 5f, y / 5f, gz / 5f) > .7f) chunk.setBlock(x, y, z, BlockType.getBlock("core.coal_ore"));
+					else chunk.setBlock(x, y, z, BlockType.getBlock("core.stone"));
 
-				for (int y = height - 4; y < height; y++)
-					chunk.setBlock(x, y, z, BlockType.getBlock("core.dirt"));
+				if (biome == Biome.GRASSLAND) {
 
-				if (world.getGrassNoise().eval(gx / 2f, gz / 2f) > .1f) chunk.setBlock(x, height, z, BlockType.getBlock("core.tallgrass"));
+					for (int y = height - 4; y < height; y++)
+						chunk.setBlock(x, y, z, BlockType.getBlock("core.dirt"));
 
-				if (world.getTreeNoise().eval(gx, gz) > .8f) {
+					if (world.getGrassNoise().eval(gx / 2f, gz / 2f) > .1f) chunk.setBlock(x, height, z, BlockType.getBlock("core.tallgrass"));
 
-					chunk.setBlock(x, height - 1, z, BlockType.getBlock("core.dirt"));
+					if (world.getTreeNoise().eval(gx, gz) > .8f) {
 
-					final int treeHeight = Mathf.round((float) (world.getTreeNoise().eval(gx * 2f, gz * 2f) * 2f + 4f));
+						chunk.setBlock(x, height - 1, z, BlockType.getBlock("core.dirt"));
 
-					for (int i = 0; i < treeHeight; i++)
-						chunk.setBlock(x, height + i, z, BlockType.getBlock("core.log"));
+						final int treeHeight = Mathf.round((float) (world.getTreeNoise().eval(gx * 2f, gz * 2f) * 2f + 4f));
 
-				} else chunk.setBlock(x, height - 1, z, BlockType.getBlock("core.grass"));
+						for (int i = 0; i < treeHeight; i++)
+							chunk.setBlock(x, height + i, z, BlockType.getBlock("core.log"));
+
+					} else chunk.setBlock(x, height - 1, z, BlockType.getBlock("core.grass"));
+
+				} else for (int y = height - 5; y < height; y++)
+					chunk.setBlock(x, y, z, BlockType.getBlock("core.sand"));
 
 			}
 
