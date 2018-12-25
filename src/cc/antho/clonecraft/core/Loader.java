@@ -1,5 +1,6 @@
 package cc.antho.clonecraft.core;
 
+import java.awt.image.BufferedImage;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
@@ -7,6 +8,8 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+
+import javax.imageio.ImageIO;
 
 public final class Loader {
 
@@ -18,6 +21,17 @@ public final class Loader {
 
 		if (relative) return Loader.class.getResourceAsStream(input);
 		return new FileInputStream(input);
+
+	}
+
+	public static final BufferedImage loadBufferedImage(final String file, final boolean relative) throws IOException {
+
+		final InputStream is = Loader.getStream(file, relative);
+
+		final BufferedImage image = ImageIO.read(is);
+		is.close();
+		image.flush();
+		return image;
 
 	}
 

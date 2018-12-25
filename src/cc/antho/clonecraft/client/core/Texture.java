@@ -16,7 +16,6 @@ import org.lwjgl.BufferUtils;
 
 import cc.antho.clonecraft.client.CloneCraftGame;
 import cc.antho.clonecraft.client.pack.PackLoader;
-import cc.antho.clonecraft.core.Loader;
 import cc.antho.clonecraft.core.log.Logger;
 import cc.antho.clonecraft.core.math.Mathf;
 import lombok.Getter;
@@ -25,17 +24,6 @@ public class Texture {
 
 	@Getter private final int handle;
 	@Getter private final int width, height;
-
-	public static final BufferedImage loadBufferedImage(final String file, final boolean relative) throws IOException {
-
-		final InputStream is = Loader.getStream(file, relative);
-
-		final BufferedImage image = ImageIO.read(is);
-		is.close();
-		image.flush();
-		return image;
-
-	}
 
 	public static final Texture create(final String file, final boolean atlas) throws IOException {
 

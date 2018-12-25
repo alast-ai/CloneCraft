@@ -11,7 +11,6 @@ import java.util.Properties;
 
 import org.joml.Vector2i;
 
-import cc.antho.clonecraft.client.core.Texture;
 import cc.antho.clonecraft.client.world.BlockType;
 import cc.antho.clonecraft.core.Loader;
 import cc.antho.clonecraft.core.log.Logger;
@@ -43,7 +42,7 @@ public class Mod {
 
 			try {
 
-				textures.put(texturename.substring(0, texturename.lastIndexOf('.')), Texture.loadBufferedImage(Loader.GAME_DIR + "mods/" + name + "/textures/" + texturename, false));
+				textures.put(texturename.substring(0, texturename.lastIndexOf('.')), Loader.loadBufferedImage(Loader.GAME_DIR + "mods/" + name + "/textures/" + texturename, false));
 
 			} catch (final IOException e) {
 
@@ -129,7 +128,7 @@ public class Mod {
 
 		try {
 
-			crosshair = Texture.loadBufferedImage(crosshairfile.getAbsolutePath(), false);
+			crosshair = Loader.loadBufferedImage(crosshairfile.getAbsolutePath(), false);
 
 		} catch (final IOException e) {
 
