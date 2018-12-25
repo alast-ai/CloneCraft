@@ -8,5 +8,4 @@ uniform sampler2D u_sampler;
 
 void main() {
 	out_color = texture(u_sampler, texturecoords);
-	if(out_color.a < 0.5) discard;
 }

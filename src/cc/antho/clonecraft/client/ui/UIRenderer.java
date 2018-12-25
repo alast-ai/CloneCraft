@@ -15,7 +15,7 @@ public class UIRenderer {
 
 	private final List<UIElement> elements = new ArrayList<>();
 
-	private Shader panelShader;
+	private Shader panelShader, textureShader;
 
 	public UIRenderer() {
 
@@ -23,8 +23,10 @@ public class UIRenderer {
 
 			final String ui_v = Shader.loadShaderString("/shaders/ui/ui_v.glsl");
 			final String panel_f = Shader.loadShaderString("/shaders/ui/panel_f.glsl");
+			final String texture_f = Shader.loadShaderString("/shaders/ui/texture_f.glsl");
 			panelShader = new Shader(ui_v, panel_f);
-			panelShader.loadUniform1i("u_sampler", 0);
+			textureShader = new Shader(ui_v, texture_f);
+			textureShader.loadUniform1i("u_sampler", 0);
 
 		} catch (final IOException e) {
 
@@ -81,6 +83,7 @@ public class UIRenderer {
 	private void renderElement(final UIElement element) {
 
 		if (element instanceof UIPanel) renderPanel((UIPanel) element);
+		else if (element instanceof UITexture) renderTexture((UITexture) element);
 
 	}
 
@@ -93,6 +96,20 @@ public class UIRenderer {
 		matrix.translate(new Vector3f(element.position, 0f));
 		matrix.scale(new Vector3f(element.scale, 1f));
 		panelShader.loadUniformMatrix4f("u_model", matrix);
+
+		UIQuad.render();
+
+	}
+
+	private void renderTexture(final UITexture element) {
+
+		textureShader.bind();
+		element.texture.bind(0);
+
+		final Matrix4f matrix = new Matrix4f();
+		matrix.translate(new Vector3f(element.position, 0f));
+		matrix.scale(new Vector3f(element.scale, 1f));
+		textureShader.loadUniformMatrix4f("u_model", matrix);
 
 		UIQuad.render();
 

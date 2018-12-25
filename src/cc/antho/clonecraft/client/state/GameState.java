@@ -15,10 +15,10 @@ import cc.antho.clonecraft.client.NetworkClient;
 import cc.antho.clonecraft.client.PlayerStore;
 import cc.antho.clonecraft.client.core.Player;
 import cc.antho.clonecraft.client.core.Shader;
-import cc.antho.clonecraft.client.core.Texture;
+import cc.antho.clonecraft.client.core.Texture2D;
 import cc.antho.clonecraft.client.mod.ModLoader;
-import cc.antho.clonecraft.client.ui.UIPanel;
 import cc.antho.clonecraft.client.ui.UIRenderer;
+import cc.antho.clonecraft.client.ui.UITexture;
 import cc.antho.clonecraft.client.world.BlockType;
 import cc.antho.clonecraft.client.world.ChunkSection;
 import cc.antho.clonecraft.client.world.FreeBlock;
@@ -35,19 +35,19 @@ public class GameState extends State {
 
 	@Getter private World world;
 	private Shader chunkShader;
-	private Texture atlas, crosshair;
+	private Texture2D atlas;
 
 	private FreeBlock freeBlock;
 	private UIRenderer uiRenderer;
-	private UIPanel panel;
+	private UITexture crosshair;
 
 	public void init() {
 
 		ChunkThread.lock.lock();
 		glfwMakeContextCurrent(CloneCraftGame.getInstance().getWindow().getHandle());
 
-		loadShader();
 		loadAtlas();
+		loadShader();
 
 		freeBlock = new FreeBlock(BlockType.getBlock("core.sand"));
 
@@ -74,9 +74,10 @@ public class GameState extends State {
 
 			final ModLoader loader = new ModLoader();
 			final BufferedImage atlas = loader.loadAll();
-			this.atlas = new Texture(atlas, true);
+			this.atlas = new Texture2D(atlas, true);
 
-			crosshair = new Texture(loader.getMod(Config.CROSSHAIR).getCrosshair(), false);
+			crosshair = new UITexture();
+			crosshair.texture = new Texture2D(loader.getMod(Config.CROSSHAIR).getCrosshair(), false);
 
 		} catch (final IOException e) {
 
@@ -96,8 +97,7 @@ public class GameState extends State {
 			chunkShader = new Shader(vertexShader, fragmentShader);
 
 			uiRenderer = new UIRenderer();
-			panel = new UIPanel();
-			uiRenderer.addElement(panel);
+			uiRenderer.addElement(crosshair);
 
 		} catch (final IOException e) {
 
@@ -187,11 +187,9 @@ public class GameState extends State {
 		final float width = CloneCraftGame.getInstance().getWindow().getWidth();
 		final float height = CloneCraftGame.getInstance().getWindow().getHeight();
 
-		if (width > height) panel.scale.set(height / width, 1f);
-		else panel.scale.set(1f, width / height);
-		panel.scale.mul(0.05f);
-
-		crosshair.bind(0);
+		if (width > height) crosshair.scale.set(height / width, 1f);
+		else crosshair.scale.set(1f, width / height);
+		crosshair.scale.mul(0.05f);
 
 		uiRenderer.render();
 
@@ -205,6 +203,7 @@ public class GameState extends State {
 		chunkShader.shutdown();
 		atlas.shutdown();
 		uiRenderer.shutdown();
+		crosshair.texture.shutdown();
 
 	}
 

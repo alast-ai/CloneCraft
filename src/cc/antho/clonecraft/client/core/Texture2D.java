@@ -20,16 +20,16 @@ import cc.antho.clonecraft.core.log.Logger;
 import cc.antho.clonecraft.core.math.Mathf;
 import lombok.Getter;
 
-public class Texture {
+public class Texture2D {
 
 	@Getter private final int handle;
 	@Getter private final int width, height;
 
-	public static final Texture create(final String file, final boolean atlas) throws IOException {
+	public static final Texture2D create(final String file, final boolean atlas) throws IOException {
 
 		final InputStream is = CloneCraftGame.class.getResourceAsStream(file);
 		final BufferedImage image = ImageIO.read(is);
-		final Texture texture = new Texture(image, atlas);
+		final Texture2D texture = new Texture2D(image, atlas);
 		is.close();
 		image.flush();
 
@@ -39,7 +39,7 @@ public class Texture {
 
 	}
 
-	public Texture(final BufferedImage image, final boolean atlas) throws IOException {
+	public Texture2D(final BufferedImage image, final boolean atlas) throws IOException {
 
 		width = image.getWidth();
 		height = image.getHeight();

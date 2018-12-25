@@ -9,7 +9,7 @@ import org.joml.Matrix4f;
 
 import cc.antho.clonecraft.client.CloneCraftGame;
 import cc.antho.clonecraft.client.core.Shader;
-import cc.antho.clonecraft.client.core.Texture;
+import cc.antho.clonecraft.client.core.Texture2D;
 import cc.antho.clonecraft.client.ui.UIQuad;
 import cc.antho.clonecraft.client.world.thread.ChunkThread;
 import cc.antho.clonecraft.core.Config;
@@ -20,7 +20,7 @@ public class SplashState extends State {
 	// TODO there shouldn't be a black screen
 
 	private Shader uiShader;
-	private Texture splash;
+	private Texture2D splash;
 
 	public void init() {
 
@@ -47,10 +47,10 @@ public class SplashState extends State {
 		try {
 
 			final String vertexShader = Shader.loadShaderString("/shaders/ui/ui_v.glsl");
-			final String fragmentShader = Shader.loadShaderString("/shaders/ui/ui_fragment.glsl");
+			final String fragmentShader = Shader.loadShaderString("/shaders/ui/texture_f.glsl");
 
 			uiShader = new Shader(vertexShader, fragmentShader);
-			splash = Texture.create("/textures/clonecraft_splash_l.png", false);
+			splash = Texture2D.create("/textures/clonecraft_splash_l.png", false);
 
 			UIQuad.create();
 
