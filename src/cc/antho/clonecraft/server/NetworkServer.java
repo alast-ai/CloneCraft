@@ -5,32 +5,33 @@ import java.io.IOException;
 import com.esotericsoftware.kryonet.Server;
 
 import cc.antho.clonecraft.core.ClassRegister;
+import cc.antho.clonecraft.core.Config;
 import cc.antho.clonecraft.core.log.Logger;
 import lombok.Getter;
 
-public final class CloneCraftServer {
+public final class NetworkServer {
 
 	public static Thread thread;
-	public static CloneCraftServer instance;
+	public static NetworkServer instance;
 
 	@Getter private Server server;
 
 	private final Object lock = new Object();
 
-	private CloneCraftServer() {
+	private NetworkServer() {
 
 	}
 
-	private void start(final int tcp, final int udp, final float ppf) {
+	private void start() {
 
 		server = new Server(16384, 2048);
 		ClassRegister.register(server);
-		server.addListener(new ServerListener(server, ppf));
+		server.addListener(new ServerListener(server, Config.PPF));
 		server.start();
 
 		try {
 
-			server.bind(tcp, udp);
+			server.bind(Config.TCP_PORT, Config.UDP_PORT);
 
 		} catch (final IOException e) {
 
@@ -56,14 +57,14 @@ public final class CloneCraftServer {
 
 	}
 
-	public static final void startThread(final int tcp, final int udp, final float ppf) {
+	public static final void startThread() {
 
 		thread = new Thread(() -> {
 
 			Logger.info("Server thread started");
 
-			instance = new CloneCraftServer();
-			instance.start(tcp, udp, ppf);
+			instance = new NetworkServer();
+			instance.start();
 			// This only occurs after the server has stopped
 			instance = null;
 

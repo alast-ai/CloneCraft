@@ -37,6 +37,8 @@ public final class CloneCraftGame extends GameLoop {
 
 	public static final void main(final boolean openDebugger) {
 
+		NetworkClient.main();
+
 		thread = new Thread(() -> {
 
 			if (openDebugger) Debugger.start();

@@ -5,17 +5,15 @@ import java.io.IOException;
 import com.esotericsoftware.kryonet.Client;
 
 import cc.antho.clonecraft.core.ClassRegister;
+import cc.antho.clonecraft.core.Config;
 import lombok.Getter;
 
-public final class CloneCraftClient {
-
-	public static String address;
-	public static int tcp, udp;
+public final class NetworkClient {
 
 	private static Thread thread;
 	@Getter private static Client networkClient;
 
-	private CloneCraftClient() {
+	private NetworkClient() {
 
 	}
 
@@ -24,16 +22,17 @@ public final class CloneCraftClient {
 		thread = new Thread(() -> {
 
 			networkClient = new Client(16384, 2048);
+			networkClient.start();
 			ClassRegister.register(networkClient);
 			networkClient.addListener(new ClientListener(networkClient));
-			networkClient.start();
 
 			try {
 
-				networkClient.connect(5000, address, tcp, udp);
+				networkClient.connect(5000, Config.ADDRESS, Config.TCP_PORT, Config.UDP_PORT);
 
 			} catch (final IOException e) {
 
+				System.err.println("AHHHHHHHHHHH");
 				e.printStackTrace();
 
 			}

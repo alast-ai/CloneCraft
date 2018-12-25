@@ -10,7 +10,7 @@ import org.joml.Matrix4f;
 import org.joml.Vector3f;
 
 import cc.antho.clonecraft.client.ClientListener;
-import cc.antho.clonecraft.client.CloneCraftClient;
+import cc.antho.clonecraft.client.NetworkClient;
 import cc.antho.clonecraft.client.CloneCraftGame;
 import cc.antho.clonecraft.client.PlayerStore;
 import cc.antho.clonecraft.client.core.Player;
@@ -39,8 +39,6 @@ public class GameState extends State {
 	private FreeBlock freeBlock;
 
 	public void init() {
-
-		CloneCraftClient.main();
 
 		ChunkThread.lock.lock();
 		glfwMakeContextCurrent(CloneCraftGame.getInstance().getWindow().getHandle());
@@ -82,10 +80,6 @@ public class GameState extends State {
 			e.printStackTrace();
 
 		}
-
-		// After load all the images such we should just call the garbage
-		// collector before starting the game
-		System.gc();
 
 	}
 
@@ -217,7 +211,7 @@ public class GameState extends State {
 
 	public void shutdown() {
 
-		CloneCraftClient.getNetworkClient().stop();
+		NetworkClient.getNetworkClient().stop();
 
 		ChunkThread.stopThreads();
 		chunkShader.shutdown();

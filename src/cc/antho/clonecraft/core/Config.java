@@ -26,12 +26,11 @@ public final class Config {
 
 	public static final int CLEAR = GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT;
 
-	public static final String ADDRESS = "127.0.0.1";
-	public static final int TCP_PORT = 64200;
-	public static final int UDP_PORT = 64201;
-	public static final float PLAYER_PACKET_FREQUENCY = .2f;
-
 	public static String CROSSHAIR;
+	public static String ADDRESS;
+	public static int TCP_PORT;
+	public static int UDP_PORT;
+	public static float PPF;
 
 	private Config() {
 
@@ -39,7 +38,8 @@ public final class Config {
 
 	public static void loadConfig() {
 
-		final File file = new File("./CloneCraft/config.properties");
+		final File file = new File(Loader.GAME_DIR + "config.properties");
+		System.out.println(file.getAbsolutePath());
 		if (!file.exists()) {
 
 			Logger.info("Config doesnt exists, creating using default");
@@ -47,7 +47,7 @@ public final class Config {
 			try {
 
 				file.createNewFile();
-				final String content = Loader.loadFileIntoString("/config.properties");
+				final String content = Loader.loadFileIntoString("/config.properties", true);
 				final FileWriter writer = new FileWriter(file);
 				writer.write(content);
 				writer.close();
@@ -63,7 +63,7 @@ public final class Config {
 		final Properties properties = new Properties();
 		try {
 
-			properties.load(Loader.getStream(file.getAbsolutePath()));
+			properties.load(Loader.getStream(file.getAbsolutePath(), false));
 
 		} catch (final IOException e) {
 
@@ -73,6 +73,17 @@ public final class Config {
 		}
 
 		CROSSHAIR = properties.getProperty("crosshair", "core");
+		ADDRESS = properties.getProperty("address", "127.0.0.1");
+		TCP_PORT = Integer.parseInt(properties.getProperty("port_tcp", "64200"));
+		UDP_PORT = Integer.parseInt(properties.getProperty("port_udp", "64201"));
+		PPF = Float.parseFloat(properties.getProperty("ppf", "0.2"));
+
+		Logger.debug("Config");
+		Logger.debug(CROSSHAIR);
+		Logger.debug(ADDRESS);
+		Logger.debug(TCP_PORT);
+		Logger.debug(UDP_PORT);
+		Logger.debug(PPF);
 
 	}
 

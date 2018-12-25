@@ -5,7 +5,7 @@ import static org.lwjgl.glfw.GLFW.*;
 import org.joml.Vector3f;
 
 import cc.antho.clonecraft.client.ClientListener;
-import cc.antho.clonecraft.client.CloneCraftClient;
+import cc.antho.clonecraft.client.NetworkClient;
 import cc.antho.clonecraft.client.CloneCraftGame;
 import cc.antho.clonecraft.client.Controls;
 import cc.antho.clonecraft.client.world.BlockType;
@@ -216,7 +216,7 @@ public class Player {
 		if (ClientListener.ready && informTimer > ClientListener.playerPacketFreq) {
 
 			informTimer = 0;
-			EventDispatcher.dispatch(new NetworkPacketEvent(this, new PlayerMovePacket(CloneCraftClient.getNetworkClient().getID(), camera.position, camera.rotation), false, false));
+			EventDispatcher.dispatch(new NetworkPacketEvent(this, new PlayerMovePacket(NetworkClient.getNetworkClient().getID(), camera.position, camera.rotation), false, false));
 
 		}
 

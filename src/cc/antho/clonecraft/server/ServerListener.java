@@ -68,6 +68,8 @@ public final class ServerListener extends Listener {
 
 	public final void connected(final Connection connection) {
 
+		super.connected(connection);
+
 		connection.sendTCP(new PlayerSelfConnectPacket(playerPacketFreq));
 		server.sendToAllExceptTCP(connection.getID(), new PlayerConnectPacket(connection.getID()));
 

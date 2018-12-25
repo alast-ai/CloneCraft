@@ -23,4 +23,13 @@ public final class Util {
 
 	}
 
+	public static final <T> boolean arrayContains(final T[] array, final T value) {
+
+		for (int i = 0; i < array.length; i++)
+			if (array[i].equals(value)) return true;
+
+		return false;
+
+	}
+
 }

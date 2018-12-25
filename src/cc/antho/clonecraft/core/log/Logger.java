@@ -47,4 +47,52 @@ public abstract class Logger {
 
 	}
 
+	public static void warn(final int s) {
+
+		warn(s + "");
+
+	}
+
+	public static void error(final int s) {
+
+		error(s + "");
+
+	}
+
+	public static void debug(final int s) {
+
+		debug(s + "");
+
+	}
+
+	public static void info(final int s) {
+
+		info(s + "");
+
+	}
+
+	public static void warn(final float s) {
+
+		warn(s + "");
+
+	}
+
+	public static void error(final float s) {
+
+		error(s + "");
+
+	}
+
+	public static void debug(final float s) {
+
+		debug(s + "");
+
+	}
+
+	public static void info(final float s) {
+
+		info(s + "");
+
+	}
+
 }

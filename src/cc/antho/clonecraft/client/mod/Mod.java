@@ -73,7 +73,7 @@ public class Mod {
 
 			try {
 
-				for (final String line : Loader.loadFileIntoString("./CloneCraft/mods/" + this.name + "/modifiers/" + name).split("\n")) {
+				for (final String line : Loader.loadFileIntoString(Loader.GAME_DIR + "mods/" + this.name + "/modifiers/" + name, false).split("\n")) {
 
 					final String[] tokens = line.split(" ");
 
