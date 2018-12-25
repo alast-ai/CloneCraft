@@ -6,7 +6,6 @@ import static org.lwjgl.opengl.GL13.*;
 import static org.lwjgl.opengl.GL30.*;
 
 import java.awt.image.BufferedImage;
-import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.ByteBuffer;
@@ -17,6 +16,7 @@ import org.lwjgl.BufferUtils;
 
 import cc.antho.clonecraft.client.CloneCraftGame;
 import cc.antho.clonecraft.client.pack.PackLoader;
+import cc.antho.clonecraft.core.Loader;
 import cc.antho.clonecraft.core.log.Logger;
 import cc.antho.clonecraft.core.math.Mathf;
 import lombok.Getter;
@@ -26,24 +26,14 @@ public class Texture {
 	@Getter private final int handle;
 	@Getter private final int width, height;
 
-	public static final BufferedImage loadBufferedImage(final String file) throws IOException {
+	public static final BufferedImage loadBufferedImage(final String file, final boolean relative) throws IOException {
 
-		if (file.startsWith("/")) {
+		final InputStream is = Loader.getStream(file, relative);
 
-			final InputStream is = CloneCraftGame.class.getResourceAsStream(file);
-			final BufferedImage image = ImageIO.read(is);
-			is.close();
-			image.flush();
-			return image;
-
-		} else {
-
-			final File f = new File(file);
-			final BufferedImage image = ImageIO.read(f);
-			image.flush();
-			return image;
-
-		}
+		final BufferedImage image = ImageIO.read(is);
+		is.close();
+		image.flush();
+		return image;
 
 	}
 

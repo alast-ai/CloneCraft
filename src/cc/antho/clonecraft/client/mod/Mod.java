@@ -43,7 +43,7 @@ public class Mod {
 
 			try {
 
-				textures.put(texturename.substring(0, texturename.lastIndexOf('.')), Texture.loadBufferedImage("./CloneCraft/mods/" + name + "/textures/" + texturename));
+				textures.put(texturename.substring(0, texturename.lastIndexOf('.')), Texture.loadBufferedImage(Loader.GAME_DIR + "mods/" + name + "/textures/" + texturename, false));
 
 			} catch (final IOException e) {
 
@@ -129,7 +129,7 @@ public class Mod {
 
 		try {
 
-			crosshair = Texture.loadBufferedImage(crosshairfile.getAbsolutePath());
+			crosshair = Texture.loadBufferedImage(crosshairfile.getAbsolutePath(), false);
 
 		} catch (final IOException e) {
 
