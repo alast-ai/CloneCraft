@@ -134,9 +134,21 @@ public class Shader {
 
 	}
 
+	public void loadUniform1i(final String name, final int v0) {
+
+		glUniform1i(getUniformLocation(name), v0);
+
+	}
+
 	public void loadUniform1f(final String name, final float v0) {
 
 		glUniform1f(getUniformLocation(name), v0);
+
+	}
+
+	public void loadUniform2f(final String name, final float v0, final float v1) {
+
+		glUniform2f(getUniformLocation(name), v0, v1);
 
 	}
 
@@ -146,9 +158,21 @@ public class Shader {
 
 	}
 
+	public void loadUniform3f(final String name, final float v0, final float v1, final float v2) {
+
+		glUniform3f(getUniformLocation(name), v0, v1, v2);
+
+	}
+
 	public void loadUniform3f(final String name, final Vector3f v0) {
 
 		glUniform3f(getUniformLocation(name), v0.x, v0.y, v0.z);
+
+	}
+
+	public void loadUniform4f(final String name, final float v0, final float v1, final float v2, final float v3) {
+
+		glUniform4f(getUniformLocation(name), v0, v1, v2, v3);
 
 	}
 

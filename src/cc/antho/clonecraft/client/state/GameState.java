@@ -10,14 +10,15 @@ import org.joml.Matrix4f;
 import org.joml.Vector3f;
 
 import cc.antho.clonecraft.client.ClientListener;
-import cc.antho.clonecraft.client.NetworkClient;
 import cc.antho.clonecraft.client.CloneCraftGame;
+import cc.antho.clonecraft.client.NetworkClient;
 import cc.antho.clonecraft.client.PlayerStore;
 import cc.antho.clonecraft.client.core.Player;
 import cc.antho.clonecraft.client.core.Shader;
 import cc.antho.clonecraft.client.core.Texture;
 import cc.antho.clonecraft.client.mod.ModLoader;
-import cc.antho.clonecraft.client.ui.UIQuad;
+import cc.antho.clonecraft.client.ui.UIPanel;
+import cc.antho.clonecraft.client.ui.UIRenderer;
 import cc.antho.clonecraft.client.world.BlockType;
 import cc.antho.clonecraft.client.world.ChunkSection;
 import cc.antho.clonecraft.client.world.FreeBlock;
@@ -33,10 +34,12 @@ public class GameState extends State {
 	private final Player player = new Player();
 
 	@Getter private World world;
-	private Shader chunkShader, uiShader;
+	private Shader chunkShader;
 	private Texture atlas, crosshair;
 
 	private FreeBlock freeBlock;
+	private UIRenderer uiRenderer;
+	private UIPanel panel;
 
 	public void init() {
 
@@ -87,17 +90,14 @@ public class GameState extends State {
 
 		try {
 
-			String vertexShader = Shader.loadShaderString("/shaders/chunk_vertex.glsl");
-			String fragmentShader = Shader.loadShaderString("/shaders/chunk_fragment.glsl");
+			final String vertexShader = Shader.loadShaderString("/shaders/chunk_vertex.glsl");
+			final String fragmentShader = Shader.loadShaderString("/shaders/chunk_fragment.glsl");
 
 			chunkShader = new Shader(vertexShader, fragmentShader);
 
-			vertexShader = Shader.loadShaderString("/shaders/ui_vertex.glsl");
-			fragmentShader = Shader.loadShaderString("/shaders/ui_fragment.glsl");
-
-			uiShader = new Shader(vertexShader, fragmentShader);
-
-			UIQuad.create();
+			uiRenderer = new UIRenderer();
+			panel = new UIPanel();
+			uiRenderer.addElement(panel);
 
 		} catch (final IOException e) {
 
@@ -184,28 +184,16 @@ public class GameState extends State {
 
 		}
 
-		uiShader.bind();
-
 		final float width = CloneCraftGame.getInstance().getWindow().getWidth();
 		final float height = CloneCraftGame.getInstance().getWindow().getHeight();
 
-		final Matrix4f matrix = new Matrix4f();
-
-		if (width > height) matrix.scale(height / width, 1, 1);
-		else matrix.scale(1, width / height, 1);
-		matrix.scale(.05f);
+		if (width > height) panel.scale.set(height / width, 1f);
+		else panel.scale.set(1f, width / height);
+		panel.scale.mul(0.05f);
 
 		crosshair.bind(0);
-		uiShader.loadUniformMatrix4f("u_model", matrix);
 
-		glEnable(GL_BLEND);
-		glBlendFunc(GL_ONE_MINUS_DST_COLOR, GL_ZERO);
-		glDisable(GL_DEPTH_TEST);
-		glDepthMask(false);
-		UIQuad.render();
-		glEnable(GL_DEPTH_TEST);
-		glDepthMask(true);
-		glDisable(GL_BLEND);
+		uiRenderer.render();
 
 	}
 
@@ -216,8 +204,7 @@ public class GameState extends State {
 		ChunkThread.stopThreads();
 		chunkShader.shutdown();
 		atlas.shutdown();
-
-		UIQuad.shutdown();
+		uiRenderer.shutdown();
 
 	}
 

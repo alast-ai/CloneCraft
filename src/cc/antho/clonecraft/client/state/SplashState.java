@@ -46,8 +46,8 @@ public class SplashState extends State {
 
 		try {
 
-			final String vertexShader = Shader.loadShaderString("/shaders/ui_vertex.glsl");
-			final String fragmentShader = Shader.loadShaderString("/shaders/ui_fragment.glsl");
+			final String vertexShader = Shader.loadShaderString("/shaders/ui/ui_v.glsl");
+			final String fragmentShader = Shader.loadShaderString("/shaders/ui/ui_fragment.glsl");
 
 			uiShader = new Shader(vertexShader, fragmentShader);
 			splash = Texture.create("/textures/clonecraft_splash_l.png", false);
