@@ -2,15 +2,12 @@ package cc.antho.clonecraft.client.world.thread;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.locks.ReentrantLock;
 
 import org.joml.Vector2f;
 
 import cc.antho.clonecraft.client.world.Chunk;
 
 public abstract class ChunkThread {
-
-	public static final ReentrantLock lock = new ReentrantLock();
 
 	// Chunk thread instances
 	public static final ChunkModelThread modelThread = new ChunkModelThread();

@@ -1,11 +1,9 @@
 package cc.antho.clonecraft.client.world.thread;
 
-import static org.lwjgl.glfw.GLFW.*;
-
 import org.joml.Vector2f;
 import org.lwjgl.opengl.GL;
 
-import cc.antho.clonecraft.client.CloneCraftGame;
+import cc.antho.clonecraft.client.ContextManager;
 import cc.antho.clonecraft.client.Debugger;
 import cc.antho.clonecraft.client.world.Chunk;
 
@@ -45,21 +43,18 @@ public class ChunkUploadThread extends ChunkThread {
 			queue.remove(chunk);
 			Debugger.Values.chunks_queued_upload = queue.size();
 
-			lock.lock();
-			final long m = System.currentTimeMillis();
+			ContextManager.lock();
 
-			// TODO enforces pipeline flush
-			glfwMakeContextCurrent(CloneCraftGame.getInstance().getWindow().getHandle());
+			final long m = System.currentTimeMillis();
 
 			GL.createCapabilities();
 
 			chunk.getMesh().upload();
-			glfwMakeContextCurrent(0);
 
 			currentTime = System.currentTimeMillis() - m;
 			totalTime += currentTime;
 
-			lock.unlock();
+			ContextManager.unlock();
 
 		}, "Chunk Upload", false);
 

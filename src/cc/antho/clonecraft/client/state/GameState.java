@@ -1,6 +1,5 @@
 package cc.antho.clonecraft.client.state;
 
-import static org.lwjgl.glfw.GLFW.*;
 import static org.lwjgl.opengl.GL11.*;
 
 import java.awt.image.BufferedImage;
@@ -11,6 +10,7 @@ import org.joml.Vector3f;
 
 import cc.antho.clonecraft.client.ClientListener;
 import cc.antho.clonecraft.client.CloneCraftGame;
+import cc.antho.clonecraft.client.ContextManager;
 import cc.antho.clonecraft.client.NetworkClient;
 import cc.antho.clonecraft.client.PlayerStore;
 import cc.antho.clonecraft.client.core.Player;
@@ -43,8 +43,7 @@ public class GameState extends State {
 
 	public void init() {
 
-		ChunkThread.lock.lock();
-		glfwMakeContextCurrent(CloneCraftGame.getInstance().getWindow().getHandle());
+		ContextManager.lock();
 
 		loadAtlas();
 		loadShader();
@@ -61,8 +60,7 @@ public class GameState extends State {
 
 		CloneCraftGame.getInstance().getWindow().trigger();
 
-		glfwMakeContextCurrent(0);
-		ChunkThread.lock.unlock();
+		ContextManager.unlock();
 
 		ChunkThread.startThreads();
 

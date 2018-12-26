@@ -1,10 +1,8 @@
 package cc.antho.clonecraft.client.world.thread;
 
-import static org.lwjgl.glfw.GLFW.*;
-
 import org.lwjgl.opengl.GL;
 
-import cc.antho.clonecraft.client.CloneCraftGame;
+import cc.antho.clonecraft.client.ContextManager;
 import cc.antho.clonecraft.client.Debugger;
 import cc.antho.clonecraft.client.world.Chunk;
 
@@ -21,22 +19,17 @@ public class ChunkDeleteThread extends ChunkThread {
 			queue.remove(chunk);
 			Debugger.Values.chunks_queued_delete = queue.size();
 
-			lock.lock();
+			ContextManager.lock();
 			final long m = System.currentTimeMillis();
-
-			// TODO enforces pipeline flush
-			glfwMakeContextCurrent(CloneCraftGame.getInstance().getWindow().getHandle());
 
 			GL.createCapabilities();
 
 			chunk.getMesh().shutdown();
 
-			glfwMakeContextCurrent(0);
-
 			currentTime = System.currentTimeMillis() - m;
 			totalTime += currentTime;
 
-			lock.unlock();
+			ContextManager.unlock();
 
 		}, "Chunk Delete", true);
 

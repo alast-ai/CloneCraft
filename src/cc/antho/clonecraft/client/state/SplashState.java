@@ -1,33 +1,40 @@
 package cc.antho.clonecraft.client.state;
 
-import static org.lwjgl.glfw.GLFW.*;
 import static org.lwjgl.opengl.GL11.*;
 
 import java.io.IOException;
 
-import org.joml.Matrix4f;
-
 import cc.antho.clonecraft.client.CloneCraftGame;
-import cc.antho.clonecraft.client.core.Shader;
+import cc.antho.clonecraft.client.ContextManager;
+import cc.antho.clonecraft.client.Controls;
 import cc.antho.clonecraft.client.core.Texture2D;
-import cc.antho.clonecraft.client.ui.UIQuad;
-import cc.antho.clonecraft.client.world.thread.ChunkThread;
+import cc.antho.clonecraft.client.ui.UIRenderer;
+import cc.antho.clonecraft.client.ui.UITexture;
 import cc.antho.clonecraft.core.Config;
 import cc.antho.clonecraft.core.state.State;
 
 public class SplashState extends State {
 
-	// TODO there shouldn't be a black screen
-
-	private Shader uiShader;
-	private Texture2D splash;
+	private UIRenderer uiRenderer;
+	private UITexture splash;
 
 	public void init() {
 
-		ChunkThread.lock.lock();
-		glfwMakeContextCurrent(CloneCraftGame.getInstance().getWindow().getHandle());
+		ContextManager.lock();
 
-		loadUI();
+		uiRenderer = new UIRenderer();
+		splash = new UITexture();
+
+		try {
+
+			splash.texture = Texture2D.create("/textures/clonecraft_splash_l.png", false);
+			uiRenderer.addElement(splash);
+
+		} catch (final IOException e) {
+
+			e.printStackTrace();
+
+		}
 
 		glEnable(GL_TEXTURE_2D);
 		glEnable(GL_DEPTH_TEST);
@@ -37,67 +44,30 @@ public class SplashState extends State {
 
 		CloneCraftGame.getInstance().getWindow().trigger();
 
-		glfwMakeContextCurrent(0);
-		ChunkThread.lock.unlock();
-
-	}
-
-	private void loadUI() {
-
-		try {
-
-			final String vertexShader = Shader.loadShaderString("/shaders/ui/ui_v.glsl");
-			final String fragmentShader = Shader.loadShaderString("/shaders/ui/texture_f.glsl");
-
-			uiShader = new Shader(vertexShader, fragmentShader);
-			splash = Texture2D.create("/textures/clonecraft_splash_l.png", false);
-
-			UIQuad.create();
-
-		} catch (final IOException e) {
-
-			e.printStackTrace();
-
-		}
+		ContextManager.unlock();
 
 	}
 
 	public void tick() {
 
-		// TODO it should wait a certain amount of time before switching states
-		// (not keypress)
-		if (CloneCraftGame.getInput().isKeyDown(GLFW_KEY_SPACE)) manager.setState(new GameState());
+		// TODO change to menu after certain amount of time
+		if (CloneCraftGame.getInput().isKeyDown(Controls.JUMP)) manager.setState(new GameState());
 
 	}
 
 	public void render() {
 
+		glViewport(0, 0, CloneCraftGame.getInstance().getWindow().getWidth(), CloneCraftGame.getInstance().getWindow().getHeight());
 		glClear(Config.CLEAR);
 
-		uiShader.bind();
-
-		final Matrix4f matrix = new Matrix4f();
-
-		matrix.scale(1, 1, 1);
-
-		splash.bind(0);
-		uiShader.loadUniformMatrix4f("u_model", matrix);
-
-		glEnable(GL_BLEND);
-		glDisable(GL_DEPTH_TEST);
-		glDepthMask(false);
-		UIQuad.render();
-		glEnable(GL_DEPTH_TEST);
-		glDepthMask(true);
-		glDisable(GL_BLEND);
+		uiRenderer.render();
 
 	}
 
 	public void shutdown() {
 
-		UIQuad.shutdown();
-		uiShader.shutdown();
-		splash.shutdown();
+		uiRenderer.shutdown();
+		splash.texture.shutdown();
 
 	}
 
