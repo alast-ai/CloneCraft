@@ -27,7 +27,7 @@ public class SplashState extends State {
 
 		try {
 
-			splash.texture = Texture2D.create("/textures/clonecraft_splash_l.png", false);
+			splash.texture = Texture2D.create("/textures/clonecraft_splash.png", false);
 			uiRenderer.addElement(splash);
 
 		} catch (final IOException e) {
