@@ -9,7 +9,7 @@ import java.nio.FloatBuffer;
 
 import org.lwjgl.BufferUtils;
 
-import cc.antho.clonecraft.client.core.FloatVertexArray;
+import cc.antho.clonecraft.client.core.FloatArray;
 import cc.antho.clonecraft.client.pack.PackLoader;
 import lombok.Getter;
 
@@ -22,9 +22,9 @@ public class FreeBlock {
 
 	public FreeBlock(final BlockType type) {
 
-		final FloatVertexArray coordTmp = new FloatVertexArray();
-		final FloatVertexArray chunkPositions = new FloatVertexArray();
-		final FloatVertexArray chunkCoords = new FloatVertexArray();
+		final FloatArray coordTmp = new FloatArray();
+		final FloatArray chunkPositions = new FloatArray();
+		final FloatArray chunkCoords = new FloatArray();
 
 		if (type.isUseXModel()) {
 

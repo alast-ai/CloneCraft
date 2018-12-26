@@ -4,10 +4,10 @@ import static org.lwjgl.glfw.GLFW.*;
 
 import org.joml.Vector3f;
 
-import cc.antho.clonecraft.client.ClientListener;
-import cc.antho.clonecraft.client.NetworkClient;
 import cc.antho.clonecraft.client.CloneCraftGame;
 import cc.antho.clonecraft.client.Controls;
+import cc.antho.clonecraft.client.net.ClientListener;
+import cc.antho.clonecraft.client.net.NetworkClient;
 import cc.antho.clonecraft.client.world.BlockType;
 import cc.antho.clonecraft.client.world.FreeBlock;
 import cc.antho.clonecraft.client.world.World;

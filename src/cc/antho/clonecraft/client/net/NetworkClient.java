@@ -1,4 +1,4 @@
-package cc.antho.clonecraft.client;
+package cc.antho.clonecraft.client.net;
 
 import java.io.IOException;
 

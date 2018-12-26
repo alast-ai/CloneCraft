@@ -6,7 +6,7 @@ import java.nio.FloatBuffer;
 
 import org.lwjgl.BufferUtils;
 
-import cc.antho.clonecraft.client.core.FloatVertexArray;
+import cc.antho.clonecraft.client.core.FloatArray;
 import cc.antho.clonecraft.client.pack.PackLoader;
 import lombok.Getter;
 
@@ -29,13 +29,13 @@ public class ChunkMesh {
 	 */
 	void model() {
 
-		final FloatVertexArray chunkPositions = new FloatVertexArray();
-		final FloatVertexArray chunkCoords = new FloatVertexArray();
+		final FloatArray chunkPositions = new FloatArray();
+		final FloatArray chunkCoords = new FloatArray();
 
 		{
 
-			final FloatVertexArray chunkSectionPositions = new FloatVertexArray();
-			final FloatVertexArray coordTmp = new FloatVertexArray();
+			final FloatArray chunkSectionPositions = new FloatArray();
+			final FloatArray coordTmp = new FloatArray();
 
 			for (int yy = 0; yy < Chunk.SIZE; yy++) {
 
@@ -53,8 +53,8 @@ public class ChunkMesh {
 
 							if (block == null) continue;
 
-							final FloatVertexArray blockData = new FloatVertexArray();
-							final FloatVertexArray blockDataTexs = new FloatVertexArray();
+							final FloatArray blockData = new FloatArray();
+							final FloatArray blockDataTexs = new FloatArray();
 
 							final BlockType left = chunk.getWorld().getBlock(wx - 1, wy, wz);
 							final BlockType right = chunk.getWorld().getBlock(wx + 1, wy, wz);

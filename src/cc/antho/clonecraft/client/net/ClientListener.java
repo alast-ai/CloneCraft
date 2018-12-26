@@ -1,4 +1,4 @@
-package cc.antho.clonecraft.client;
+package cc.antho.clonecraft.client.net;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -7,6 +7,8 @@ import com.esotericsoftware.kryonet.Client;
 import com.esotericsoftware.kryonet.Connection;
 import com.esotericsoftware.kryonet.Listener;
 
+import cc.antho.clonecraft.client.CloneCraftGame;
+import cc.antho.clonecraft.client.PlayerStore;
 import cc.antho.clonecraft.client.state.GameState;
 import cc.antho.clonecraft.client.world.BlockType;
 import cc.antho.clonecraft.client.world.Chunk;
@@ -85,11 +87,15 @@ public final class ClientListener extends Listener implements EventListener {
 
 			final World world = ((GameState) CloneCraftGame.getInstance().getManager().getCurrentState()).getWorld();
 
-			for (final BlockUpdatePacket p : packet.changes)
-				world.setBlock(p.x, p.y, p.z, BlockType.getBlock(p.type));
+			if (!packet.changes.isEmpty()) {
 
-			final Chunk chunk = world.getChunk(packet.x, packet.z);
-			if (chunk != null) chunk.update();
+				for (final BlockUpdatePacket p : packet.changes)
+					world.setBlock(p.x, p.y, p.z, BlockType.getBlock(p.type));
+
+				final Chunk chunk = world.getChunk(packet.x, packet.z);
+				if (chunk != null) chunk.update();
+
+			}
 
 		}
 

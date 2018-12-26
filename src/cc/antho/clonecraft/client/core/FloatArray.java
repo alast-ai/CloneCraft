@@ -7,11 +7,11 @@ import org.joml.Vector2i;
 
 import cc.antho.clonecraft.core.math.RawFloat;
 
-public class FloatVertexArray {
+public class FloatArray {
 
 	private final List<RawFloat> data = new ArrayList<>();
 
-	public FloatVertexArray append(final float[] data) {
+	public FloatArray append(final float[] data) {
 
 		for (final float f : data)
 			this.data.add(new RawFloat(f));
@@ -20,7 +20,7 @@ public class FloatVertexArray {
 
 	}
 
-	public FloatVertexArray append(final FloatVertexArray data) {
+	public FloatArray append(final FloatArray data) {
 
 		this.data.addAll(data.data);
 
@@ -28,7 +28,7 @@ public class FloatVertexArray {
 
 	}
 
-	public FloatVertexArray add(final float x, final float y, final float z) {
+	public FloatArray add(final float x, final float y, final float z) {
 
 		for (int i = 0; i < data.size(); i += 3) {
 
@@ -42,7 +42,7 @@ public class FloatVertexArray {
 
 	}
 
-	public FloatVertexArray add(final float x, final float y) {
+	public FloatArray add(final float x, final float y) {
 
 		for (int i = 0; i < data.size(); i += 2) {
 
@@ -55,7 +55,7 @@ public class FloatVertexArray {
 
 	}
 
-	public FloatVertexArray mul(final float x, final float y) {
+	public FloatArray mul(final float x, final float y) {
 
 		for (int i = 0; i < data.size(); i += 2) {
 

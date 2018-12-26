@@ -1,4 +1,4 @@
-package cc.antho.clonecraft.client.mod;
+package cc.antho.clonecraft.core.mod;
 
 import java.awt.Graphics;
 import java.awt.image.BufferedImage;

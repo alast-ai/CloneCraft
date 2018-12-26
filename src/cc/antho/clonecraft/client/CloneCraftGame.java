@@ -8,6 +8,7 @@ import org.lwjgl.opengl.GL;
 import cc.antho.clonecraft.client.core.GameLoop;
 import cc.antho.clonecraft.client.core.Input;
 import cc.antho.clonecraft.client.core.Window;
+import cc.antho.clonecraft.client.net.NetworkClient;
 import cc.antho.clonecraft.client.state.SplashState;
 import cc.antho.clonecraft.core.Config;
 import cc.antho.clonecraft.core.log.Logger;

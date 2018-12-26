@@ -1,6 +1,6 @@
 package cc.antho.clonecraft.client.world;
 
-import cc.antho.clonecraft.client.core.FloatVertexArray;
+import cc.antho.clonecraft.client.core.FloatArray;
 import cc.antho.clonecraft.core.math.Mathf;
 import lombok.Getter;
 
@@ -108,7 +108,7 @@ public class BlockFace {
 
 	static {
 
-		X.positions = new FloatVertexArray().append(X.positions).add(rt / 4f, 0, rt / 4f).get();
+		X.positions = new FloatArray().append(X.positions).add(rt / 4f, 0, rt / 4f).get();
 
 		X.texCoords = new float[] {
 

@@ -8,15 +8,14 @@ import java.io.IOException;
 import org.joml.Matrix4f;
 import org.joml.Vector3f;
 
-import cc.antho.clonecraft.client.ClientListener;
 import cc.antho.clonecraft.client.CloneCraftGame;
 import cc.antho.clonecraft.client.ContextManager;
-import cc.antho.clonecraft.client.NetworkClient;
 import cc.antho.clonecraft.client.PlayerStore;
 import cc.antho.clonecraft.client.core.Player;
 import cc.antho.clonecraft.client.core.Shader;
 import cc.antho.clonecraft.client.core.Texture2D;
-import cc.antho.clonecraft.client.mod.ModLoader;
+import cc.antho.clonecraft.client.net.ClientListener;
+import cc.antho.clonecraft.client.net.NetworkClient;
 import cc.antho.clonecraft.client.ui.UIRenderer;
 import cc.antho.clonecraft.client.ui.UITexture;
 import cc.antho.clonecraft.client.world.BlockType;
@@ -26,6 +25,7 @@ import cc.antho.clonecraft.client.world.World;
 import cc.antho.clonecraft.client.world.thread.ChunkThread;
 import cc.antho.clonecraft.core.Config;
 import cc.antho.clonecraft.core.math.Mathf;
+import cc.antho.clonecraft.core.mod.ModLoader;
 import cc.antho.clonecraft.core.state.State;
 import lombok.Getter;
 
