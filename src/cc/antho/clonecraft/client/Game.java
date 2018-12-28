@@ -8,17 +8,17 @@ import org.lwjgl.opengl.GL;
 import cc.antho.clonecraft.client.core.GameLoop;
 import cc.antho.clonecraft.client.core.Input;
 import cc.antho.clonecraft.client.core.Window;
-import cc.antho.clonecraft.client.net.NetworkClient;
 import cc.antho.clonecraft.client.state.SplashState;
 import cc.antho.clonecraft.core.Config;
+import cc.antho.clonecraft.core.audio.AudioManager;
 import cc.antho.clonecraft.core.log.Logger;
 import cc.antho.clonecraft.core.state.StateManager;
 import lombok.Getter;
 
-public final class CloneCraftGame extends GameLoop {
+public final class Game extends GameLoop {
 
 	@Getter private static Thread thread;
-	@Getter private static CloneCraftGame instance;
+	@Getter private static Game instance;
 
 	@Getter private Window window;
 	@Getter private final StateManager manager = new StateManager();
@@ -29,7 +29,7 @@ public final class CloneCraftGame extends GameLoop {
 
 	}
 
-	private CloneCraftGame() {
+	private Game() {
 
 		super(Config.UPS_SUBDIVIDE);
 
@@ -37,12 +37,10 @@ public final class CloneCraftGame extends GameLoop {
 
 	public static final void main(final boolean openDebugger) {
 
-		NetworkClient.main();
-
 		thread = new Thread(() -> {
 
 			if (openDebugger) Debugger.start();
-			instance = new CloneCraftGame();
+			instance = new Game();
 			instance.start();
 
 		}, "CloneCraftGame");
@@ -53,6 +51,8 @@ public final class CloneCraftGame extends GameLoop {
 	}
 
 	protected void init() {
+
+		AudioManager.init();
 
 		if (!glfwInit()) new IllegalStateException("GLFW Failed to initialize").printStackTrace();
 		Logger.debug("Initialized glfw");
@@ -107,6 +107,8 @@ public final class CloneCraftGame extends GameLoop {
 	}
 
 	protected void shutdown() {
+
+		AudioManager.shutdown();
 
 		manager.setState(null);
 		window.shutdown();

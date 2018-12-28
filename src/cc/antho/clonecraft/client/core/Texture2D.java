@@ -14,7 +14,7 @@ import javax.imageio.ImageIO;
 
 import org.lwjgl.BufferUtils;
 
-import cc.antho.clonecraft.client.CloneCraftGame;
+import cc.antho.clonecraft.client.Game;
 import cc.antho.clonecraft.client.pack.PackLoader;
 import cc.antho.clonecraft.core.log.Logger;
 import cc.antho.clonecraft.core.math.Mathf;
@@ -27,7 +27,7 @@ public class Texture2D {
 
 	public static final Texture2D create(final String file, final boolean atlas) throws IOException {
 
-		final InputStream is = CloneCraftGame.class.getResourceAsStream(file);
+		final InputStream is = Game.class.getResourceAsStream(file);
 		final BufferedImage image = ImageIO.read(is);
 		final Texture2D texture = new Texture2D(image, atlas);
 		is.close();

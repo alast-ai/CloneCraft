@@ -38,8 +38,6 @@ public class Input {
 
 		this.window = window;
 
-		glfwSetInputMode(window.getHandle(), GLFW_CURSOR, GLFW_CURSOR_DISABLED);
-
 		glfwSetFramebufferSizeCallback(window.getHandle(), framebufferSizeCallback = new GLFWFramebufferSizeCallback() {
 
 			public final void invoke(final long window, final int width, final int height) {
@@ -117,6 +115,18 @@ public class Input {
 	public boolean isButtonDown(final int button) {
 
 		return buttons.contains(button);
+
+	}
+
+	public void lockCursor() {
+
+		glfwSetInputMode(window.getHandle(), GLFW_CURSOR, GLFW_CURSOR_DISABLED);
+
+	}
+
+	public void unlockCursor() {
+
+		glfwSetInputMode(window.getHandle(), GLFW_CURSOR, GLFW_CURSOR_NORMAL);
 
 	}
 

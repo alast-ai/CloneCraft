@@ -10,7 +10,7 @@ public class LoggerImpl extends Logger {
 
 	public void _error(final String s) {
 
-		System.out.println("[" + Thread.currentThread().getName() + "][error]: " + s);
+		System.err.println("[" + Thread.currentThread().getName() + "][error]: " + s);
 
 	}
 
@@ -23,6 +23,12 @@ public class LoggerImpl extends Logger {
 	public void _info(final String s) {
 
 		System.out.println("[" + Thread.currentThread().getName() + "][info]: " + s);
+
+	}
+
+	public void _trace(final String s) {
+
+		System.out.println("[" + Thread.currentThread().getName() + "][trace]: " + s);
 
 	}
 

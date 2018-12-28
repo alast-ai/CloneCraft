@@ -17,7 +17,7 @@ import org.joml.Vector3f;
 import org.joml.Vector4f;
 import org.lwjgl.BufferUtils;
 
-import cc.antho.clonecraft.client.CloneCraftGame;
+import cc.antho.clonecraft.client.Game;
 import cc.antho.clonecraft.core.log.Logger;
 import lombok.Getter;
 
@@ -58,7 +58,7 @@ public class Shader {
 
 	public static final String loadShaderString(final String file) throws IOException {
 
-		final InputStream vis = CloneCraftGame.class.getResourceAsStream(file);
+		final InputStream vis = Game.class.getResourceAsStream(file);
 
 		final InputStreamReader isr = new InputStreamReader(vis);
 		final BufferedReader br = new BufferedReader(isr);

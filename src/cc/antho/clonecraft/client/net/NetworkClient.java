@@ -10,37 +10,28 @@ import lombok.Getter;
 
 public final class NetworkClient {
 
-	private static Thread thread;
 	@Getter private static Client networkClient;
 
 	private NetworkClient() {
 
 	}
 
-	public static final void main() {
+	public static final void startNetworkClient() {
 
-		thread = new Thread(() -> {
+		networkClient = new Client(16384, 2048);
+		networkClient.start();
+		ClassRegister.register(networkClient);
+		networkClient.addListener(new ClientListener(networkClient));
 
-			networkClient = new Client(16384, 2048);
-			networkClient.start();
-			ClassRegister.register(networkClient);
-			networkClient.addListener(new ClientListener(networkClient));
+		try {
 
-			try {
+			networkClient.connect(5000, Config.ADDRESS, Config.TCP_PORT, Config.UDP_PORT);
 
-				networkClient.connect(5000, Config.ADDRESS, Config.TCP_PORT, Config.UDP_PORT);
+		} catch (final IOException e) {
 
-			} catch (final IOException e) {
+			e.printStackTrace();
 
-				System.err.println("AHHHHHHHHHHH");
-				e.printStackTrace();
-
-			}
-
-		}, "CloneCraftClient");
-
-		thread.setPriority(Thread.MAX_PRIORITY);
-		thread.start();
+		}
 
 	}
 

@@ -2,8 +2,8 @@ package cc.antho.clonecraft.client.core;
 
 import org.joml.Matrix4f;
 import org.joml.Vector3f;
-import org.joml.Vector4f;
 
+import cc.antho.clonecraft.core.TMP;
 import cc.antho.clonecraft.core.event.Event;
 import cc.antho.clonecraft.core.event.EventDispatcher;
 import cc.antho.clonecraft.core.event.EventListener;
@@ -42,25 +42,22 @@ public class Camera implements EventListener {
 
 		position.mul(-1f);
 
-		final Matrix4f invView = new Matrix4f();
-		view.invert(invView);
+		view.invert(TMP.m40);
 
 		{
 
-			final Vector4f v = new Vector4f(0f, 0f, -1f, 0f);
-			v.mul(invView);
+			TMP.v40.set(0f, 0f, -1f, 0f).mul(TMP.m40);
 
-			forward.set(v.x, v.y, v.z);
+			forward.set(TMP.v40.x, TMP.v40.y, TMP.v40.z);
 			forward.normalize();
 
 		}
 
 		{
 
-			final Vector4f v = new Vector4f(0f, 1f, 0f, 0f);
-			v.mul(invView);
+			TMP.v40.set(0f, 1f, 0f, 0f).mul(TMP.m40);
 
-			up.set(v.x, v.y, v.z);
+			up.set(TMP.v40.x, TMP.v40.y, TMP.v40.z);
 			up.normalize();
 
 		}

@@ -157,7 +157,7 @@ public class Debugger {
 
 					{
 
-						final long mainTotal = CloneCraftGame.getInstance().totalTime;
+						final long mainTotal = Game.getInstance().totalTime;
 						final long uploadTotal = ChunkThread.uploadThread.totalTime;
 						final long deleteTotal = ChunkThread.deleteThread.totalTime;
 						final long totalTime = mainTotal + uploadTotal + deleteTotal;
@@ -174,7 +174,7 @@ public class Debugger {
 
 					{
 
-						final long mainTotal = CloneCraftGame.getInstance().currentTime;
+						final long mainTotal = Game.getInstance().currentTime;
 						final long uploadTotal = ChunkThread.uploadThread.currentTime;
 						final long deleteTotal = ChunkThread.deleteThread.currentTime;
 						final long totalTime = mainTotal + uploadTotal + deleteTotal;

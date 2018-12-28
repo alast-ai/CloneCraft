@@ -4,7 +4,7 @@ import static org.lwjgl.glfw.GLFW.*;
 
 import org.joml.Vector3f;
 
-import cc.antho.clonecraft.client.CloneCraftGame;
+import cc.antho.clonecraft.client.Game;
 import cc.antho.clonecraft.client.Controls;
 import cc.antho.clonecraft.client.net.ClientListener;
 import cc.antho.clonecraft.client.net.NetworkClient;
@@ -49,15 +49,15 @@ public class Player {
 		velocity.x = 0;
 		velocity.z = 0;
 
-		final Input input = CloneCraftGame.getInput();
+		final Input input = Game.getInput();
 
-		final float deltaTime = (float) CloneCraftGame.getInstance().getDeltaTime();
+		final float deltaTime = (float) Game.getInstance().getDeltaTime();
 
 		informTimer += deltaTime;
 
 		// Rotate the camera using the mouse
-		camera.rotation.x += Controls.SENSITIVITY_Y * CloneCraftGame.getInput().getDifferecePos().y;
-		camera.rotation.y += Controls.SENSITIVITY_X * CloneCraftGame.getInput().getDifferecePos().x;
+		camera.rotation.x += Controls.SENSITIVITY_Y * Game.getInput().getDifferecePos().y;
+		camera.rotation.y += Controls.SENSITIVITY_X * Game.getInput().getDifferecePos().x;
 		camera.rotation.x = Mathf.clamp(camera.rotation.x, -AXIS_X_LIMIT, AXIS_X_LIMIT);
 		camera.rotation.y %= 360f;
 
@@ -226,7 +226,7 @@ public class Player {
 
 		if (!canBreak) {
 
-			timer += CloneCraftGame.getInstance().getDeltaTime();
+			timer += Game.getInstance().getDeltaTime();
 			if (timer > .2f) {
 
 				timer = 0;

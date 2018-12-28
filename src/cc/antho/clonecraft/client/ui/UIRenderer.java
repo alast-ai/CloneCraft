@@ -6,10 +6,8 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.joml.Matrix4f;
-import org.joml.Vector3f;
-
 import cc.antho.clonecraft.client.core.Shader;
+import cc.antho.clonecraft.core.TMP;
 
 public class UIRenderer {
 
@@ -92,10 +90,9 @@ public class UIRenderer {
 		panelShader.bind();
 		panelShader.loadUniform4f("u_color", element.color.r, element.color.g, element.color.b, element.color.a);
 
-		final Matrix4f matrix = new Matrix4f();
-		matrix.translate(new Vector3f(element.position, 0f));
-		matrix.scale(new Vector3f(element.scale, 1f));
-		panelShader.loadUniformMatrix4f("u_model", matrix);
+		TMP.m40.translation(TMP.v30.set(element.position, 0f));
+		TMP.m40.scale(TMP.v31.set(element.scale, 1f));
+		panelShader.loadUniformMatrix4f("u_model", TMP.m40);
 
 		UIQuad.render();
 
@@ -106,10 +103,9 @@ public class UIRenderer {
 		textureShader.bind();
 		element.texture.bind(0);
 
-		final Matrix4f matrix = new Matrix4f();
-		matrix.translate(new Vector3f(element.position, 0f));
-		matrix.scale(new Vector3f(element.scale, 1f));
-		textureShader.loadUniformMatrix4f("u_model", matrix);
+		TMP.m40.translation(TMP.v30.set(element.position, 0f));
+		TMP.m40.scale(TMP.v31.set(element.scale, 1f));
+		textureShader.loadUniformMatrix4f("u_model", TMP.m40);
 
 		UIQuad.render();
 

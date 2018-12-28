@@ -10,6 +10,7 @@ public abstract class Logger {
 	public static boolean use_error = true;
 	public static boolean use_debug = true;
 	public static boolean use_info = true;
+	public static boolean use_trace = true;
 
 	public abstract void _warn(String s);
 
@@ -18,6 +19,8 @@ public abstract class Logger {
 	public abstract void _debug(String s);
 
 	public abstract void _info(String s);
+
+	public abstract void _trace(String s);
 
 	public static void warn(final String s) {
 
@@ -47,6 +50,13 @@ public abstract class Logger {
 
 	}
 
+	public static void trace(final String s) {
+
+		if (!use_trace) return;
+		Objects.requireNonNull(logger)._trace(s);
+
+	}
+
 	public static void warn(final int s) {
 
 		warn(s + "");
@@ -71,6 +81,12 @@ public abstract class Logger {
 
 	}
 
+	public static void trace(final int s) {
+
+		trace(s + "");
+
+	}
+
 	public static void warn(final float s) {
 
 		warn(s + "");
@@ -92,6 +108,12 @@ public abstract class Logger {
 	public static void info(final float s) {
 
 		info(s + "");
+
+	}
+
+	public static void trace(final float s) {
+
+		trace(s + "");
 
 	}
 

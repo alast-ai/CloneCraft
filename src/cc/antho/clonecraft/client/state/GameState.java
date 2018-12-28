@@ -5,11 +5,10 @@ import static org.lwjgl.opengl.GL11.*;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 
-import org.joml.Matrix4f;
 import org.joml.Vector3f;
 
-import cc.antho.clonecraft.client.CloneCraftGame;
 import cc.antho.clonecraft.client.ContextManager;
+import cc.antho.clonecraft.client.Game;
 import cc.antho.clonecraft.client.PlayerStore;
 import cc.antho.clonecraft.client.core.Player;
 import cc.antho.clonecraft.client.core.Shader;
@@ -24,6 +23,9 @@ import cc.antho.clonecraft.client.world.FreeBlock;
 import cc.antho.clonecraft.client.world.World;
 import cc.antho.clonecraft.client.world.thread.ChunkThread;
 import cc.antho.clonecraft.core.Config;
+import cc.antho.clonecraft.core.TMP;
+import cc.antho.clonecraft.core.audio.AudioBuffer;
+import cc.antho.clonecraft.core.audio.AudioSource;
 import cc.antho.clonecraft.core.math.Mathf;
 import cc.antho.clonecraft.core.mod.ModLoader;
 import cc.antho.clonecraft.core.state.State;
@@ -41,7 +43,19 @@ public class GameState extends State {
 	private UIRenderer uiRenderer;
 	private UITexture crosshair;
 
+	private AudioBuffer audioBuffer;
+	private AudioSource audioSource;
+
 	public void init() {
+
+		audioBuffer = new AudioBuffer("/audio/charms.ogg");
+		audioSource = new AudioSource();
+
+		audioSource.attachBuffer(audioBuffer);
+		audioSource.setLooping(true);
+		audioSource.play();
+
+		Game.getInput().lockCursor();
 
 		ContextManager.lock();
 
@@ -58,11 +72,13 @@ public class GameState extends State {
 		glEnable(GL_CULL_FACE);
 		glCullFace(GL_BACK);
 
-		CloneCraftGame.getInstance().getWindow().trigger();
+		Game.getInstance().getWindow().trigger();
 
 		ContextManager.unlock();
 
 		ChunkThread.startThreads();
+
+		NetworkClient.startNetworkClient();
 
 	}
 
@@ -121,7 +137,7 @@ public class GameState extends State {
 		atlas.bind(0);
 		chunkShader.bind();
 
-		glViewport(0, 0, CloneCraftGame.getInstance().getWindow().getWidth(), CloneCraftGame.getInstance().getWindow().getHeight());
+		glViewport(0, 0, Game.getInstance().getWindow().getWidth(), Game.getInstance().getWindow().getHeight());
 
 		chunkShader.loadUniformMatrix4f("u_view", player.camera.getView());
 
@@ -134,9 +150,9 @@ public class GameState extends State {
 
 		glClear(Config.CLEAR);
 
-		final Matrix4f m = new Matrix4f();
+		TMP.m40.identity();
 
-		chunkShader.loadUniformMatrix4f("u_model", m);
+		chunkShader.loadUniformMatrix4f("u_model", TMP.m40);
 		world.render();
 
 		if (player.curDirty) {
@@ -153,17 +169,17 @@ public class GameState extends State {
 		final float offsetZ = .7f;
 
 		final Vector3f handPosition = new Vector3f();
-		handPosition.add(new Vector3f(player.camera.forward).mul(offsetZ));
-		handPosition.add(new Vector3f(player.camera.right).mul(offsetX));
-		handPosition.add(new Vector3f(player.camera.up).mul(offsetY));
+		handPosition.add(TMP.v30.set(player.camera.forward).mul(offsetZ));
+		handPosition.add(TMP.v31.set(player.camera.right).mul(offsetX));
+		handPosition.add(TMP.v32.set(player.camera.up).mul(offsetY));
 		handPosition.add(player.camera.position);
 
-		m.translation(handPosition);
-		m.scale(.4f);
-		m.rotate(Mathf.toRadians(-player.camera.rotation.z), 0, 0, 1);
-		m.rotate(Mathf.toRadians(-player.camera.rotation.y), 0, 1, 0);
-		m.rotate(Mathf.toRadians(-player.camera.rotation.x), 1, 0, 0);
-		chunkShader.loadUniformMatrix4f("u_model", m);
+		TMP.m40.translation(handPosition);
+		TMP.m40.scale(.4f);
+		TMP.m40.rotate(Mathf.toRadians(-player.camera.rotation.z), 0, 0, 1);
+		TMP.m40.rotate(Mathf.toRadians(-player.camera.rotation.y), 0, 1, 0);
+		TMP.m40.rotate(Mathf.toRadians(-player.camera.rotation.x), 1, 0, 0);
+		chunkShader.loadUniformMatrix4f("u_model", TMP.m40);
 
 		glDisable(GL_DEPTH_TEST);
 		player.curBlock.render();
@@ -173,8 +189,8 @@ public class GameState extends State {
 
 			for (final PlayerStore store : ClientListener.players.values()) {
 
-				m.translation(store.position);
-				chunkShader.loadUniformMatrix4f("u_model", m);
+				TMP.m40.translation(store.position);
+				chunkShader.loadUniformMatrix4f("u_model", TMP.m40);
 
 				freeBlock.render();
 
@@ -182,8 +198,8 @@ public class GameState extends State {
 
 		}
 
-		final float width = CloneCraftGame.getInstance().getWindow().getWidth();
-		final float height = CloneCraftGame.getInstance().getWindow().getHeight();
+		final float width = Game.getInstance().getWindow().getWidth();
+		final float height = Game.getInstance().getWindow().getHeight();
 
 		if (width > height) crosshair.scale.set(height / width, 1f);
 		else crosshair.scale.set(1f, width / height);
@@ -194,6 +210,9 @@ public class GameState extends State {
 	}
 
 	public void shutdown() {
+
+		audioBuffer.shutdown();
+		audioSource.shutdown();
 
 		NetworkClient.getNetworkClient().stop();
 

@@ -7,7 +7,7 @@ import com.esotericsoftware.kryonet.Client;
 import com.esotericsoftware.kryonet.Connection;
 import com.esotericsoftware.kryonet.Listener;
 
-import cc.antho.clonecraft.client.CloneCraftGame;
+import cc.antho.clonecraft.client.Game;
 import cc.antho.clonecraft.client.PlayerStore;
 import cc.antho.clonecraft.client.state.GameState;
 import cc.antho.clonecraft.client.world.BlockType;
@@ -45,7 +45,7 @@ public final class ClientListener extends Listener implements EventListener {
 
 			final BlockUpdatePacket p = (BlockUpdatePacket) object;
 
-			final World world = ((GameState) CloneCraftGame.getInstance().getManager().getCurrentState()).getWorld();
+			final World world = ((GameState) Game.getInstance().getManager().getCurrentState()).getWorld();
 			world.setBlock(p.x, p.y, p.z, BlockType.getBlock(p.type));
 			final Chunk chunk = world.getChunkFromWorldCoord(p.x, p.z);
 			if (chunk != null) chunk.update();
@@ -85,7 +85,7 @@ public final class ClientListener extends Listener implements EventListener {
 
 			final ChunkChangesPacket packet = (ChunkChangesPacket) object;
 
-			final World world = ((GameState) CloneCraftGame.getInstance().getManager().getCurrentState()).getWorld();
+			final World world = ((GameState) Game.getInstance().getManager().getCurrentState()).getWorld();
 
 			if (!packet.changes.isEmpty()) {
 
