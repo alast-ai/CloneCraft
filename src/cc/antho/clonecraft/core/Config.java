@@ -47,7 +47,7 @@ public final class Config {
 			try {
 
 				file.createNewFile();
-				final String content = Loader.loadFileIntoString("/config.properties", true);
+				final String content = Loader.loadString("/config.properties", true);
 				final FileWriter writer = new FileWriter(file);
 				writer.write(content);
 				writer.close();

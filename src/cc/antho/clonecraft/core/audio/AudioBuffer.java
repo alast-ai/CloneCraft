@@ -34,12 +34,8 @@ public class AudioBuffer {
 		try {
 
 			final InputStream stream = Loader.getStream(file, true);
-			final ByteArrayOutputStream os = new ByteArrayOutputStream();
-			final byte[] tmp = new byte[1024];
-			int len;
-			while ((len = stream.read(tmp)) != -1)
-				os.write(tmp, 0, len);
-			final byte[] data = os.toByteArray();
+			final byte[] data = Loader.loadByteArray(stream);
+
 			buffer = BufferUtils.createByteBuffer(data.length);
 			buffer.put(data);
 			buffer.flip();

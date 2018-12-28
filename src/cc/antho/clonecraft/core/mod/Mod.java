@@ -72,7 +72,7 @@ public class Mod {
 
 			try {
 
-				for (final String line : Loader.loadFileIntoString(Loader.GAME_DIR + "mods/" + this.name + "/modifiers/" + name, false).split("\n")) {
+				for (final String line : Loader.loadString(Loader.GAME_DIR + "mods/" + this.name + "/modifiers/" + name, false).split("\n")) {
 
 					final String[] tokens = line.split(" ");
 
