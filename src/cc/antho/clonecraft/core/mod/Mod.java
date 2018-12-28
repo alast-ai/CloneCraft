@@ -42,7 +42,7 @@ public class Mod {
 
 			try {
 
-				textures.put(texturename.substring(0, texturename.lastIndexOf('.')), Loader.loadBufferedImage(Loader.GAME_DIR + "mods/" + name + "/textures/" + texturename, false));
+				textures.put(texturename.substring(0, texturename.lastIndexOf('.')), Loader.loadBufferedImage(Loader.getStream(Loader.GAME_DIR + "mods/" + name + "/textures/" + texturename, false)));
 
 			} catch (final IOException e) {
 
@@ -72,7 +72,7 @@ public class Mod {
 
 			try {
 
-				for (final String line : Loader.loadString(Loader.GAME_DIR + "mods/" + this.name + "/modifiers/" + name, false).split("\n")) {
+				for (final String line : Loader.loadString(Loader.getStream(Loader.GAME_DIR + "mods/" + this.name + "/modifiers/" + name, false)).split("\n")) {
 
 					final String[] tokens = line.split(" ");
 
@@ -128,7 +128,7 @@ public class Mod {
 
 		try {
 
-			crosshair = Loader.loadBufferedImage(crosshairfile.getAbsolutePath(), false);
+			crosshair = Loader.loadBufferedImage(Loader.getStream(crosshairfile.getAbsolutePath(), false));
 
 		} catch (final IOException e) {
 

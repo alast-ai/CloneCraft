@@ -39,20 +39,18 @@ public final class Loader {
 
 	}
 
-	public static final BufferedImage loadBufferedImage(final String file, final boolean relative) throws IOException {
+	public static final BufferedImage loadBufferedImage(final InputStream stream) throws IOException {
 
-		final InputStream is = Loader.getStream(file, relative);
-
-		final BufferedImage image = ImageIO.read(is);
-		is.close();
+		final BufferedImage image = ImageIO.read(stream);
+		stream.close();
 		image.flush();
+
 		return image;
 
 	}
 
-	public static final String loadString(final String file, final boolean relative) throws IOException {
+	public static final String loadString(final InputStream stream) throws IOException {
 
-		final InputStream stream = getStream(file, relative);
 		final InputStreamReader isr = new InputStreamReader(stream);
 		final BufferedReader br = new BufferedReader(isr);
 
