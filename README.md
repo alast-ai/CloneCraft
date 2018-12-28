@@ -41,7 +41,7 @@ CloneCraft is still in heavy development.
 ## Dependencies
 
 * [Lombok](https://projectlombok.org/download). This is a simple utility library that we use.
-* [LWJGL3](https://www.lwjgl.org/customize). This gives us access to opengl and other things that we will use. Select the None preset and for contents select, GLFW, and OpenGL, under addons select, JOML, select the natives for you platform and download the zip.
+* [LWJGL3](https://www.lwjgl.org/customize). This gives us access to opengl and other things that we will use. Select the None preset and for contents select, GLFW, and OpenGL, OpenAL and stb, under addons select, JOML, select the natives for you platform and download the zip.
 * [Kryonet](https://github.com/EsotericSoftware/kryonet/releases/download/kryonet-2.21/kryonet-2.21.zip). This gives up an easier time with networking.
 
 ## Getting the Source
