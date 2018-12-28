@@ -5,7 +5,6 @@ import static org.lwjgl.stb.STBVorbis.*;
 import static org.lwjgl.system.MemoryStack.*;
 import static org.lwjgl.system.libc.LibCStdlib.*;
 
-import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.ByteBuffer;
@@ -15,7 +14,6 @@ import java.nio.ShortBuffer;
 import org.lwjgl.BufferUtils;
 
 import cc.antho.clonecraft.core.Loader;
-import cc.antho.clonecraft.core.log.Logger;
 import lombok.Getter;
 
 public class AudioBuffer {
@@ -64,11 +62,15 @@ public class AudioBuffer {
 
 		free(rawAudioBuffer);
 
+		AudioManager.add(this);
+
 	}
 
 	public void shutdown() {
 
 		alDeleteBuffers(handle);
+
+		AudioManager.remove(this);
 
 	}
 

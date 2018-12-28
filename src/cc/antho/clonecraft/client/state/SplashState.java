@@ -29,6 +29,7 @@ public class SplashState extends State {
 		try {
 
 			splash.texture = Texture2D.create("/textures/clonecraft_splash.png", false);
+			splash.scale.set(.8f);
 			uiRenderer.addElement(splash);
 
 		} catch (final IOException e) {
@@ -53,6 +54,8 @@ public class SplashState extends State {
 
 		timer -= Game.getInstance().getDeltaTime();
 		if (timer <= 0d) manager.setState(new MenuState());
+
+		splash.scale.add((float) Game.getInstance().getDeltaTime() / 5f, (float) Game.getInstance().getDeltaTime() / 5f);
 
 	}
 

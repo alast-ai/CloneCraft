@@ -56,7 +56,8 @@ public final class Loader {
 
 		String line;
 		final StringBuilder builder = new StringBuilder();
-		for (;;) {
+
+		while (true) {
 
 			line = br.readLine();
 			if (line == null) break;

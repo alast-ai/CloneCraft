@@ -7,10 +7,13 @@ import lombok.Getter;
 public class AudioSource {
 
 	@Getter private final int handle;
+	@Getter private float gain = 1f;
 
 	public AudioSource() {
 
 		handle = alGenSources();
+
+		AudioManager.add(this);
 
 	}
 
@@ -23,6 +26,13 @@ public class AudioSource {
 	public void setLooping(final boolean looping) {
 
 		alSourcei(handle, AL_LOOPING, looping ? AL_TRUE : AL_FALSE);
+
+	}
+
+	public void setGain(final float gain) {
+
+		this.gain = gain;
+		AudioManager.update(this);
 
 	}
 
@@ -47,6 +57,8 @@ public class AudioSource {
 	public void shutdown() {
 
 		alDeleteSources(handle);
+
+		AudioManager.remove(this);
 
 	}
 
