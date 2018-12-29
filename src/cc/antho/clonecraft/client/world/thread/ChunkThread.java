@@ -14,9 +14,6 @@ public abstract class ChunkThread {
 	public static final ChunkUploadThread uploadThread = new ChunkUploadThread();
 	public static final ChunkDeleteThread deleteThread = new ChunkDeleteThread();
 
-	public long totalTime;
-	public long currentTime;
-
 	protected Thread thread;
 	protected final List<Chunk> queue = new ArrayList<>();
 	private boolean syncAdd;
@@ -52,6 +49,9 @@ public abstract class ChunkThread {
 	}
 
 	public void add(final Chunk chunk) {
+
+		while (thread.isInterrupted())
+			return;
 
 		if (syncAdd) synchronized (queue) {
 
@@ -113,10 +113,12 @@ public abstract class ChunkThread {
 	public static void stopThreads() {
 
 		modelThread.interrupt();
-		uploadThread.interrupt();
-		deleteThread.interrupt();
 		modelThread.join();
+
+		uploadThread.interrupt();
 		uploadThread.join();
+
+		deleteThread.interrupt();
 		deleteThread.join();
 
 	}

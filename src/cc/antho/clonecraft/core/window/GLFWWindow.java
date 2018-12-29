@@ -99,7 +99,6 @@ public class GLFWWindow implements EventListener {
 		GL.createCapabilities();
 
 		EventDispatcher.addListener(this);
-		trigger();
 
 		Logger.info("Created GLFW window " + this);
 

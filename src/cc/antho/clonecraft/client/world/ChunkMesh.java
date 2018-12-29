@@ -9,8 +9,8 @@ import java.nio.FloatBuffer;
 
 import org.lwjgl.BufferUtils;
 
+import cc.antho.clonecraft.client.PackLoader;
 import cc.antho.clonecraft.client.core.FloatArray;
-import cc.antho.clonecraft.client.pack.PackLoader;
 import lombok.Getter;
 
 public class ChunkMesh {

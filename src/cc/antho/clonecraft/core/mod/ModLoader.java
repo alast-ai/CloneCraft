@@ -11,7 +11,7 @@ import java.util.Map;
 
 import org.joml.Vector2i;
 
-import cc.antho.clonecraft.client.pack.PackLoader;
+import cc.antho.clonecraft.client.PackLoader;
 import cc.antho.clonecraft.core.log.Logger;
 import cc.antho.clonecraft.core.math.Mathf;
 

@@ -19,6 +19,7 @@ public final class Game extends GameLoop {
 	@Getter private static Thread thread;
 	@Getter private static GLFWWindow window;
 	@Getter private static final StateManager manager = new StateManager();
+	@Getter private static Renderer renderer;
 
 	private Game() {
 
@@ -51,9 +52,12 @@ public final class Game extends GameLoop {
 
 		AudioManager.init();
 
+		renderer = new Renderer();
+		renderer.init();
+		window.trigger();
+
 		manager.setState(new SplashState());
 
-		glClearColor(.7f, .8f, .9f, 1f);
 		glfwMakeContextCurrent(0);
 
 	}
@@ -88,6 +92,9 @@ public final class Game extends GameLoop {
 	protected void shutdown() {
 
 		manager.setState(null);
+		manager.updateStates();
+
+		renderer.shutdown();
 
 		AudioManager.shutdown();
 

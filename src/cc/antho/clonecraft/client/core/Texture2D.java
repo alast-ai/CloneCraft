@@ -15,7 +15,7 @@ import javax.imageio.ImageIO;
 import org.lwjgl.BufferUtils;
 
 import cc.antho.clonecraft.client.Game;
-import cc.antho.clonecraft.client.pack.PackLoader;
+import cc.antho.clonecraft.client.PackLoader;
 import cc.antho.clonecraft.core.log.Logger;
 import cc.antho.clonecraft.core.math.Mathf;
 import lombok.Getter;

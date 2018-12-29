@@ -1,4 +1,4 @@
-package cc.antho.clonecraft.client.pack;
+package cc.antho.clonecraft.client;
 
 public class PackLoader {
 

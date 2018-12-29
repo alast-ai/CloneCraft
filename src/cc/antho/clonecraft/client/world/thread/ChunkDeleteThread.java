@@ -8,6 +8,8 @@ import cc.antho.clonecraft.client.world.Chunk;
 
 public class ChunkDeleteThread extends ChunkThread {
 
+	private boolean created = false;
+
 	ChunkDeleteThread() {
 
 		create(() -> {
@@ -20,14 +22,15 @@ public class ChunkDeleteThread extends ChunkThread {
 			Debugger.Values.chunks_queued_delete = queue.size();
 
 			ContextManager.lock();
-			final long m = System.currentTimeMillis();
 
-			GL.createCapabilities();
+			if (!created) {
+
+				GL.createCapabilities();
+				created = true;
+
+			}
 
 			chunk.getMesh().shutdown();
-
-			currentTime = System.currentTimeMillis() - m;
-			totalTime += currentTime;
 
 			ContextManager.unlock();
 

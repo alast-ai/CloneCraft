@@ -9,6 +9,8 @@ import cc.antho.clonecraft.client.world.Chunk;
 
 public class ChunkUploadThread extends ChunkThread {
 
+	private boolean created = false;
+
 	ChunkUploadThread() {
 
 		create(() -> {
@@ -45,14 +47,14 @@ public class ChunkUploadThread extends ChunkThread {
 
 			ContextManager.lock();
 
-			final long m = System.currentTimeMillis();
+			if (!created) {
 
-			GL.createCapabilities();
+				GL.createCapabilities();
+				created = true;
+
+			}
 
 			chunk.getMesh().upload();
-
-			currentTime = System.currentTimeMillis() - m;
-			totalTime += currentTime;
 
 			ContextManager.unlock();
 
