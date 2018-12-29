@@ -50,7 +50,7 @@ public class MenuState extends State {
 		glEnable(GL_CULL_FACE);
 		glCullFace(GL_BACK);
 
-		Game.getInstance().getWindow().trigger();
+		Game.getWindow().trigger();
 
 		ContextManager.unlock();
 
@@ -58,13 +58,13 @@ public class MenuState extends State {
 
 	public void tick() {
 
-		if (Game.getInput().isKeyDown(Controls.JUMP)) manager.setState(new GameState());
+		if (Game.getWindow().getInput().isKeyDown(Controls.JUMP)) manager.setState(new GameState());
 
 	}
 
 	public void render() {
 
-		glViewport(0, 0, Game.getInstance().getWindow().getWidth(), Game.getInstance().getWindow().getHeight());
+		glViewport(0, 0, Game.getWindow().getWidth(), Game.getWindow().getHeight());
 		glClear(Config.CLEAR);
 
 		uiRenderer.render();

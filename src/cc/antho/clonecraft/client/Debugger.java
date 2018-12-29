@@ -14,7 +14,6 @@ import java.util.Set;
 
 import javax.swing.JFrame;
 
-import cc.antho.clonecraft.client.world.thread.ChunkThread;
 import cc.antho.clonecraft.core.math.Mathf;
 import lombok.Getter;
 
@@ -35,7 +34,7 @@ public class Debugger {
 
 	}
 
-	public static void start() {
+	public static void startThread() {
 
 		thread = new Thread(() -> {
 
@@ -151,40 +150,6 @@ public class Debugger {
 					val += inc;
 
 					g.setColor(Color.WHITE);
-
-					val += inc;
-					g.drawString("-- Context Threads (Overall) --", 0, val += inc);
-
-					{
-
-						final long mainTotal = Game.getInstance().totalTime;
-						final long uploadTotal = ChunkThread.uploadThread.totalTime;
-						final long deleteTotal = ChunkThread.deleteThread.totalTime;
-						final long totalTime = mainTotal + uploadTotal + deleteTotal;
-
-						g.drawString("main " + Mathf.round((float) mainTotal / (float) totalTime * 100f) + "%", 0, val += inc);
-						g.drawString("upload " + Mathf.round((float) uploadTotal / (float) totalTime * 100f) + "%", 0, val += inc);
-						g.drawString("delete " + Mathf.round((float) deleteTotal / (float) totalTime * 100f) + "%", 0, val += inc);
-						g.drawString("time " + totalTime + "ms", 0, val += inc);
-
-					}
-
-					val += inc;
-					g.drawString("-- Context Threads (Current) --", 0, val += inc);
-
-					{
-
-						final long mainTotal = Game.getInstance().currentTime;
-						final long uploadTotal = ChunkThread.uploadThread.currentTime;
-						final long deleteTotal = ChunkThread.deleteThread.currentTime;
-						final long totalTime = mainTotal + uploadTotal + deleteTotal;
-
-						g.drawString("main " + Mathf.round((float) mainTotal / (float) totalTime * 100f) + "%", 0, val += inc);
-						g.drawString("upload " + Mathf.round((float) uploadTotal / (float) totalTime * 100f) + "%", 0, val += inc);
-						g.drawString("delete " + Mathf.round((float) deleteTotal / (float) totalTime * 100f) + "%", 0, val += inc);
-						g.drawString("time " + totalTime + "ms", 0, val += inc);
-
-					}
 
 					val += inc;
 					g.drawString("-- Chunk Queues --", 0, val += inc);

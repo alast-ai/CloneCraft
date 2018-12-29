@@ -84,7 +84,9 @@ public final class AudioManager {
 		final ALCCapabilities alcCapabilities = ALC.createCapabilities(device);
 		final ALCapabilities alCapabilities = AL.createCapabilities(alcCapabilities);
 
-		if (!alCapabilities.OpenAL10) Logger.error("Yeah audio wont work sooo :/");
+		if (!alCapabilities.OpenAL10) Logger.error("OpenAL 1.0 is not supported");
+
+		Logger.info("Initialized OpenAL");
 
 	}
 
@@ -92,6 +94,7 @@ public final class AudioManager {
 
 		alcDestroyContext(context);
 		alcCloseDevice(device);
+		Logger.info("Terminated OpenAL");
 
 	}
 

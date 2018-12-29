@@ -45,7 +45,7 @@ public final class ClientListener extends Listener implements EventListener {
 
 			final BlockUpdatePacket p = (BlockUpdatePacket) object;
 
-			final World world = ((GameState) Game.getInstance().getManager().getCurrentState()).getWorld();
+			final World world = ((GameState) Game.getManager().getCurrentState()).getWorld();
 			world.setBlock(p.x, p.y, p.z, BlockType.getBlock(p.type));
 			final Chunk chunk = world.getChunkFromWorldCoord(p.x, p.z);
 			if (chunk != null) chunk.update();
@@ -85,7 +85,7 @@ public final class ClientListener extends Listener implements EventListener {
 
 			final ChunkChangesPacket packet = (ChunkChangesPacket) object;
 
-			final World world = ((GameState) Game.getInstance().getManager().getCurrentState()).getWorld();
+			final World world = ((GameState) Game.getManager().getCurrentState()).getWorld();
 
 			if (!packet.changes.isEmpty()) {
 

@@ -55,7 +55,7 @@ public class GameState extends State {
 		audioSource.setLooping(true);
 		audioSource.play();
 
-		Game.getInput().lockCursor();
+		Game.getWindow().getInput().lockCursor();
 
 		ContextManager.lock();
 
@@ -72,7 +72,7 @@ public class GameState extends State {
 		glEnable(GL_CULL_FACE);
 		glCullFace(GL_BACK);
 
-		Game.getInstance().getWindow().trigger();
+		Game.getWindow().trigger();
 
 		ContextManager.unlock();
 
@@ -137,7 +137,7 @@ public class GameState extends State {
 		atlas.bind(0);
 		chunkShader.bind();
 
-		glViewport(0, 0, Game.getInstance().getWindow().getWidth(), Game.getInstance().getWindow().getHeight());
+		glViewport(0, 0, Game.getWindow().getWidth(), Game.getWindow().getHeight());
 
 		chunkShader.loadUniformMatrix4f("u_view", player.camera.getView());
 
@@ -198,8 +198,8 @@ public class GameState extends State {
 
 		}
 
-		final float width = Game.getInstance().getWindow().getWidth();
-		final float height = Game.getInstance().getWindow().getHeight();
+		final float width = Game.getWindow().getWidth();
+		final float height = Game.getWindow().getHeight();
 
 		if (width > height) crosshair.scale.set(height / width, 1f);
 		else crosshair.scale.set(1f, width / height);

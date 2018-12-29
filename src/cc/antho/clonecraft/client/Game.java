@@ -3,43 +3,33 @@ package cc.antho.clonecraft.client;
 import static org.lwjgl.glfw.GLFW.*;
 import static org.lwjgl.opengl.GL11.*;
 
-import org.lwjgl.opengl.GL;
+import org.lwjgl.Version;
 
 import cc.antho.clonecraft.client.core.GameLoop;
-import cc.antho.clonecraft.client.core.Input;
-import cc.antho.clonecraft.client.core.Window;
 import cc.antho.clonecraft.client.state.SplashState;
-import cc.antho.clonecraft.core.Config;
 import cc.antho.clonecraft.core.audio.AudioManager;
 import cc.antho.clonecraft.core.log.Logger;
 import cc.antho.clonecraft.core.state.StateManager;
+import cc.antho.clonecraft.core.window.GLFWWindow;
 import lombok.Getter;
 
 public final class Game extends GameLoop {
 
-	@Getter private static Thread thread;
 	@Getter private static Game instance;
-
-	@Getter private Window window;
-	@Getter private final StateManager manager = new StateManager();
-
-	public static Input getInput() {
-
-		return getInstance().getWindow().getInput();
-
-	}
+	@Getter private static Thread thread;
+	@Getter private static GLFWWindow window;
+	@Getter private static final StateManager manager = new StateManager();
 
 	private Game() {
 
-		super(Config.UPS_SUBDIVIDE);
+		super(100);
 
 	}
 
-	public static final void main(final boolean openDebugger) {
+	public static final void startThread() {
 
 		thread = new Thread(() -> {
 
-			if (openDebugger) Debugger.start();
 			instance = new Game();
 			instance.start();
 
@@ -52,19 +42,18 @@ public final class Game extends GameLoop {
 
 	protected void init() {
 
+		GLFWWindow.createPrint(System.err);
+		GLFWWindow.init();
+		window = new GLFWWindow(1280, 720, "CloneCraft", 0l, 0l);
+
+		Logger.info(Version.getVersion());
+		Logger.info(glGetString(GL_VERSION));
+
 		AudioManager.init();
-
-		if (!glfwInit()) new IllegalStateException("GLFW Failed to initialize").printStackTrace();
-		Logger.debug("Initialized glfw");
-
-		window = new Window(Config.DEFAULT_WIDTH, Config.DEFAULT_HEIGHT, Config.USE_FULLSCREEN, Config.USE_VSYNC);
-		Logger.info("Created window");
 
 		manager.setState(new SplashState());
 
-		Logger.info(glGetString(GL_VERSION));
-
-		glClearColor(Config.CLEAR_RED, Config.CLEAR_GREEN, Config.CLEAR_BLUE, Config.CLEAR_ALPHA);
+		glClearColor(.7f, .8f, .9f, 1f);
 		glfwMakeContextCurrent(0);
 
 	}
@@ -85,22 +74,12 @@ public final class Game extends GameLoop {
 
 	}
 
-	public long currentTime, totalTime;
-
 	protected void render() {
 
 		ContextManager.lock();
 
-		final long m = System.currentTimeMillis();
-		glfwMakeContextCurrent(window.getHandle());
-
 		manager.render();
 		window.swapBuffers();
-
-		glfwMakeContextCurrent(0);
-
-		currentTime = System.currentTimeMillis() - m;
-		totalTime += currentTime;
 
 		ContextManager.unlock();
 
@@ -108,12 +87,14 @@ public final class Game extends GameLoop {
 
 	protected void shutdown() {
 
+		manager.setState(null);
+
 		AudioManager.shutdown();
 
-		manager.setState(null);
-		window.shutdown();
-		GL.destroy();
-		glfwTerminate();
+		window.freeCallbacks();
+		window.destroy();
+		GLFWWindow.terminate();
+		GLFWWindow.removePrint();
 
 	}
 

@@ -16,6 +16,7 @@ import cc.antho.clonecraft.core.events.NetworkPacketEvent;
 import cc.antho.clonecraft.core.math.Mathf;
 import cc.antho.clonecraft.core.packet.BlockUpdatePacket;
 import cc.antho.clonecraft.core.packet.PlayerMovePacket;
+import cc.antho.clonecraft.core.window.GLFWInput;
 import lombok.Getter;
 
 public class Player {
@@ -49,15 +50,15 @@ public class Player {
 		velocity.x = 0;
 		velocity.z = 0;
 
-		final Input input = Game.getInput();
+		final GLFWInput input = Game.getWindow().getInput();
 
 		final float deltaTime = (float) Game.getInstance().getDeltaTime();
 
 		informTimer += deltaTime;
 
 		// Rotate the camera using the mouse
-		camera.rotation.x += Controls.SENSITIVITY_Y * Game.getInput().getDifferecePos().y;
-		camera.rotation.y += Controls.SENSITIVITY_X * Game.getInput().getDifferecePos().x;
+		camera.rotation.x += Controls.SENSITIVITY_Y * input.getDifferecePos().y;
+		camera.rotation.y += Controls.SENSITIVITY_X * input.getDifferecePos().x;
 		camera.rotation.x = Mathf.clamp(camera.rotation.x, -AXIS_X_LIMIT, AXIS_X_LIMIT);
 		camera.rotation.y %= 360f;
 

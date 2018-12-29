@@ -1,20 +1,20 @@
 package cc.antho.clonecraft.client.core;
 
-import static org.lwjgl.glfw.GLFW.*;
-
 import cc.antho.clonecraft.client.Debugger;
+import cc.antho.clonecraft.core.window.GLFWWindow;
 import lombok.Getter;
+import lombok.Setter;
 
 public abstract class GameLoop {
 
 	@Getter private boolean running = false;
 
-	@Getter private final int ups;
+	@Getter @Setter private int ups;
 	@Getter private double deltaTime = 0, globalTime = 0;
 
 	public GameLoop(final int ups) {
 
-		this.ups = ups;
+		setUps(ups);
 
 	}
 
@@ -37,16 +37,16 @@ public abstract class GameLoop {
 
 		init();
 
-		double currentTime = glfwGetTime();
+		double currentTime = GLFWWindow.getTime();
 		double newTime, frameTime;
 
-		double counterTime = glfwGetTime();
+		double counterTime = GLFWWindow.getTime();
 		int upsCount = 0;
 		int fpsCount = 0;
 
 		while (running) {
 
-			newTime = glfwGetTime();
+			newTime = GLFWWindow.getTime();
 			frameTime = newTime - currentTime;
 			currentTime = newTime;
 
@@ -68,7 +68,7 @@ public abstract class GameLoop {
 			render();
 			fpsCount++;
 
-			if (glfwGetTime() - counterTime >= 1d) {
+			if (GLFWWindow.getTime() - counterTime >= 1d) {
 
 				counterTime += 1d;
 

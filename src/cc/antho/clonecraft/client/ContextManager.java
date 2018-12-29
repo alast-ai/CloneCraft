@@ -11,7 +11,7 @@ public class ContextManager {
 	public static void lock() {
 
 		lock.lock();
-		glfwMakeContextCurrent(Game.getInstance().getWindow().getHandle());
+		glfwMakeContextCurrent(Game.getWindow().getHandle());
 
 	}
 

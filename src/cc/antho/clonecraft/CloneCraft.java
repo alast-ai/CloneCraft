@@ -2,6 +2,7 @@ package cc.antho.clonecraft;
 
 import com.esotericsoftware.minlog.Log;
 
+import cc.antho.clonecraft.client.Debugger;
 import cc.antho.clonecraft.client.Game;
 import cc.antho.clonecraft.core.Config;
 import cc.antho.clonecraft.core.Util;
@@ -58,8 +59,10 @@ public final class CloneCraft {
 		final boolean startServer = Util.arrayContains(args, "server");
 		final boolean useDebugger = Util.arrayContains(args, "debugger");
 
+		if (useDebugger) Debugger.startThread();
+
 		if (startServer) NetworkServer.startThread();
-		else Game.main(useDebugger);
+		else Game.startThread();
 
 	}
 

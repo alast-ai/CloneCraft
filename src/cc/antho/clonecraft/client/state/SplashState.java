@@ -44,7 +44,7 @@ public class SplashState extends State {
 		glEnable(GL_CULL_FACE);
 		glCullFace(GL_BACK);
 
-		Game.getInstance().getWindow().trigger();
+		Game.getWindow().trigger();
 
 		ContextManager.unlock();
 
@@ -61,7 +61,7 @@ public class SplashState extends State {
 
 	public void render() {
 
-		glViewport(0, 0, Game.getInstance().getWindow().getWidth(), Game.getInstance().getWindow().getHeight());
+		glViewport(0, 0, Game.getWindow().getWidth(), Game.getWindow().getHeight());
 		glClear(Config.CLEAR);
 
 		uiRenderer.render();

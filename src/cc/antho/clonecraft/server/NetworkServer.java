@@ -4,9 +4,9 @@ import java.io.IOException;
 
 import com.esotericsoftware.kryonet.Server;
 
-import cc.antho.clonecraft.core.ClassRegister;
 import cc.antho.clonecraft.core.Config;
 import cc.antho.clonecraft.core.log.Logger;
+import cc.antho.clonecraft.core.net.ClassRegister;
 import lombok.Getter;
 
 public final class NetworkServer {
