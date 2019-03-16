@@ -1,7 +1,7 @@
 package cc.antho.clonecraft.core.events;
 
-import cc.antho.clonecraft.core.event.Event;
 import cc.antho.clonecraft.core.packet.Packet;
+import cc.antho.commons.event.Event;
 
 public final class NetworkPacketEvent extends Event {
 
@@ -9,9 +9,7 @@ public final class NetworkPacketEvent extends Event {
 	public final boolean fromServer;
 	public final boolean tcp;
 
-	public NetworkPacketEvent(final Object sender, final Packet packet, final boolean fromServer, final boolean tcp) {
-
-		super(sender);
+	public NetworkPacketEvent(final Packet packet, final boolean fromServer, final boolean tcp) {
 
 		this.packet = packet;
 		this.fromServer = fromServer;

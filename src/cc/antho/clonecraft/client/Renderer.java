@@ -18,14 +18,14 @@ import cc.antho.clonecraft.client.world.FreeBlock;
 import cc.antho.clonecraft.client.world.World;
 import cc.antho.clonecraft.core.Config;
 import cc.antho.clonecraft.core.TMP;
-import cc.antho.clonecraft.core.event.Event;
-import cc.antho.clonecraft.core.event.EventDispatcher;
-import cc.antho.clonecraft.core.event.EventListener;
 import cc.antho.clonecraft.core.events.FramebufferResizeEvent;
 import cc.antho.clonecraft.core.math.Mathf;
+import cc.antho.commons.event.Event;
+import cc.antho.commons.event.EventLayer;
+import cc.antho.commons.event.EventListener;
 import lombok.Getter;
 
-public class Renderer implements EventListener {
+public class Renderer extends EventListener {
 
 	@Getter private UIRenderer uiRenderer;
 	@Getter private Shader chunkShader;
@@ -33,7 +33,7 @@ public class Renderer implements EventListener {
 
 	public void init() {
 
-		EventDispatcher.addListener(this);
+		EventLayer.ROOT.addListener(this);
 
 		uiRenderer = new UIRenderer();
 

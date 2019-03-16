@@ -13,9 +13,6 @@ import cc.antho.clonecraft.client.state.GameState;
 import cc.antho.clonecraft.client.world.BlockType;
 import cc.antho.clonecraft.client.world.Chunk;
 import cc.antho.clonecraft.client.world.World;
-import cc.antho.clonecraft.core.event.Event;
-import cc.antho.clonecraft.core.event.EventDispatcher;
-import cc.antho.clonecraft.core.event.EventListener;
 import cc.antho.clonecraft.core.events.NetworkPacketEvent;
 import cc.antho.clonecraft.core.packet.BlockUpdatePacket;
 import cc.antho.clonecraft.core.packet.ChunkChangesPacket;
@@ -23,8 +20,11 @@ import cc.antho.clonecraft.core.packet.PlayerConnectPacket;
 import cc.antho.clonecraft.core.packet.PlayerDisconnectPacket;
 import cc.antho.clonecraft.core.packet.PlayerMovePacket;
 import cc.antho.clonecraft.core.packet.PlayerSelfConnectPacket;
+import cc.antho.commons.event.Event;
+import cc.antho.commons.event.EventLayer;
+import cc.antho.commons.event.EventListener;
 
-public final class ClientListener extends Listener implements EventListener {
+public final class ClientListener extends Listener {
 
 	public static final Map<Integer, PlayerStore> players = new HashMap<>();
 	public static boolean ready = false;
@@ -32,10 +32,27 @@ public final class ClientListener extends Listener implements EventListener {
 
 	private final Client client;
 
+	class AnthoCommonsEventListener extends EventListener {
+
+		public void onEvent(final Event event) {
+
+			if (event instanceof NetworkPacketEvent) {
+
+				final NetworkPacketEvent e = (NetworkPacketEvent) event;
+
+				if (!e.fromServer) if (e.tcp) client.sendTCP(e.packet);
+				else client.sendUDP(e.packet);
+
+			}
+
+		}
+
+	}
+
 	public ClientListener(final Client client) {
 
 		this.client = client;
-		EventDispatcher.addListener(this);
+		EventLayer.ROOT.addListener(new AnthoCommonsEventListener());
 
 	}
 
@@ -104,19 +121,6 @@ public final class ClientListener extends Listener implements EventListener {
 	public void disconnected(final Connection connection) {
 
 		// CloneCraftGame.getInstance().stop();
-
-	}
-
-	public void onEvent(final Event event) {
-
-		if (event instanceof NetworkPacketEvent) {
-
-			final NetworkPacketEvent e = (NetworkPacketEvent) event;
-
-			if (!e.fromServer) if (e.tcp) client.sendTCP(e.packet);
-			else client.sendUDP(e.packet);
-
-		}
 
 	}
 

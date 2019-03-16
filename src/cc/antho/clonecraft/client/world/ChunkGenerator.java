@@ -1,9 +1,9 @@
 package cc.antho.clonecraft.client.world;
 
-import cc.antho.clonecraft.core.event.EventDispatcher;
 import cc.antho.clonecraft.core.events.NetworkPacketEvent;
 import cc.antho.clonecraft.core.math.Mathf;
 import cc.antho.clonecraft.core.packet.ChunkChangesPacket;
+import cc.antho.commons.event.EventLayer;
 
 public class ChunkGenerator {
 
@@ -52,7 +52,7 @@ public class ChunkGenerator {
 
 			}
 
-		EventDispatcher.dispatch(new NetworkPacketEvent(null, new ChunkChangesPacket(null, chunk.getX(), chunk.getZ()), false, true));
+		EventLayer.ROOT.dispatch(new NetworkPacketEvent(new ChunkChangesPacket(null, chunk.getX(), chunk.getZ()), false, true));
 
 	}
 

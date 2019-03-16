@@ -4,15 +4,15 @@ import org.joml.Matrix4f;
 import org.joml.Vector3f;
 
 import cc.antho.clonecraft.core.TMP;
-import cc.antho.clonecraft.core.event.Event;
-import cc.antho.clonecraft.core.event.EventDispatcher;
-import cc.antho.clonecraft.core.event.EventListener;
 import cc.antho.clonecraft.core.events.FramebufferResizeEvent;
 import cc.antho.clonecraft.core.math.Mathf;
+import cc.antho.commons.event.Event;
+import cc.antho.commons.event.EventLayer;
+import cc.antho.commons.event.EventListener;
 import lombok.Getter;
 import lombok.Setter;
 
-public class Camera implements EventListener {
+public class Camera extends EventListener {
 
 	@Getter @Setter private boolean projectionDirty = true;
 	@Getter private final Matrix4f projection = new Matrix4f();
@@ -27,7 +27,7 @@ public class Camera implements EventListener {
 
 	public Camera() {
 
-		EventDispatcher.addListener(this);
+		EventLayer.ROOT.addListener(this);
 
 	}
 

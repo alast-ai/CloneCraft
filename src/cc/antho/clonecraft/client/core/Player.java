@@ -4,19 +4,19 @@ import static org.lwjgl.glfw.GLFW.*;
 
 import org.joml.Vector3f;
 
-import cc.antho.clonecraft.client.Game;
 import cc.antho.clonecraft.client.Controls;
+import cc.antho.clonecraft.client.Game;
 import cc.antho.clonecraft.client.net.ClientListener;
 import cc.antho.clonecraft.client.net.NetworkClient;
 import cc.antho.clonecraft.client.world.BlockType;
 import cc.antho.clonecraft.client.world.FreeBlock;
 import cc.antho.clonecraft.client.world.World;
-import cc.antho.clonecraft.core.event.EventDispatcher;
 import cc.antho.clonecraft.core.events.NetworkPacketEvent;
 import cc.antho.clonecraft.core.math.Mathf;
 import cc.antho.clonecraft.core.packet.BlockUpdatePacket;
 import cc.antho.clonecraft.core.packet.PlayerMovePacket;
 import cc.antho.clonecraft.core.window.GLFWInput;
+import cc.antho.commons.event.EventLayer;
 import lombok.Getter;
 
 public class Player {
@@ -217,7 +217,7 @@ public class Player {
 		if (ClientListener.ready && informTimer > ClientListener.playerPacketFreq) {
 
 			informTimer = 0;
-			EventDispatcher.dispatch(new NetworkPacketEvent(this, new PlayerMovePacket(NetworkClient.getNetworkClient().getID(), camera.position, camera.rotation), false, false));
+			EventLayer.ROOT.dispatch(new NetworkPacketEvent(new PlayerMovePacket(NetworkClient.getNetworkClient().getID(), camera.position, camera.rotation), false, false));
 
 		}
 
@@ -297,7 +297,7 @@ public class Player {
 
 					world.setBlock(p.x, p.y, p.z, null);
 
-					EventDispatcher.dispatch(new NetworkPacketEvent(this, new BlockUpdatePacket(Mathf.floor(p.x), Mathf.floor(p.y), Mathf.floor(p.z), null), false, true));
+					EventLayer.ROOT.dispatch(new NetworkPacketEvent(new BlockUpdatePacket(Mathf.floor(p.x), Mathf.floor(p.y), Mathf.floor(p.z), null), false, true));
 
 					world.getChunkFromWorldCoord(p.x, p.z).update();
 					break;
@@ -332,7 +332,7 @@ public class Player {
 					final BlockType currentBlock = BlockType.getPalette().get(blockIndex);
 
 					world.setBlock(lp.x, lp.y, lp.z, currentBlock);
-					EventDispatcher.dispatch(new NetworkPacketEvent(this, new BlockUpdatePacket(Mathf.floor(lp.x), Mathf.floor(lp.y), Mathf.floor(lp.z), currentBlock.getName()), false, true));
+					EventLayer.ROOT.dispatch(new NetworkPacketEvent(new BlockUpdatePacket(Mathf.floor(lp.x), Mathf.floor(lp.y), Mathf.floor(lp.z), currentBlock.getName()), false, true));
 					world.getChunkFromWorldCoord(lp.x, lp.z).update();
 					break;
 

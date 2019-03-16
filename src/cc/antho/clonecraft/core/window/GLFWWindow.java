@@ -13,14 +13,14 @@ import org.lwjgl.glfw.GLFWVidMode;
 import org.lwjgl.opengl.GL;
 import org.lwjgl.system.MemoryStack;
 
-import cc.antho.clonecraft.core.event.Event;
-import cc.antho.clonecraft.core.event.EventDispatcher;
-import cc.antho.clonecraft.core.event.EventListener;
 import cc.antho.clonecraft.core.events.FramebufferResizeEvent;
 import cc.antho.clonecraft.core.log.Logger;
+import cc.antho.commons.event.Event;
+import cc.antho.commons.event.EventLayer;
+import cc.antho.commons.event.EventListener;
 import lombok.Getter;
 
-public class GLFWWindow implements EventListener {
+public class GLFWWindow extends EventListener {
 
 	public static void createPrint(final PrintStream stream) {
 
@@ -98,7 +98,7 @@ public class GLFWWindow implements EventListener {
 
 		GL.createCapabilities();
 
-		EventDispatcher.addListener(this);
+		EventLayer.ROOT.addListener(this);
 
 		Logger.info("Created GLFW window " + this);
 
@@ -153,7 +153,7 @@ public class GLFWWindow implements EventListener {
 
 	public void trigger() {
 
-		EventDispatcher.dispatch(new FramebufferResizeEvent(this, width, height));
+		EventLayer.ROOT.dispatch(new FramebufferResizeEvent(width, height));
 
 	}
 
@@ -165,7 +165,7 @@ public class GLFWWindow implements EventListener {
 
 	public void onEvent(final Event event) {
 
-		if (event.getSender() == this && event instanceof FramebufferResizeEvent) {
+		if (event instanceof FramebufferResizeEvent) {
 
 			final FramebufferResizeEvent e = (FramebufferResizeEvent) event;
 
